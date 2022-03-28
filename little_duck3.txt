@@ -1,0 +1,1 @@
+program id ; var v1 , v2 : int ; { print("HOLA") ; print("HOLA") ;}

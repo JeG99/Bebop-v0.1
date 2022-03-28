@@ -1,18 +1,24 @@
 import ply.yacc as yacc
 import sys
 
-from pylexer import tokens
+from pylexer import tokens, lexer
 
 def p_program(p):
     '''
-    program : PROGRAM ID SEMICOLON vars0 block
+    program : PROGRAM ID SEMICOLON VAR vars block
             | PROGRAM ID SEMICOLON block
     '''
     p[0] = 1
 
+def p_vars(p):
+    '''
+    vars : vars0 vars 
+         | vars0
+    '''
+
 def p_vars0(p):
     '''
-    vars0 : VAR ID vars1
+    vars0 : ID vars1
     vars1 : COMMA ID vars1 
           | vars2   
     vars2 : COLON type SEMICOLON
@@ -65,12 +71,12 @@ def p_relop(p):
            | GTHAN
            | DIFFERENT 
     '''
-
+    
 def p_exp0(p):
     '''
     exp0 : term0 exp1
-    exp1 : PLUS term0 exp1
-         | MINUS term0 exp1
+    exp1 : PLUS exp0
+         | MINUS exp0
          | empty
     '''
 
@@ -83,19 +89,18 @@ def p_condition0(p):
 
 def p_term0(p):
     '''    
-    term0 : factor0 term1
-    term1 : DIVIDE factor0 term1
-          | TIMES factor0 term1
+    term0 : factor term1
+    term1 : DIVIDE term0
+          | TIMES term0
           | empty
     '''
 
-def p_factor0(p):
-    '''    
-    factor0 : LPAREN expression RPAREN 
-            | factor1 var_cte
-    factor1 : PLUS
-            | MINUS
-            | empty
+def p_factor(p):
+    '''
+    factor : LPAREN expression RPAREN
+           | PLUS var_cte
+           | MINUS var_cte
+           | var_cte
     '''
 
 def p_var_cte(p):
@@ -122,8 +127,14 @@ if __name__ == '__main__':
             _file = open(code, 'r')
             source = _file.read()
             _file.close()
+            lexer.input(source)
+            
+            for lexem in lexer:
+                print(lexem)
+
             if parser.parse(source) == 1:
                 print("Código válido.")
+            
         except EOFError:
             print(EOFError)
     else:
