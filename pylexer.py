@@ -29,7 +29,12 @@ reserved = {
     'print': 'PRINT',
     'var': 'VAR',
     'int': 'INT',
-    'float': 'FLOAT'
+    'float': 'FLOAT',
+    'public' : 'PUBLIC',
+    'private' : 'PRIVATE',
+    'return' : 'RETURN',
+    'void' : 'VOID',
+    'constructor' : 'CONSTRUCTOR'
 }
 
 tokens += list(reserved.values())
