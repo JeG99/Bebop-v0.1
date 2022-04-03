@@ -1,0 +1,65 @@
+ROUTINE = routine id ';' {[CLASS | FUNCTION | DECLARATION | ASSIGNMENT]} MAIN.
+
+TYPE = int | float | string | bool | id.
+
+CLASS = class id [EXTENSION] '{' [ATTRIBUTES] CONSTRUCTOR [METHODS] '}' ';'.
+
+EXTENSION = DATA_ACCESS id {',' DATA_ACCESS id}.
+
+ATTRIBUTES = DATA_ACCESS ASSIGNMENT {DATA_ACCESS ASSIGNMENT}. 
+
+CONSTRUCTOR = construct id '(' PARAMS ')' BLOCK.
+
+METHODS = DATA_ACCESS function {DATA_ACCESS function}.
+
+DATA_ACCESS = private | public.
+
+FUNCTION = def id '(' PARAMS ')' '-' '>' (TYPE | void) BLOCK {def id '(' PARAMS ')' '-' '>' (TYPE | void) BLOCK}.
+
+PARAMS = [(TYPE id {',' TYPE id})].
+
+FUNCTION_CALL = id '(' FUNCTION_CALL_PARAMS ')' ';'.
+
+FUNCTION_CALL_PARAMS = [(EXPRESSION | string)] {',' [(EXPRESSION | string)]}.
+
+BLOCK = '{' [STATEMENT {STATEMENT}] '}'.
+
+STATEMENT = DECLARATION | ASSIGNMENT | CONDITION | WRITING | READING | RETURN | FUNCTION_CALL | METHOD_CALL | WHILE.
+
+RETURN = return [EXPRESSION] ';'.
+
+DECLARATION = id ':' ((TYPE ['=' EXPRESSION]) | (STACK) | id) ';'.
+
+ASSIGNMENT = id '=' (EXPRESSION | OBJECT_ASSIGNMENT) ';'.
+
+OBJECT_ASSIGNMENT = new id '(' FUNCTION_CALL_PARAMS ')' ';'.
+
+WHILE = while '(' EXPRESSION ')' BLOCK.
+
+WRITING = '<' '<' '<' '(' (EXPRESSION | string) {',' (EXPRESSION | string)} ')' ';'.
+
+READING = '>' '>' '>' id ';'.
+
+CONDITION = if '(' EXPRESSION ')' BLOCK [else BLOCK] ';'.
+
+LOGIC_OPERATION = EXPRESSION {('&&' | '||') EXPRESSION}.   
+
+EXPRESSION = (EXP | BOOL) ( | ('<' | '>' | '<>' | '==') (EXP | BOOL)).
+
+EXP = TERM {('+' | '-') TERM}.
+
+TERM = (FACTOR) {('*' | '/') FACTOR}.
+
+FACTOR = ['+' | '-'] POWER.
+
+POWER = ('(' EXP ')' | CONS_VAR | FUNCTION_CALL | METHOD_CALL) {('**' | '|/') ('(' EXP ')' | CONS_VAR | FUNCTION_CALL | METHOD_CALL)}.
+
+CONS_VAR = id | cons_int | cons_float.
+
+BOOL = true | false.
+
+MAIN = main BLOCK.
+
+STACK = stack '<' TYPE '>'.
+
+METHOD_CALL = id '.' {id '.'} FUNCTION_CALL.
