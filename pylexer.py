@@ -18,12 +18,17 @@ tokens = [
     'RBRACKET',
     'SEMICOLON',
     'COLON',
-    'INT_CTE',
-    'FLOAT_CTE'
+    'CONS_INT',
+    'CONS_FLOAT',
+    'AND',
+    'OR',
+    'NOT',
+    'RSQBRACKET',
+    'LSQBRACKET'
 ]
 
 reserved = {
-    'program': 'PROGRAM',
+    'routine': 'ROUTINE',
     'if':'IF',
     'else': 'ELSE',
     'print': 'PRINT',
@@ -34,7 +39,14 @@ reserved = {
     'private' : 'PRIVATE',
     'return' : 'RETURN',
     'void' : 'VOID',
-    'constructor' : 'CONSTRUCTOR'
+    'construct' : 'CONSTRUCT',
+    'def' : 'DEF',
+    'while' : 'WHILE',
+    'stack' : 'STACK',
+    'new' : 'NEW',
+    'true' : 'TRUE',
+    'false' : 'FALSE',
+    'main' : 'MAIN'
 }
 
 tokens += list(reserved.values())
@@ -55,6 +67,11 @@ t_LTHAN = r'<'
 t_EQUALS = r'='
 t_DIFFERENT = r'<>'
 t_STRING = r'\"(\"\"|[^\"$])*\"'
+t_AND = r'&&'
+t_OR = r'||'
+t_NOT = r'!'
+t_RSQBRACKET = r'['
+t_LSQBRACKET = r']'
 
 t_ignore = ' \t'
 
@@ -68,7 +85,7 @@ def t_FLOAT_CTE(t):
     t.value = float(t.value)
     return t
 
-def t_INT_CTE(t):
+def t_CONS_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t

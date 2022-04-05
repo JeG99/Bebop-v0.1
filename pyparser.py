@@ -5,11 +5,11 @@ from pylexer import tokens, lexer
 
 def p_program(p):
     '''
-    program : PROGRAM ID SEMICOLON class VAR vars function block
-            | PROGRAM ID SEMICOLON VAR vars function block
-            | PROGRAM ID SEMICOLON class VAR vars block
-            | PROGRAM ID SEMICOLON VAR vars block
-            | PROGRAM ID SEMICOLON block
+    program : ROUTINE ID SEMICOLON class VAR vars function block
+            | ROUTINE ID SEMICOLON VAR vars function block
+            | ROUTINE ID SEMICOLON class VAR vars block
+            | ROUTINE ID SEMICOLON VAR vars block
+            | ROUTINE ID SEMICOLON block
     '''
     p[0] = 1
 
@@ -117,8 +117,8 @@ def p_factor(p):
 
 def p_var_cte(p):
     '''
-    var_cte : INT_CTE
-            | FLOAT_CTE
+    var_cte : CONS_INT
+            | CONS_FLOAT
             | ID
     '''
 
