@@ -1,9 +1,9 @@
 ####   Library Importing
-from ply.lex import lex
+import ply.lex as lex
 
 ####   Token Array Definition
 tokens = [
-
+    'ID',
     'SEMICOLON',
     'LBRACKET',
     'RBRACKET',
@@ -30,7 +30,7 @@ tokens = [
     'DIVIDE',
     'POWER',
     'SQRT',
-    'DOT'
+    'DOT',
     'CONST_INT',
     'CONST_FLOAT',
     'CONST_STRING',
@@ -47,7 +47,6 @@ reserved = {
     'string' : 'STRING',
     'bool' : 'BOOL',
     'construct' : 'CONSTRUCT',
-    'function' : 'FUNCTION',
     'private' : 'PRIVATE',
     'public' : 'PUBLIC',
     'def' : 'DEF',
@@ -56,8 +55,6 @@ reserved = {
     'while' : 'WHILE',
     'if' : 'IF',
     'else' : 'ELSE',
-    'true' : 'TRUE',
-    'false' : 'FALSE',
     'void' : 'VOID'
 }
 
@@ -87,7 +84,7 @@ t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
-t_POWER = r'**'
+t_POWER = r'\*\*'
 t_SQRT = r'\|/'
 t_DOT = r'\.'
 t_CONST_BOOL = r'true|false'
@@ -116,3 +113,5 @@ def t_newline(t):
 
 def t_error(t):
     t.lexer.skip(1)
+
+lexer = lex.lex()

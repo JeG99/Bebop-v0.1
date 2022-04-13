@@ -11,7 +11,7 @@ def p_routine0(p):
              | declaration0 routine1
              | assignment0 routine1
              | empty
-    '''
+    ''' 
     p[0] = 1
 
 def p_class0(p):
@@ -28,7 +28,7 @@ def p_class0(p):
 def p_function0(p):
     '''
     function0 : DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    function1 : type 0
+    function1 : type
               | VOID
     function2 : simple_declaration function2    
               | simple_assignment function2
@@ -119,7 +119,7 @@ def p_complex_type(p):
 
 def p_logic_or0(p):
     '''
-    logic_or0 : logic_and logic_or1
+    logic_or0 : logic_and0 logic_or1
     logic_or1 : OR logic_or0
               | empty
     '''
@@ -133,12 +133,12 @@ def p_logic_and0(p):
 
 def p_logic_operand0(p):
     '''
-    logic_operand0 : NOT expression
+    logic_operand : NOT expression0
     '''
 
 def p_exp0(p):
     '''
-    exp0 : term exp1
+    exp0 : term0 exp1
     exp1 : PLUS exp0
          | MINUS exp0
          | empty
@@ -161,13 +161,13 @@ def p_factor(p):
 
 def p_power0(p):
     '''
-    power0 : LPAREN exp RPAREN power2
+    power0 : LPAREN exp0 RPAREN power2
            | const_var power2
            | function_call power2
            | method_call0 power2
            | attr_access0 power2
-           | ID LSQRBRACKET exp RSQRBRACKET power1 power2 
-    power1 : LSQRBRACKET exp RSQRBRACKET
+           | ID LSQRBRACKET exp0 RSQRBRACKET power1 power2 
+    power1 : LSQRBRACKET exp0 RSQRBRACKET
            | empty
     power2 : POWER power0
            | SQRT power0
@@ -189,7 +189,7 @@ def p_function_call(p):
 def p_function_call_params0(p):
     '''
     function_call_params0 : expression0 function_call_params1
-                          | string function_call_params1
+                          | CONST_STRING function_call_params1
                           | empty function_call_params1
     function_call_params1 : COMMA function_call_params0
                           | empty 
@@ -197,7 +197,7 @@ def p_function_call_params0(p):
 
 def p_expression0(p):
     '''
-    expression0 : exp expression1
+    expression0 : exp0 expression1
                 | CONST_BOOL expression1
                 | attr_access0 expression1
     expression1 : empty
@@ -206,7 +206,7 @@ def p_expression0(p):
                 | GTHAN expression3
                 | DIFFERENT expression3
                 | EQUIVALENT expression3
-    expression3 : exp
+    expression3 : exp0
                 | CONST_BOOL
                 | attr_access0
     ''' 
@@ -227,8 +227,8 @@ def p_method_call0(p):
 
 def p_data_access(p):
     '''
-    data_access : private
-                | public
+    data_access : PRIVATE
+                | PUBLIC
     '''
 
 def p_function_statement(p):
@@ -239,22 +239,23 @@ def p_function_statement(p):
                        | reading
                        | return
                        | function_call SEMICOLON
-                       | method_call SEMICOLON
+                       | method_call0 SEMICOLON
                        | while
     '''
 
 def p_condition0(p):
     '''
-    condition0 : IF LPAREN expression RPAREN block0 condition1 SEMICOLON 
+    condition0 : IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON 
     condition1 : ELSE block0
                | empty
     '''
 
 def p_writing0(p):
     '''
+
     writing0 : WRITE LPAREN writing1 LPAREN SEMICOLON
-    writing1 : expression writing2
-             | STRING writing2
+    writing1 : expression0 writing2
+             | CONST_STRING writing2
     writing2 : COMMA writing1
              | empty
     '''
@@ -266,13 +267,13 @@ def p_reading(p):
 
 def p_return(p):
     '''
-    return : RETURN expression SEMICOLON
+    return : RETURN expression0 SEMICOLON
            | RETURN SEMICOLON
     '''
 
 def p_while(p):
     '''
-    while : WHILE LPAREN expression RPAREN block0
+    while : WHILE LPAREN expression0 RPAREN block0
     '''
 
 def p_block0(p):
@@ -284,27 +285,27 @@ def p_block0(p):
 
 def p_statement(p):
     '''
-    statement : assignment
+    statement : assignment0
               | object_assignment
               | condition0
               | writing0
               | reading
               | return
               | function_call SEMICOLON
-              | method_call SEMICOLON
+              | method_call0 SEMICOLON
               | while
     '''
 
 def p_object_assignment(p):
     '''
-    object_assignment : ID EQUALS NEW ID LPAREN function_call_params RPAREN SEMICOLON  
+    object_assignment : ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON  
     '''
 
 def p_main(p):
     '''
     main0 : LBRACKET main1 RBRACKET 
-    main1 : declaration main
-          | statement main 
+    main1 : declaration0 main1
+          | statement main1 
           | empty
     '''
 
