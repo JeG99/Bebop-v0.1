@@ -31,8 +31,10 @@ tokens = [
     'POWER',
     'SQRT',
     'DOT'
-
-
+    'CONST_INT',
+    'CONST_FLOAT',
+    'CONST_STRING',
+    'CONST_BOOL'
 ]
 
 ####   Reserved Dictionary Definition
@@ -55,8 +57,8 @@ reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
     'true' : 'TRUE',
-    'false' : 'FALSE'
-
+    'false' : 'FALSE',
+    'void' : 'VOID'
 }
 
 tokens += list(reserved.values())
@@ -74,7 +76,7 @@ t_COLON = r':'
 t_EQUALS = r'='
 t_WRITE = r'<<<'
 t_READ = r'>>>'
-t_OR = r'||'
+t_OR = r'\|\|'
 t_AND = r'&&'
 t_NOT = r'\!'
 t_LTHAN = r'\<'
@@ -86,8 +88,10 @@ t_MINUS = r'\-'
 t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
 t_POWER = r'**'
-t_SQRT = r'|/'
+t_SQRT = r'\|/'
 t_DOT = r'\.'
+t_CONST_BOOL = r'true|false'
+t_CONST_STRING = r'\"(\"\"|[^\"$])*\"'
 
 t_ignore = ' \t'
 
@@ -96,12 +100,12 @@ def t_ID(t):
     t.type = reserved.get(t.value,'ID')
     return t
 
-def t_FLOAT_CTE(t):
+def t_CONST_FLOAT(t):
     r'\d*\.\d+'
     t.value = float(t.value)
     return t
 
-def t_INT_CTE(t):
+def t_CONST_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
