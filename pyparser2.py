@@ -21,9 +21,9 @@ def p_class0(p):
            | empty
     class2 : attributes
            | empty
-    class3 : methods
+    class3 : methods 
            | empty  
-    '''
+    ''' 
 
 def p_function0(p):
     '''
@@ -177,8 +177,8 @@ def p_power0(p):
 def p_const_var(p):
     '''
     const_var : CONST_INT
-            | CONST_FLOAT
-            | ID
+              | CONST_FLOAT
+              | ID
     '''
 
 def p_function_call(p):
@@ -303,7 +303,7 @@ def p_object_assignment(p):
 
 def p_main(p):
     '''
-    main0 : LBRACKET main1 RBRACKET 
+    main0 : MAIN LBRACKET main1 RBRACKET 
     main1 : declaration0 main1
           | statement main1 
           | empty
@@ -311,7 +311,7 @@ def p_main(p):
 
 def p_empty(p):
     '''
-    empty :
+    empty :  
     '''
 
 def p_error(p):

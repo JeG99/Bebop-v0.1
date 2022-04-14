@@ -55,7 +55,8 @@ reserved = {
     'while' : 'WHILE',
     'if' : 'IF',
     'else' : 'ELSE',
-    'void' : 'VOID'
+    'void' : 'VOID',
+    'main' : 'MAIN'
 }
 
 tokens += list(reserved.values())

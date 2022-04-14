@@ -1,4 +1,16 @@
-program hola ; var v1, v2, v3: int; { v1 = 23; v2 = 3; v3 = v1 + v2; print( v3 ); if(v3 > v2) { print("esmayor"); } else { print("noesmayor"); } }
+routine hola ; 
+v1	int[3]; 
+main { 
+	v1 = true;
+	v2 = 3; 
+	v3 = v1 + v2; 
+	<<<(v3); 
+	if(v3 > v2) { 
+		<<<("esmayor"); 
+	} else { 
+		<<<("noesmayor"); 
+	} 
+}
 
 
 
