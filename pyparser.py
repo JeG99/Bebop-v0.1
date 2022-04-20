@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 import sys
 
-from pylexer2 import tokens, lexer
+from pylexer import tokens, lexer
 
 def p_routine0(p):
     '''
@@ -17,7 +17,7 @@ def p_routine0(p):
 def p_class0(p):
     '''
     class0 : CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    class1 : extension0
+    class1 : COLON extension0
            | empty
     class2 : attributes
            | empty
@@ -37,7 +37,7 @@ def p_function0(p):
 
 def p_declaration0(p):
     '''
-    declaration0 : ID declaration1 SEMICOLON
+    declaration0 : ID COLON declaration1 SEMICOLON
     declaration1 : type
                  | complex_type
                  | type LSQRBRACKET exp0 RSQRBRACKET declaration2
@@ -47,11 +47,9 @@ def p_declaration0(p):
 
 def p_assignment0(p):
     '''
-    assignment0 : ID assignment1 EQUALS expression0 SEMICOLON
-    assignment1 : LSQRBRACKET exp0 RSQRBRACKET assignment2
-                | empty
-    assignment2 : LSQRBRACKET exp0 RSQRBRACKET
-                | empty
+    assignment0 : ID EQUALS expression0 SEMICOLON
+                | ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+                | ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     '''
 
 def p_constructor(p):
@@ -59,11 +57,9 @@ def p_constructor(p):
     constructor : CONSTRUCT ID LPAREN params0 RPAREN function_block0
     '''
 
-def p_extension0(p):
+def p_extension0(p): # quitamos polimorfismo temporalmente
     '''
-    extension0 : data_access ID extension1
-    extension1 : COMMA extension0
-               | empty
+    extension0 : ID
     '''
 
 def p_attributes(p):
@@ -211,18 +207,14 @@ def p_expression0(p):
                 | attr_access0
     ''' 
 
-def p_attr_access0(p):
+def p_attr_access0(p): # eliminamos anidamiento temporalmente
     '''
-    attr_access0 : ID DOT ID attr_access1
-    attr_access1 : DOT attr_access0
-                 | empty
+    attr_access0 : ID DOT ID
     '''
 
-def p_method_call0(p):
+def p_method_call0(p): # eliminamos anidamiento temporalmente 
     '''
-    method_call0 : ID DOT method_call1 function_call
-    method_call1 : ID DOT method_call1
-                 | empty
+    method_call0 : ID DOT function_call
     '''
 
 def p_data_access(p):
@@ -252,8 +244,7 @@ def p_condition0(p):
 
 def p_writing0(p):
     '''
-
-    writing0 : WRITE LPAREN writing1 LPAREN SEMICOLON
+    writing0 : WRITE LPAREN writing1 RPAREN SEMICOLON
     writing1 : expression0 writing2
              | CONST_STRING writing2
     writing2 : COMMA writing1
@@ -262,6 +253,7 @@ def p_writing0(p):
 
 def p_reading(p):
     '''
+
     reading : READ ID SEMICOLON
     '''
 

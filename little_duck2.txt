@@ -1,43 +1,71 @@
-routine hola ; 
-v1	int[3]; 
-main { 
-	v1 = true;
-	v2 = 3; 
+routine holamundo; 
+v1: int[3][1]; 
+v1: int[3]; 
+v1 = true;
+
+class Clase1 : Clase3 {
+
+	public df: int;
+	private dX: float;
+	df = gh ** 2\|4;
+	
+	construct Clase1(int gy, float v2, bool k2){
+		ig = 23;
+	}
+
+	private def func1(int hola, float adios) -> int [[
+		var2: int;
+		var3: bool;
+		var: float;
+	]] {
+		>>> input;
+		<<<(hola \| adios + funcion23(adios**hola));
+		return hola + 3;
+	}
+
+	public def func2() -> void [[]] {
+		<<<("que onda");
+	}
+
+};
+
+def funcion71628() -> bool [[]] {
+	return true;
+}
+
+main {
+	v9: float[3][-54 + 3\|7];
+	v67 = 3\|7;
+	v1[1] = 2; 
+	v1[1][2] = v5;
+	v2 = vv; 
 	v3 = v1 + v2; 
+	>>> v4;
 	<<<(v3); 
 	if(v3 > v2) { 
 		<<<("esmayor"); 
 	} else { 
 		<<<("noesmayor"); 
-	} 
+	};
+	while(v3 < v5) {
+		>>> keonda;
+		<<<( obj.meth(), obj2.attr6 );
+		while(v7) {
+			<<<("hola");
+		}
+		if(cond) {
+			<<<("inside condition");
+			if(cond32) {
+				<<<("if anidado compadre");
+				while(holahola) {
+					<<<("hola");
+				}
+			};
+		} else {
+			<<<("no se pudo compadre");
+		};
+	}
+	obj: Obj7;
+	obj = new Obj7(2, 4, 6, true, hola(234), obj2.attr, obj.meth(2));
+	var23 = obj.attr23 + obj.attr4 / obj2.meth34(2, 4, 6);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
