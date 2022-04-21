@@ -331,8 +331,8 @@ if __name__ == '__main__':
             _file.close()
             lexer.input(source)
             
-            for lexem in lexer:
-                print(lexem)
+            #for lexem in lexer:
+            #    print(lexem)
 
             if parser.parse(source) == 1:
                 print("Código válido.")
