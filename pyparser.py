@@ -3,9 +3,11 @@ import sys
 
 from pylexer import tokens, lexer
 
+func_dir = {}
+
 def p_routine0(p):
     '''
-    routine0 : ROUTINE ID SEMICOLON routine1 main0
+    routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
     routine1 : class0 routine1 
              | function0 routine1
              | declaration0 routine1
@@ -14,16 +16,31 @@ def p_routine0(p):
     ''' 
     p[0] = 1
 
+def p_global_scope(p):
+    '''
+    global_scope:
+    '''
+    func_dir['global'] = {}
+    curr_scope = 'global'
+
 def p_class0(p):
     '''
-    class0 : CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    class1 : COLON extension0
+    class0 : CLASS ID class1 LBRACKET class_scope class2 constructor class3 RBRACKET SEMICOLON
+    class1 : COLON ID
            | empty
     class2 : attributes
            | empty
     class3 : methods 
            | empty  
-    ''' 
+    '''
+    curr_scope = p[2]
+
+def p_class_scope(p):
+    '''
+    class_scope:
+    '''
+    global curr_scope
+    func_dir[curr_scope] = {}
 
 def p_function0(p):
     '''
@@ -57,10 +74,10 @@ def p_constructor(p):
     constructor : CONSTRUCT ID LPAREN params0 RPAREN function_block0
     '''
 
-def p_extension0(p): # quitamos polimorfismo temporalmente
-    '''
-    extension0 : ID
-    '''
+#def p_extension0(p): # quitamos polimorfismo temporalmente
+#    '''
+#    extension0 : ID
+#    '''
 
 def p_attributes(p):
     '''
