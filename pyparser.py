@@ -15,32 +15,26 @@ def p_routine0(p):
              | empty
     ''' 
     p[0] = 1
+    print(func_dir)
 
 def p_global_scope(p):
     '''
-    global_scope:
+    global_scope :
     '''
     func_dir['global'] = {}
     curr_scope = 'global'
 
 def p_class0(p):
     '''
-    class0 : CLASS ID class1 LBRACKET class_scope class2 constructor class3 RBRACKET SEMICOLON
+    class0 : CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
     class1 : COLON ID
            | empty
     class2 : attributes
            | empty
     class3 : methods 
            | empty  
-    '''
-    curr_scope = p[2]
 
-def p_class_scope(p):
     '''
-    class_scope:
-    '''
-    global curr_scope
-    func_dir[curr_scope] = {}
 
 def p_function0(p):
     '''

@@ -3,36 +3,36 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> routine0
-Rule 1     routine0 -> ROUTINE ID SEMICOLON routine1 main0
+Rule 1     routine0 -> ROUTINE ID SEMICOLON global_scope routine1 main0
 Rule 2     routine1 -> class0 routine1
 Rule 3     routine1 -> function0 routine1
 Rule 4     routine1 -> declaration0 routine1
 Rule 5     routine1 -> assignment0 routine1
 Rule 6     routine1 -> empty
-Rule 7     class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-Rule 8     class1 -> COLON extension0
-Rule 9     class1 -> empty
-Rule 10    class2 -> attributes
-Rule 11    class2 -> empty
-Rule 12    class3 -> methods
-Rule 13    class3 -> empty
-Rule 14    function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-Rule 15    function1 -> type
-Rule 16    function1 -> VOID
-Rule 17    function2 -> simple_declaration function2
-Rule 18    function2 -> simple_assignment function2
-Rule 19    function2 -> empty
-Rule 20    declaration0 -> ID COLON declaration1 SEMICOLON
-Rule 21    declaration1 -> type
-Rule 22    declaration1 -> complex_type
-Rule 23    declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET declaration2
-Rule 24    declaration2 -> LSQRBRACKET exp0 RSQRBRACKET
-Rule 25    declaration2 -> empty
-Rule 26    assignment0 -> ID EQUALS expression0 SEMICOLON
-Rule 27    assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-Rule 28    assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-Rule 29    constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0
-Rule 30    extension0 -> ID
+Rule 7     global_scope -> <empty>
+Rule 8     class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+Rule 9     class1 -> COLON ID
+Rule 10    class1 -> empty
+Rule 11    class2 -> attributes
+Rule 12    class2 -> empty
+Rule 13    class3 -> methods
+Rule 14    class3 -> empty
+Rule 15    function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+Rule 16    function1 -> type
+Rule 17    function1 -> VOID
+Rule 18    function2 -> simple_declaration function2
+Rule 19    function2 -> simple_assignment function2
+Rule 20    function2 -> empty
+Rule 21    declaration0 -> ID COLON declaration1 SEMICOLON
+Rule 22    declaration1 -> type
+Rule 23    declaration1 -> complex_type
+Rule 24    declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET declaration2
+Rule 25    declaration2 -> LSQRBRACKET exp0 RSQRBRACKET
+Rule 26    declaration2 -> empty
+Rule 27    assignment0 -> ID EQUALS expression0 SEMICOLON
+Rule 28    assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+Rule 29    assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+Rule 30    constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0
 Rule 31    attributes -> data_access simple_declaration attributes
 Rule 32    attributes -> simple_assignment attributes
 Rule 33    attributes -> empty
@@ -148,31 +148,31 @@ Rule 141   empty -> <empty>
 Terminals, with rules where they appear
 
 AND                  : 54
-ARROW                : 14
+ARROW                : 15
 BOOL                 : 46
-CLASS                : 7
-COLON                : 8 20 47
+CLASS                : 8
+COLON                : 9 21 47
 COMMA                : 38 86 118
-CONSTRUCT            : 29
+CONSTRUCT            : 30
 CONST_BOOL           : 89 98
 CONST_FLOAT          : 80
 CONST_INT            : 79
 CONST_STRING         : 84 117
-DEF                  : 14
+DEF                  : 15
 DIFFERENT            : 95
 DIVIDE               : 63
 DOT                  : 100 101
 ELSE                 : 113
-EQUALS               : 26 27 28 48 136
+EQUALS               : 27 28 29 48 136
 EQUIVALENT           : 96
 FLOAT                : 44
 GTHAN                : 94
-ID                   : 1 7 14 20 26 27 28 29 30 36 47 48 49 73 81 82 100 100 101 120 136 136
+ID                   : 1 8 9 15 21 27 28 29 30 36 47 48 49 73 81 82 100 100 101 120 136 136
 IF                   : 112
 INT                  : 43
-LBRACKET             : 7 40 124 137
-LPAREN               : 14 29 68 82 112 115 123 136
-LSQRBRACKET          : 14 14 23 24 27 28 28 73 74
+LBRACKET             : 8 40 124 137
+LPAREN               : 15 30 68 82 112 115 123 136
+LSQRBRACKET          : 15 15 24 25 28 29 29 73 74
 LTHAN                : 93
 MAIN                 : 137
 MINUS                : 59 66
@@ -184,16 +184,16 @@ PLUS                 : 58 65
 POWER                : 76
 PRIVATE              : 102
 PUBLIC               : 103
-RBRACKET             : 7 40 124 137
+RBRACKET             : 8 40 124 137
 READ                 : 120
 RETURN               : 121 122
 ROUTINE              : 1
-RPAREN               : 14 29 68 82 112 115 123 136
-RSQRBRACKET          : 14 14 23 24 27 28 28 73 74
-SEMICOLON            : 1 7 20 26 27 28 47 48 109 110 112 115 120 121 122 133 134 136
+RPAREN               : 15 30 68 82 112 115 123 136
+RSQRBRACKET          : 15 15 24 25 28 29 29 73 74
+SEMICOLON            : 1 8 21 27 28 29 47 48 109 110 112 115 120 121 122 133 134 136
 SQRT                 : 77
 STRING               : 45
-VOID                 : 16
+VOID                 : 17
 WHILE                : 123
 WRITE                : 115
 error                : 
@@ -202,40 +202,40 @@ Nonterminals, with rules where they appear
 
 assignment0          : 5 127
 attr_access0         : 72 90 99
-attributes           : 10 31 32
+attributes           : 11 31 32
 block0               : 112 113 123
 block1               : 124 125
 class0               : 2
-class1               : 7
-class2               : 7
-class3               : 7
-complex_type         : 22
+class1               : 8
+class2               : 8
+class3               : 8
+complex_type         : 23
 condition0           : 105 129
 condition1           : 112
 const_var            : 69
-constructor          : 7
+constructor          : 8
 data_access          : 31 34
 declaration0         : 4 138
-declaration1         : 20
-declaration2         : 23
-empty                : 6 9 11 13 19 25 33 35 37 39 42 52 55 60 64 75 78 85 87 91 114 119 126 140
-exp0                 : 23 24 27 28 28 58 59 68 73 74 88 97
+declaration1         : 21
+declaration2         : 24
+empty                : 6 10 12 14 20 26 33 35 37 39 42 52 55 60 64 75 78 85 87 91 114 119 126 140
+exp0                 : 24 25 28 29 29 58 59 68 73 74 88 97
 exp1                 : 57
-expression0          : 26 27 28 48 56 83 112 116 121 123
+expression0          : 27 28 29 48 56 83 112 116 121 123
 expression1          : 88 89 90
 expression2          : 92
 expression3          : 93 94 95 96
-extension0           : 8
 factor               : 61
 function0            : 3 34
-function1            : 14
-function2            : 14 17 18
-function_block0      : 14 29
+function1            : 15
+function2            : 15 18 19
+function_block0      : 15 30
 function_block1      : 40 41
 function_call        : 70 101 109 133
 function_call_params0 : 82 86 136
 function_call_params1 : 83 84 85
 function_statement   : 41
+global_scope         : 1
 logic_and0           : 50 54
 logic_and1           : 53
 logic_operand        : 53
@@ -244,9 +244,9 @@ logic_or1            : 50
 main0                : 1
 main1                : 137 138 139
 method_call0         : 71 110 134
-methods              : 12 34
+methods              : 13 34
 object_assignment    : 128
-params0              : 14 29 38
+params0              : 15 30 38
 params1              : 36
 power0               : 65 66 67 76 77
 power1               : 73
@@ -255,12 +255,12 @@ reading              : 107 131
 return               : 108 132
 routine0             : 0
 routine1             : 1 2 3 4 5
-simple_assignment    : 18 32 104
-simple_declaration   : 17 31
+simple_assignment    : 19 32 104
+simple_declaration   : 18 31
 statement            : 125 139
 term0                : 57 62 63
 term1                : 61
-type                 : 15 21 23 36 47
+type                 : 16 22 24 36 47
 while                : 111 135
 writing0             : 106 130
 writing1             : 115 118
@@ -271,7 +271,7 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . routine0
-    (1) routine0 -> . ROUTINE ID SEMICOLON routine1 main0
+    (1) routine0 -> . ROUTINE ID SEMICOLON global_scope routine1 main0
 
     ROUTINE         shift and go to state 2
 
@@ -285,68 +285,80 @@ state 1
 
 state 2
 
-    (1) routine0 -> ROUTINE . ID SEMICOLON routine1 main0
+    (1) routine0 -> ROUTINE . ID SEMICOLON global_scope routine1 main0
 
     ID              shift and go to state 3
 
 
 state 3
 
-    (1) routine0 -> ROUTINE ID . SEMICOLON routine1 main0
+    (1) routine0 -> ROUTINE ID . SEMICOLON global_scope routine1 main0
 
     SEMICOLON       shift and go to state 4
 
 
 state 4
 
-    (1) routine0 -> ROUTINE ID SEMICOLON . routine1 main0
+    (1) routine0 -> ROUTINE ID SEMICOLON . global_scope routine1 main0
+    (7) global_scope -> .
+
+    CLASS           reduce using rule 7 (global_scope -> .)
+    DEF             reduce using rule 7 (global_scope -> .)
+    ID              reduce using rule 7 (global_scope -> .)
+    MAIN            reduce using rule 7 (global_scope -> .)
+
+    global_scope                   shift and go to state 5
+
+state 5
+
+    (1) routine0 -> ROUTINE ID SEMICOLON global_scope . routine1 main0
     (2) routine1 -> . class0 routine1
     (3) routine1 -> . function0 routine1
     (4) routine1 -> . declaration0 routine1
     (5) routine1 -> . assignment0 routine1
     (6) routine1 -> . empty
-    (7) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    (14) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (8) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    (15) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (141) empty -> .
 
-    CLASS           shift and go to state 12
-    DEF             shift and go to state 13
-    ID              shift and go to state 5
+    CLASS           shift and go to state 13
+    DEF             shift and go to state 14
+    ID              shift and go to state 6
     MAIN            reduce using rule 141 (empty -> .)
 
-    routine1                       shift and go to state 6
-    class0                         shift and go to state 7
-    function0                      shift and go to state 8
-    declaration0                   shift and go to state 9
-    assignment0                    shift and go to state 10
-    empty                          shift and go to state 11
-
-state 5
-
-    (20) declaration0 -> ID . COLON declaration1 SEMICOLON
-    (26) assignment0 -> ID . EQUALS expression0 SEMICOLON
-    (27) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-
-    COLON           shift and go to state 14
-    EQUALS          shift and go to state 15
-    LSQRBRACKET     shift and go to state 16
-
+    routine1                       shift and go to state 7
+    class0                         shift and go to state 8
+    function0                      shift and go to state 9
+    declaration0                   shift and go to state 10
+    assignment0                    shift and go to state 11
+    empty                          shift and go to state 12
 
 state 6
 
-    (1) routine0 -> ROUTINE ID SEMICOLON routine1 . main0
-    (137) main0 -> . MAIN LBRACKET main1 RBRACKET
+    (21) declaration0 -> ID . COLON declaration1 SEMICOLON
+    (27) assignment0 -> ID . EQUALS expression0 SEMICOLON
+    (28) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
 
-    MAIN            shift and go to state 18
+    COLON           shift and go to state 15
+    EQUALS          shift and go to state 16
+    LSQRBRACKET     shift and go to state 17
 
-    main0                          shift and go to state 17
 
 state 7
+
+    (1) routine0 -> ROUTINE ID SEMICOLON global_scope routine1 . main0
+    (137) main0 -> . MAIN LBRACKET main1 RBRACKET
+
+    MAIN            shift and go to state 19
+
+    main0                          shift and go to state 18
+
+state 8
 
     (2) routine1 -> class0 . routine1
     (2) routine1 -> . class0 routine1
@@ -354,27 +366,27 @@ state 7
     (4) routine1 -> . declaration0 routine1
     (5) routine1 -> . assignment0 routine1
     (6) routine1 -> . empty
-    (7) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    (14) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (8) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    (15) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (141) empty -> .
 
-    CLASS           shift and go to state 12
-    DEF             shift and go to state 13
-    ID              shift and go to state 5
+    CLASS           shift and go to state 13
+    DEF             shift and go to state 14
+    ID              shift and go to state 6
     MAIN            reduce using rule 141 (empty -> .)
 
-    class0                         shift and go to state 7
-    routine1                       shift and go to state 19
-    function0                      shift and go to state 8
-    declaration0                   shift and go to state 9
-    assignment0                    shift and go to state 10
-    empty                          shift and go to state 11
+    class0                         shift and go to state 8
+    routine1                       shift and go to state 20
+    function0                      shift and go to state 9
+    declaration0                   shift and go to state 10
+    assignment0                    shift and go to state 11
+    empty                          shift and go to state 12
 
-state 8
+state 9
 
     (3) routine1 -> function0 . routine1
     (2) routine1 -> . class0 routine1
@@ -382,27 +394,27 @@ state 8
     (4) routine1 -> . declaration0 routine1
     (5) routine1 -> . assignment0 routine1
     (6) routine1 -> . empty
-    (7) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    (14) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (8) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    (15) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (141) empty -> .
 
-    CLASS           shift and go to state 12
-    DEF             shift and go to state 13
-    ID              shift and go to state 5
+    CLASS           shift and go to state 13
+    DEF             shift and go to state 14
+    ID              shift and go to state 6
     MAIN            reduce using rule 141 (empty -> .)
 
-    function0                      shift and go to state 8
-    routine1                       shift and go to state 20
-    class0                         shift and go to state 7
-    declaration0                   shift and go to state 9
-    assignment0                    shift and go to state 10
-    empty                          shift and go to state 11
+    function0                      shift and go to state 9
+    routine1                       shift and go to state 21
+    class0                         shift and go to state 8
+    declaration0                   shift and go to state 10
+    assignment0                    shift and go to state 11
+    empty                          shift and go to state 12
 
-state 9
+state 10
 
     (4) routine1 -> declaration0 . routine1
     (2) routine1 -> . class0 routine1
@@ -410,27 +422,27 @@ state 9
     (4) routine1 -> . declaration0 routine1
     (5) routine1 -> . assignment0 routine1
     (6) routine1 -> . empty
-    (7) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    (14) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (8) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    (15) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (141) empty -> .
 
-    CLASS           shift and go to state 12
-    DEF             shift and go to state 13
-    ID              shift and go to state 5
+    CLASS           shift and go to state 13
+    DEF             shift and go to state 14
+    ID              shift and go to state 6
     MAIN            reduce using rule 141 (empty -> .)
 
-    declaration0                   shift and go to state 9
-    routine1                       shift and go to state 21
-    class0                         shift and go to state 7
-    function0                      shift and go to state 8
-    assignment0                    shift and go to state 10
-    empty                          shift and go to state 11
+    declaration0                   shift and go to state 10
+    routine1                       shift and go to state 22
+    class0                         shift and go to state 8
+    function0                      shift and go to state 9
+    assignment0                    shift and go to state 11
+    empty                          shift and go to state 12
 
-state 10
+state 11
 
     (5) routine1 -> assignment0 . routine1
     (2) routine1 -> . class0 routine1
@@ -438,72 +450,72 @@ state 10
     (4) routine1 -> . declaration0 routine1
     (5) routine1 -> . assignment0 routine1
     (6) routine1 -> . empty
-    (7) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    (14) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (8) class0 -> . CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    (15) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (141) empty -> .
 
-    CLASS           shift and go to state 12
-    DEF             shift and go to state 13
-    ID              shift and go to state 5
+    CLASS           shift and go to state 13
+    DEF             shift and go to state 14
+    ID              shift and go to state 6
     MAIN            reduce using rule 141 (empty -> .)
 
-    assignment0                    shift and go to state 10
-    routine1                       shift and go to state 22
-    class0                         shift and go to state 7
-    function0                      shift and go to state 8
-    declaration0                   shift and go to state 9
-    empty                          shift and go to state 11
+    assignment0                    shift and go to state 11
+    routine1                       shift and go to state 23
+    class0                         shift and go to state 8
+    function0                      shift and go to state 9
+    declaration0                   shift and go to state 10
+    empty                          shift and go to state 12
 
-state 11
+state 12
 
     (6) routine1 -> empty .
 
     MAIN            reduce using rule 6 (routine1 -> empty .)
 
 
-state 12
-
-    (7) class0 -> CLASS . ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-
-    ID              shift and go to state 23
-
-
 state 13
 
-    (14) function0 -> DEF . ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (8) class0 -> CLASS . ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
 
     ID              shift and go to state 24
 
 
 state 14
 
-    (20) declaration0 -> ID COLON . declaration1 SEMICOLON
-    (21) declaration1 -> . type
-    (22) declaration1 -> . complex_type
-    (23) declaration1 -> . type LSQRBRACKET exp0 RSQRBRACKET declaration2
+    (15) function0 -> DEF . ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+
+    ID              shift and go to state 25
+
+
+state 15
+
+    (21) declaration0 -> ID COLON . declaration1 SEMICOLON
+    (22) declaration1 -> . type
+    (23) declaration1 -> . complex_type
+    (24) declaration1 -> . type LSQRBRACKET exp0 RSQRBRACKET declaration2
     (43) type -> . INT
     (44) type -> . FLOAT
     (45) type -> . STRING
     (46) type -> . BOOL
     (49) complex_type -> . ID
 
-    INT             shift and go to state 29
-    FLOAT           shift and go to state 30
-    STRING          shift and go to state 31
-    BOOL            shift and go to state 32
-    ID              shift and go to state 25
+    INT             shift and go to state 30
+    FLOAT           shift and go to state 31
+    STRING          shift and go to state 32
+    BOOL            shift and go to state 33
+    ID              shift and go to state 26
 
-    declaration1                   shift and go to state 26
-    type                           shift and go to state 27
-    complex_type                   shift and go to state 28
+    declaration1                   shift and go to state 27
+    type                           shift and go to state 28
+    complex_type                   shift and go to state 29
 
-state 15
+state 16
 
-    (26) assignment0 -> ID EQUALS . expression0 SEMICOLON
+    (27) assignment0 -> ID EQUALS . expression0 SEMICOLON
     (88) expression0 -> . exp0 expression1
     (89) expression0 -> . CONST_BOOL expression1
     (90) expression0 -> . attr_access0 expression1
@@ -525,28 +537,28 @@ state 15
     (82) function_call -> . ID LPAREN function_call_params0 RPAREN
     (101) method_call0 -> . ID DOT function_call
 
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    expression0                    shift and go to state 34
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    expression0                    shift and go to state 35
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
-state 16
+state 17
 
-    (27) assignment0 -> ID LSQRBRACKET . exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> ID LSQRBRACKET . exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (28) assignment0 -> ID LSQRBRACKET . exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET . exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (57) exp0 -> . term0 exp1
     (61) term0 -> . factor term1
     (65) factor -> . PLUS power0
@@ -565,115 +577,115 @@ state 16
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    exp0                           shift and go to state 50
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
-
-state 17
-
-    (1) routine0 -> ROUTINE ID SEMICOLON routine1 main0 .
-
-    $end            reduce using rule 1 (routine0 -> ROUTINE ID SEMICOLON routine1 main0 .)
-
+    exp0                           shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
 state 18
 
-    (137) main0 -> MAIN . LBRACKET main1 RBRACKET
+    (1) routine0 -> ROUTINE ID SEMICOLON global_scope routine1 main0 .
 
-    LBRACKET        shift and go to state 52
+    $end            reduce using rule 1 (routine0 -> ROUTINE ID SEMICOLON global_scope routine1 main0 .)
 
 
 state 19
+
+    (137) main0 -> MAIN . LBRACKET main1 RBRACKET
+
+    LBRACKET        shift and go to state 53
+
+
+state 20
 
     (2) routine1 -> class0 routine1 .
 
     MAIN            reduce using rule 2 (routine1 -> class0 routine1 .)
 
 
-state 20
+state 21
 
     (3) routine1 -> function0 routine1 .
 
     MAIN            reduce using rule 3 (routine1 -> function0 routine1 .)
 
 
-state 21
+state 22
 
     (4) routine1 -> declaration0 routine1 .
 
     MAIN            reduce using rule 4 (routine1 -> declaration0 routine1 .)
 
 
-state 22
+state 23
 
     (5) routine1 -> assignment0 routine1 .
 
     MAIN            reduce using rule 5 (routine1 -> assignment0 routine1 .)
 
 
-state 23
-
-    (7) class0 -> CLASS ID . class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-    (8) class1 -> . COLON extension0
-    (9) class1 -> . empty
-    (141) empty -> .
-
-    COLON           shift and go to state 54
-    LBRACKET        reduce using rule 141 (empty -> .)
-
-    class1                         shift and go to state 53
-    empty                          shift and go to state 55
-
 state 24
 
-    (14) function0 -> DEF ID . LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (8) class0 -> CLASS ID . class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    (9) class1 -> . COLON ID
+    (10) class1 -> . empty
+    (141) empty -> .
 
-    LPAREN          shift and go to state 56
+    COLON           shift and go to state 55
+    LBRACKET        reduce using rule 141 (empty -> .)
 
+    class1                         shift and go to state 54
+    empty                          shift and go to state 56
 
 state 25
+
+    (15) function0 -> DEF ID . LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+
+    LPAREN          shift and go to state 57
+
+
+state 26
 
     (49) complex_type -> ID .
 
     SEMICOLON       reduce using rule 49 (complex_type -> ID .)
 
 
-state 26
-
-    (20) declaration0 -> ID COLON declaration1 . SEMICOLON
-
-    SEMICOLON       shift and go to state 57
-
-
 state 27
 
-    (21) declaration1 -> type .
-    (23) declaration1 -> type . LSQRBRACKET exp0 RSQRBRACKET declaration2
+    (21) declaration0 -> ID COLON declaration1 . SEMICOLON
 
-    SEMICOLON       reduce using rule 21 (declaration1 -> type .)
-    LSQRBRACKET     shift and go to state 58
+    SEMICOLON       shift and go to state 58
 
 
 state 28
 
-    (22) declaration1 -> complex_type .
+    (22) declaration1 -> type .
+    (24) declaration1 -> type . LSQRBRACKET exp0 RSQRBRACKET declaration2
 
-    SEMICOLON       reduce using rule 22 (declaration1 -> complex_type .)
+    SEMICOLON       reduce using rule 22 (declaration1 -> type .)
+    LSQRBRACKET     shift and go to state 59
 
 
 state 29
+
+    (23) declaration1 -> complex_type .
+
+    SEMICOLON       reduce using rule 23 (declaration1 -> complex_type .)
+
+
+state 30
 
     (43) type -> INT .
 
@@ -682,7 +694,7 @@ state 29
     ID              reduce using rule 43 (type -> INT .)
 
 
-state 30
+state 31
 
     (44) type -> FLOAT .
 
@@ -691,7 +703,7 @@ state 30
     ID              reduce using rule 44 (type -> FLOAT .)
 
 
-state 31
+state 32
 
     (45) type -> STRING .
 
@@ -700,7 +712,7 @@ state 31
     ID              reduce using rule 45 (type -> STRING .)
 
 
-state 32
+state 33
 
     (46) type -> BOOL .
 
@@ -709,7 +721,7 @@ state 32
     ID              reduce using rule 46 (type -> BOOL .)
 
 
-state 33
+state 34
 
     (100) attr_access0 -> ID . DOT ID
     (73) power0 -> ID . LSQRBRACKET exp0 RSQRBRACKET power1 power2
@@ -717,8 +729,8 @@ state 33
     (82) function_call -> ID . LPAREN function_call_params0 RPAREN
     (101) method_call0 -> ID . DOT function_call
 
-    DOT             shift and go to state 59
-    LSQRBRACKET     shift and go to state 60
+    DOT             shift and go to state 60
+    LSQRBRACKET     shift and go to state 61
     POWER           reduce using rule 81 (const_var -> ID .)
     SQRT            reduce using rule 81 (const_var -> ID .)
     MULTIPLY        reduce using rule 81 (const_var -> ID .)
@@ -732,17 +744,17 @@ state 33
     SEMICOLON       reduce using rule 81 (const_var -> ID .)
     COMMA           reduce using rule 81 (const_var -> ID .)
     RPAREN          reduce using rule 81 (const_var -> ID .)
-    LPAREN          shift and go to state 61
-
-
-state 34
-
-    (26) assignment0 -> ID EQUALS expression0 . SEMICOLON
-
-    SEMICOLON       shift and go to state 62
+    LPAREN          shift and go to state 62
 
 
 state 35
+
+    (27) assignment0 -> ID EQUALS expression0 . SEMICOLON
+
+    SEMICOLON       shift and go to state 63
+
+
+state 36
 
     (88) expression0 -> exp0 . expression1
     (91) expression1 -> . empty
@@ -756,16 +768,16 @@ state 35
     SEMICOLON       reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
     RPAREN          reduce using rule 141 (empty -> .)
-    LTHAN           shift and go to state 66
-    GTHAN           shift and go to state 67
-    DIFFERENT       shift and go to state 68
-    EQUIVALENT      shift and go to state 69
+    LTHAN           shift and go to state 67
+    GTHAN           shift and go to state 68
+    DIFFERENT       shift and go to state 69
+    EQUIVALENT      shift and go to state 70
 
-    expression1                    shift and go to state 63
-    empty                          shift and go to state 64
-    expression2                    shift and go to state 65
+    expression1                    shift and go to state 64
+    empty                          shift and go to state 65
+    expression2                    shift and go to state 66
 
-state 36
+state 37
 
     (89) expression0 -> CONST_BOOL . expression1
     (91) expression1 -> . empty
@@ -779,16 +791,16 @@ state 36
     SEMICOLON       reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
     RPAREN          reduce using rule 141 (empty -> .)
-    LTHAN           shift and go to state 66
-    GTHAN           shift and go to state 67
-    DIFFERENT       shift and go to state 68
-    EQUIVALENT      shift and go to state 69
+    LTHAN           shift and go to state 67
+    GTHAN           shift and go to state 68
+    DIFFERENT       shift and go to state 69
+    EQUIVALENT      shift and go to state 70
 
-    expression1                    shift and go to state 70
-    empty                          shift and go to state 64
-    expression2                    shift and go to state 65
+    expression1                    shift and go to state 71
+    empty                          shift and go to state 65
+    expression2                    shift and go to state 66
 
-state 37
+state 38
 
     (90) expression0 -> attr_access0 . expression1
     (72) power0 -> attr_access0 . power2
@@ -807,8 +819,8 @@ state 37
   ! shift/reduce conflict for GTHAN resolved as shift
   ! shift/reduce conflict for DIFFERENT resolved as shift
   ! shift/reduce conflict for EQUIVALENT resolved as shift
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     SEMICOLON       reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
     RPAREN          reduce using rule 141 (empty -> .)
@@ -816,22 +828,22 @@ state 37
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
     MINUS           reduce using rule 141 (empty -> .)
-    LTHAN           shift and go to state 66
-    GTHAN           shift and go to state 67
-    DIFFERENT       shift and go to state 68
-    EQUIVALENT      shift and go to state 69
+    LTHAN           shift and go to state 67
+    GTHAN           shift and go to state 68
+    DIFFERENT       shift and go to state 69
+    EQUIVALENT      shift and go to state 70
 
   ! LTHAN           [ reduce using rule 141 (empty -> .) ]
   ! GTHAN           [ reduce using rule 141 (empty -> .) ]
   ! DIFFERENT       [ reduce using rule 141 (empty -> .) ]
   ! EQUIVALENT      [ reduce using rule 141 (empty -> .) ]
 
-    expression1                    shift and go to state 71
-    power2                         shift and go to state 72
-    empty                          shift and go to state 73
-    expression2                    shift and go to state 65
+    expression1                    shift and go to state 72
+    power2                         shift and go to state 73
+    empty                          shift and go to state 74
+    expression2                    shift and go to state 66
 
-state 38
+state 39
 
     (57) exp0 -> term0 . exp1
     (58) exp1 -> . PLUS exp0
@@ -839,8 +851,8 @@ state 38
     (60) exp1 -> . empty
     (141) empty -> .
 
-    PLUS            shift and go to state 77
-    MINUS           shift and go to state 78
+    PLUS            shift and go to state 78
+    MINUS           shift and go to state 79
     LTHAN           reduce using rule 141 (empty -> .)
     GTHAN           reduce using rule 141 (empty -> .)
     DIFFERENT       reduce using rule 141 (empty -> .)
@@ -850,10 +862,10 @@ state 38
     RPAREN          reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
 
-    exp1                           shift and go to state 76
-    empty                          shift and go to state 79
+    exp1                           shift and go to state 77
+    empty                          shift and go to state 80
 
-state 39
+state 40
 
     (61) term0 -> factor . term1
     (62) term1 -> . MULTIPLY term0
@@ -861,8 +873,8 @@ state 39
     (64) term1 -> . empty
     (141) empty -> .
 
-    MULTIPLY        shift and go to state 81
-    DIVIDE          shift and go to state 82
+    MULTIPLY        shift and go to state 82
+    DIVIDE          shift and go to state 83
     PLUS            reduce using rule 141 (empty -> .)
     MINUS           reduce using rule 141 (empty -> .)
     LTHAN           reduce using rule 141 (empty -> .)
@@ -874,10 +886,10 @@ state 39
     RPAREN          reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
 
-    term1                          shift and go to state 80
-    empty                          shift and go to state 83
+    term1                          shift and go to state 81
+    empty                          shift and go to state 84
 
-state 40
+state 41
 
     (65) factor -> PLUS . power0
     (68) power0 -> . LPAREN exp0 RPAREN power2
@@ -893,18 +905,18 @@ state 40
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    power0                         shift and go to state 84
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    power0                         shift and go to state 85
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 41
+state 42
 
     (67) factor -> power0 .
 
@@ -922,7 +934,7 @@ state 41
     COMMA           reduce using rule 67 (factor -> power0 .)
 
 
-state 42
+state 43
 
     (66) factor -> MINUS . power0
     (68) power0 -> . LPAREN exp0 RPAREN power2
@@ -938,18 +950,18 @@ state 42
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    power0                         shift and go to state 85
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    power0                         shift and go to state 86
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 43
+state 44
 
     (68) power0 -> LPAREN . exp0 RPAREN power2
     (57) exp0 -> . term0 exp1
@@ -970,23 +982,23 @@ state 43
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    exp0                           shift and go to state 86
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    exp0                           shift and go to state 87
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 44
+state 45
 
     (69) power0 -> const_var . power2
     (76) power2 -> . POWER power0
@@ -994,8 +1006,8 @@ state 44
     (78) power2 -> . empty
     (141) empty -> .
 
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     MULTIPLY        reduce using rule 141 (empty -> .)
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
@@ -1009,10 +1021,10 @@ state 44
     RPAREN          reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
 
-    power2                         shift and go to state 87
-    empty                          shift and go to state 88
+    power2                         shift and go to state 88
+    empty                          shift and go to state 89
 
-state 45
+state 46
 
     (70) power0 -> function_call . power2
     (76) power2 -> . POWER power0
@@ -1020,34 +1032,8 @@ state 45
     (78) power2 -> . empty
     (141) empty -> .
 
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
-    MULTIPLY        reduce using rule 141 (empty -> .)
-    DIVIDE          reduce using rule 141 (empty -> .)
-    PLUS            reduce using rule 141 (empty -> .)
-    MINUS           reduce using rule 141 (empty -> .)
-    LTHAN           reduce using rule 141 (empty -> .)
-    GTHAN           reduce using rule 141 (empty -> .)
-    DIFFERENT       reduce using rule 141 (empty -> .)
-    EQUIVALENT      reduce using rule 141 (empty -> .)
-    SEMICOLON       reduce using rule 141 (empty -> .)
-    RSQRBRACKET     reduce using rule 141 (empty -> .)
-    RPAREN          reduce using rule 141 (empty -> .)
-    COMMA           reduce using rule 141 (empty -> .)
-
-    power2                         shift and go to state 89
-    empty                          shift and go to state 88
-
-state 46
-
-    (71) power0 -> method_call0 . power2
-    (76) power2 -> . POWER power0
-    (77) power2 -> . SQRT power0
-    (78) power2 -> . empty
-    (141) empty -> .
-
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     MULTIPLY        reduce using rule 141 (empty -> .)
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
@@ -1062,9 +1048,35 @@ state 46
     COMMA           reduce using rule 141 (empty -> .)
 
     power2                         shift and go to state 90
-    empty                          shift and go to state 88
+    empty                          shift and go to state 89
 
 state 47
+
+    (71) power0 -> method_call0 . power2
+    (76) power2 -> . POWER power0
+    (77) power2 -> . SQRT power0
+    (78) power2 -> . empty
+    (141) empty -> .
+
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
+    MULTIPLY        reduce using rule 141 (empty -> .)
+    DIVIDE          reduce using rule 141 (empty -> .)
+    PLUS            reduce using rule 141 (empty -> .)
+    MINUS           reduce using rule 141 (empty -> .)
+    LTHAN           reduce using rule 141 (empty -> .)
+    GTHAN           reduce using rule 141 (empty -> .)
+    DIFFERENT       reduce using rule 141 (empty -> .)
+    EQUIVALENT      reduce using rule 141 (empty -> .)
+    SEMICOLON       reduce using rule 141 (empty -> .)
+    RSQRBRACKET     reduce using rule 141 (empty -> .)
+    RPAREN          reduce using rule 141 (empty -> .)
+    COMMA           reduce using rule 141 (empty -> .)
+
+    power2                         shift and go to state 91
+    empty                          shift and go to state 89
+
+state 48
 
     (79) const_var -> CONST_INT .
 
@@ -1084,7 +1096,7 @@ state 47
     COMMA           reduce using rule 79 (const_var -> CONST_INT .)
 
 
-state 48
+state 49
 
     (80) const_var -> CONST_FLOAT .
 
@@ -1104,7 +1116,7 @@ state 48
     COMMA           reduce using rule 80 (const_var -> CONST_FLOAT .)
 
 
-state 49
+state 50
 
     (73) power0 -> ID . LSQRBRACKET exp0 RSQRBRACKET power1 power2
     (81) const_var -> ID .
@@ -1112,7 +1124,7 @@ state 49
     (101) method_call0 -> ID . DOT function_call
     (100) attr_access0 -> ID . DOT ID
 
-    LSQRBRACKET     shift and go to state 60
+    LSQRBRACKET     shift and go to state 61
     POWER           reduce using rule 81 (const_var -> ID .)
     SQRT            reduce using rule 81 (const_var -> ID .)
     MULTIPLY        reduce using rule 81 (const_var -> ID .)
@@ -1127,19 +1139,19 @@ state 49
     SEMICOLON       reduce using rule 81 (const_var -> ID .)
     RPAREN          reduce using rule 81 (const_var -> ID .)
     COMMA           reduce using rule 81 (const_var -> ID .)
-    LPAREN          shift and go to state 61
-    DOT             shift and go to state 91
-
-
-state 50
-
-    (27) assignment0 -> ID LSQRBRACKET exp0 . RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> ID LSQRBRACKET exp0 . RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-
-    RSQRBRACKET     shift and go to state 92
+    LPAREN          shift and go to state 62
+    DOT             shift and go to state 92
 
 
 state 51
+
+    (28) assignment0 -> ID LSQRBRACKET exp0 . RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 . RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+
+    RSQRBRACKET     shift and go to state 93
+
+
+state 52
 
     (72) power0 -> attr_access0 . power2
     (76) power2 -> . POWER power0
@@ -1147,8 +1159,8 @@ state 51
     (78) power2 -> . empty
     (141) empty -> .
 
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     MULTIPLY        reduce using rule 141 (empty -> .)
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
@@ -1162,16 +1174,16 @@ state 51
     RPAREN          reduce using rule 141 (empty -> .)
     COMMA           reduce using rule 141 (empty -> .)
 
-    power2                         shift and go to state 72
-    empty                          shift and go to state 88
+    power2                         shift and go to state 73
+    empty                          shift and go to state 89
 
-state 52
+state 53
 
     (137) main0 -> MAIN LBRACKET . main1 RBRACKET
     (138) main1 -> . declaration0 main1
     (139) main1 -> . statement main1
     (140) main1 -> . empty
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
     (127) statement -> . assignment0
     (128) statement -> . object_assignment
     (129) statement -> . condition0
@@ -1182,9 +1194,9 @@ state 52
     (134) statement -> . method_call0 SEMICOLON
     (135) statement -> . while
     (141) empty -> .
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (112) condition0 -> . IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON
     (115) writing0 -> . WRITE LPAREN writing1 RPAREN SEMICOLON
@@ -1195,54 +1207,52 @@ state 52
     (101) method_call0 -> . ID DOT function_call
     (123) while -> . WHILE LPAREN expression0 RPAREN block0
 
-    ID              shift and go to state 97
+    ID              shift and go to state 98
     RBRACKET        reduce using rule 141 (empty -> .)
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
-    main1                          shift and go to state 93
-    declaration0                   shift and go to state 94
-    statement                      shift and go to state 95
-    empty                          shift and go to state 96
-    assignment0                    shift and go to state 98
-    object_assignment              shift and go to state 99
-    condition0                     shift and go to state 100
-    writing0                       shift and go to state 101
-    reading                        shift and go to state 102
-    return                         shift and go to state 103
-    function_call                  shift and go to state 104
-    method_call0                   shift and go to state 105
-    while                          shift and go to state 106
-
-state 53
-
-    (7) class0 -> CLASS ID class1 . LBRACKET class2 constructor class3 RBRACKET SEMICOLON
-
-    LBRACKET        shift and go to state 112
-
+    main1                          shift and go to state 94
+    declaration0                   shift and go to state 95
+    statement                      shift and go to state 96
+    empty                          shift and go to state 97
+    assignment0                    shift and go to state 99
+    object_assignment              shift and go to state 100
+    condition0                     shift and go to state 101
+    writing0                       shift and go to state 102
+    reading                        shift and go to state 103
+    return                         shift and go to state 104
+    function_call                  shift and go to state 105
+    method_call0                   shift and go to state 106
+    while                          shift and go to state 107
 
 state 54
 
-    (8) class1 -> COLON . extension0
-    (30) extension0 -> . ID
+    (8) class0 -> CLASS ID class1 . LBRACKET class2 constructor class3 RBRACKET SEMICOLON
 
-    ID              shift and go to state 114
+    LBRACKET        shift and go to state 113
 
-    extension0                     shift and go to state 113
 
 state 55
 
-    (9) class1 -> empty .
+    (9) class1 -> COLON . ID
 
-    LBRACKET        reduce using rule 9 (class1 -> empty .)
+    ID              shift and go to state 114
 
 
 state 56
 
-    (14) function0 -> DEF ID LPAREN . params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (10) class1 -> empty .
+
+    LBRACKET        reduce using rule 10 (class1 -> empty .)
+
+
+state 57
+
+    (15) function0 -> DEF ID LPAREN . params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
     (36) params0 -> . type ID params1
     (37) params0 -> . empty
     (43) type -> . INT
@@ -1251,35 +1261,35 @@ state 56
     (46) type -> . BOOL
     (141) empty -> .
 
-    INT             shift and go to state 29
-    FLOAT           shift and go to state 30
-    STRING          shift and go to state 31
-    BOOL            shift and go to state 32
+    INT             shift and go to state 30
+    FLOAT           shift and go to state 31
+    STRING          shift and go to state 32
+    BOOL            shift and go to state 33
     RPAREN          reduce using rule 141 (empty -> .)
 
     params0                        shift and go to state 115
     type                           shift and go to state 116
     empty                          shift and go to state 117
 
-state 57
-
-    (20) declaration0 -> ID COLON declaration1 SEMICOLON .
-
-    CLASS           reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    DEF             reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    ID              reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    MAIN            reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    IF              reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    WRITE           reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    READ            reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    RETURN          reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    WHILE           reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-    RBRACKET        reduce using rule 20 (declaration0 -> ID COLON declaration1 SEMICOLON .)
-
-
 state 58
 
-    (23) declaration1 -> type LSQRBRACKET . exp0 RSQRBRACKET declaration2
+    (21) declaration0 -> ID COLON declaration1 SEMICOLON .
+
+    CLASS           reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    DEF             reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    ID              reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    MAIN            reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    IF              reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    WRITE           reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    READ            reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    RETURN          reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    WHILE           reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+    RBRACKET        reduce using rule 21 (declaration0 -> ID COLON declaration1 SEMICOLON .)
+
+
+state 59
+
+    (24) declaration1 -> type LSQRBRACKET . exp0 RSQRBRACKET declaration2
     (57) exp0 -> . term0 exp1
     (61) term0 -> . factor term1
     (65) factor -> . PLUS power0
@@ -1298,23 +1308,23 @@ state 58
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 118
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 59
+state 60
 
     (100) attr_access0 -> ID DOT . ID
     (101) method_call0 -> ID DOT . function_call
@@ -1324,7 +1334,7 @@ state 59
 
     function_call                  shift and go to state 120
 
-state 60
+state 61
 
     (73) power0 -> ID LSQRBRACKET . exp0 RSQRBRACKET power1 power2
     (57) exp0 -> . term0 exp1
@@ -1345,23 +1355,23 @@ state 60
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 121
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 61
+state 62
 
     (82) function_call -> ID LPAREN . function_call_params0 RPAREN
     (83) function_call_params0 -> . expression0 function_call_params1
@@ -1390,45 +1400,45 @@ state 61
     (101) method_call0 -> . ID DOT function_call
 
     CONST_STRING    shift and go to state 124
-    CONST_BOOL      shift and go to state 36
+    CONST_BOOL      shift and go to state 37
     COMMA           reduce using rule 141 (empty -> .)
     RPAREN          reduce using rule 141 (empty -> .)
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     function_call_params0          shift and go to state 122
     expression0                    shift and go to state 123
     empty                          shift and go to state 125
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-
-state 62
-
-    (26) assignment0 -> ID EQUALS expression0 SEMICOLON .
-
-    CLASS           reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    DEF             reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    ID              reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    MAIN            reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    IF              reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    WRITE           reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    READ            reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    RETURN          reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    WHILE           reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-    RBRACKET        reduce using rule 26 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
-
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 63
+
+    (27) assignment0 -> ID EQUALS expression0 SEMICOLON .
+
+    CLASS           reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    DEF             reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    ID              reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    MAIN            reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    IF              reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    WRITE           reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    READ            reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    RETURN          reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    WHILE           reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+    RBRACKET        reduce using rule 27 (assignment0 -> ID EQUALS expression0 SEMICOLON .)
+
+
+state 64
 
     (88) expression0 -> exp0 expression1 .
 
@@ -1437,7 +1447,7 @@ state 63
     RPAREN          reduce using rule 88 (expression0 -> exp0 expression1 .)
 
 
-state 64
+state 65
 
     (91) expression1 -> empty .
 
@@ -1446,7 +1456,7 @@ state 64
     RPAREN          reduce using rule 91 (expression1 -> empty .)
 
 
-state 65
+state 66
 
     (92) expression1 -> expression2 .
 
@@ -1455,7 +1465,7 @@ state 65
     RPAREN          reduce using rule 92 (expression1 -> expression2 .)
 
 
-state 66
+state 67
 
     (93) expression2 -> LTHAN . expression3
     (97) expression3 -> . exp0
@@ -1480,24 +1490,24 @@ state 66
     (101) method_call0 -> . ID DOT function_call
 
     CONST_BOOL      shift and go to state 128
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression3                    shift and go to state 126
     exp0                           shift and go to state 127
     attr_access0                   shift and go to state 129
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
-state 67
+state 68
 
     (94) expression2 -> GTHAN . expression3
     (97) expression3 -> . exp0
@@ -1522,24 +1532,24 @@ state 67
     (101) method_call0 -> . ID DOT function_call
 
     CONST_BOOL      shift and go to state 128
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression3                    shift and go to state 130
     exp0                           shift and go to state 127
     attr_access0                   shift and go to state 129
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
-state 68
+state 69
 
     (95) expression2 -> DIFFERENT . expression3
     (97) expression3 -> . exp0
@@ -1564,24 +1574,24 @@ state 68
     (101) method_call0 -> . ID DOT function_call
 
     CONST_BOOL      shift and go to state 128
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression3                    shift and go to state 131
     exp0                           shift and go to state 127
     attr_access0                   shift and go to state 129
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
-state 69
+state 70
 
     (96) expression2 -> EQUIVALENT . expression3
     (97) expression3 -> . exp0
@@ -1606,24 +1616,24 @@ state 69
     (101) method_call0 -> . ID DOT function_call
 
     CONST_BOOL      shift and go to state 128
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression3                    shift and go to state 132
     exp0                           shift and go to state 127
     attr_access0                   shift and go to state 129
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
-state 70
+state 71
 
     (89) expression0 -> CONST_BOOL expression1 .
 
@@ -1632,7 +1642,7 @@ state 70
     RPAREN          reduce using rule 89 (expression0 -> CONST_BOOL expression1 .)
 
 
-state 71
+state 72
 
     (90) expression0 -> attr_access0 expression1 .
 
@@ -1641,7 +1651,7 @@ state 71
     RPAREN          reduce using rule 90 (expression0 -> attr_access0 expression1 .)
 
 
-state 72
+state 73
 
     (72) power0 -> attr_access0 power2 .
 
@@ -1659,7 +1669,7 @@ state 72
     COMMA           reduce using rule 72 (power0 -> attr_access0 power2 .)
 
 
-state 73
+state 74
 
     (91) expression1 -> empty .
     (78) power2 -> empty .
@@ -1684,7 +1694,7 @@ state 73
   ! RPAREN          [ reduce using rule 91 (expression1 -> empty .) ]
 
 
-state 74
+state 75
 
     (76) power2 -> POWER . power0
     (68) power0 -> . LPAREN exp0 RPAREN power2
@@ -1700,18 +1710,18 @@ state 74
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     power0                         shift and go to state 133
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 75
+state 76
 
     (77) power2 -> SQRT . power0
     (68) power0 -> . LPAREN exp0 RPAREN power2
@@ -1727,18 +1737,18 @@ state 75
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     power0                         shift and go to state 134
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 76
+state 77
 
     (57) exp0 -> term0 exp1 .
 
@@ -1752,7 +1762,7 @@ state 76
     COMMA           reduce using rule 57 (exp0 -> term0 exp1 .)
 
 
-state 77
+state 78
 
     (58) exp1 -> PLUS . exp0
     (57) exp0 -> . term0 exp1
@@ -1773,23 +1783,23 @@ state 77
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 135
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 78
+state 79
 
     (59) exp1 -> MINUS . exp0
     (57) exp0 -> . term0 exp1
@@ -1810,23 +1820,23 @@ state 78
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 136
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 79
+state 80
 
     (60) exp1 -> empty .
 
@@ -1840,7 +1850,7 @@ state 79
     COMMA           reduce using rule 60 (exp1 -> empty .)
 
 
-state 80
+state 81
 
     (61) term0 -> factor term1 .
 
@@ -1856,7 +1866,7 @@ state 80
     COMMA           reduce using rule 61 (term0 -> factor term1 .)
 
 
-state 81
+state 82
 
     (62) term1 -> MULTIPLY . term0
     (61) term0 -> . factor term1
@@ -1876,22 +1886,22 @@ state 81
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     term0                          shift and go to state 137
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 82
+state 83
 
     (63) term1 -> DIVIDE . term0
     (61) term0 -> . factor term1
@@ -1911,22 +1921,22 @@ state 82
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     term0                          shift and go to state 138
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
-state 83
+state 84
 
     (64) term1 -> empty .
 
@@ -1942,7 +1952,7 @@ state 83
     COMMA           reduce using rule 64 (term1 -> empty .)
 
 
-state 84
+state 85
 
     (65) factor -> PLUS power0 .
 
@@ -1960,7 +1970,7 @@ state 84
     COMMA           reduce using rule 65 (factor -> PLUS power0 .)
 
 
-state 85
+state 86
 
     (66) factor -> MINUS power0 .
 
@@ -1978,14 +1988,14 @@ state 85
     COMMA           reduce using rule 66 (factor -> MINUS power0 .)
 
 
-state 86
+state 87
 
     (68) power0 -> LPAREN exp0 . RPAREN power2
 
     RPAREN          shift and go to state 139
 
 
-state 87
+state 88
 
     (69) power0 -> const_var power2 .
 
@@ -2003,7 +2013,7 @@ state 87
     COMMA           reduce using rule 69 (power0 -> const_var power2 .)
 
 
-state 88
+state 89
 
     (78) power2 -> empty .
 
@@ -2021,7 +2031,7 @@ state 88
     COMMA           reduce using rule 78 (power2 -> empty .)
 
 
-state 89
+state 90
 
     (70) power0 -> function_call power2 .
 
@@ -2039,7 +2049,7 @@ state 89
     COMMA           reduce using rule 70 (power0 -> function_call power2 .)
 
 
-state 90
+state 91
 
     (71) power0 -> method_call0 power2 .
 
@@ -2057,7 +2067,7 @@ state 90
     COMMA           reduce using rule 71 (power0 -> method_call0 power2 .)
 
 
-state 91
+state 92
 
     (101) method_call0 -> ID DOT . function_call
     (100) attr_access0 -> ID DOT . ID
@@ -2067,29 +2077,29 @@ state 91
 
     function_call                  shift and go to state 120
 
-state 92
+state 93
 
-    (27) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET . EQUALS expression0 SEMICOLON
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET . EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
 
     EQUALS          shift and go to state 141
     LSQRBRACKET     shift and go to state 140
 
 
-state 93
+state 94
 
     (137) main0 -> MAIN LBRACKET main1 . RBRACKET
 
     RBRACKET        shift and go to state 142
 
 
-state 94
+state 95
 
     (138) main1 -> declaration0 . main1
     (138) main1 -> . declaration0 main1
     (139) main1 -> . statement main1
     (140) main1 -> . empty
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
     (127) statement -> . assignment0
     (128) statement -> . object_assignment
     (129) statement -> . condition0
@@ -2100,9 +2110,9 @@ state 94
     (134) statement -> . method_call0 SEMICOLON
     (135) statement -> . while
     (141) empty -> .
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (112) condition0 -> . IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON
     (115) writing0 -> . WRITE LPAREN writing1 RPAREN SEMICOLON
@@ -2113,35 +2123,35 @@ state 94
     (101) method_call0 -> . ID DOT function_call
     (123) while -> . WHILE LPAREN expression0 RPAREN block0
 
-    ID              shift and go to state 97
+    ID              shift and go to state 98
     RBRACKET        reduce using rule 141 (empty -> .)
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
-    declaration0                   shift and go to state 94
+    declaration0                   shift and go to state 95
     main1                          shift and go to state 143
-    statement                      shift and go to state 95
-    empty                          shift and go to state 96
-    assignment0                    shift and go to state 98
-    object_assignment              shift and go to state 99
-    condition0                     shift and go to state 100
-    writing0                       shift and go to state 101
-    reading                        shift and go to state 102
-    return                         shift and go to state 103
-    function_call                  shift and go to state 104
-    method_call0                   shift and go to state 105
-    while                          shift and go to state 106
+    statement                      shift and go to state 96
+    empty                          shift and go to state 97
+    assignment0                    shift and go to state 99
+    object_assignment              shift and go to state 100
+    condition0                     shift and go to state 101
+    writing0                       shift and go to state 102
+    reading                        shift and go to state 103
+    return                         shift and go to state 104
+    function_call                  shift and go to state 105
+    method_call0                   shift and go to state 106
+    while                          shift and go to state 107
 
-state 95
+state 96
 
     (139) main1 -> statement . main1
     (138) main1 -> . declaration0 main1
     (139) main1 -> . statement main1
     (140) main1 -> . empty
-    (20) declaration0 -> . ID COLON declaration1 SEMICOLON
+    (21) declaration0 -> . ID COLON declaration1 SEMICOLON
     (127) statement -> . assignment0
     (128) statement -> . object_assignment
     (129) statement -> . condition0
@@ -2152,9 +2162,9 @@ state 95
     (134) statement -> . method_call0 SEMICOLON
     (135) statement -> . while
     (141) empty -> .
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (112) condition0 -> . IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON
     (115) writing0 -> . WRITE LPAREN writing1 RPAREN SEMICOLON
@@ -2165,53 +2175,53 @@ state 95
     (101) method_call0 -> . ID DOT function_call
     (123) while -> . WHILE LPAREN expression0 RPAREN block0
 
-    ID              shift and go to state 97
+    ID              shift and go to state 98
     RBRACKET        reduce using rule 141 (empty -> .)
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
-    statement                      shift and go to state 95
+    statement                      shift and go to state 96
     main1                          shift and go to state 144
-    declaration0                   shift and go to state 94
-    empty                          shift and go to state 96
-    assignment0                    shift and go to state 98
-    object_assignment              shift and go to state 99
-    condition0                     shift and go to state 100
-    writing0                       shift and go to state 101
-    reading                        shift and go to state 102
-    return                         shift and go to state 103
-    function_call                  shift and go to state 104
-    method_call0                   shift and go to state 105
-    while                          shift and go to state 106
+    declaration0                   shift and go to state 95
+    empty                          shift and go to state 97
+    assignment0                    shift and go to state 99
+    object_assignment              shift and go to state 100
+    condition0                     shift and go to state 101
+    writing0                       shift and go to state 102
+    reading                        shift and go to state 103
+    return                         shift and go to state 104
+    function_call                  shift and go to state 105
+    method_call0                   shift and go to state 106
+    while                          shift and go to state 107
 
-state 96
+state 97
 
     (140) main1 -> empty .
 
     RBRACKET        reduce using rule 140 (main1 -> empty .)
 
 
-state 97
+state 98
 
-    (20) declaration0 -> ID . COLON declaration1 SEMICOLON
-    (26) assignment0 -> ID . EQUALS expression0 SEMICOLON
-    (27) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (21) declaration0 -> ID . COLON declaration1 SEMICOLON
+    (27) assignment0 -> ID . EQUALS expression0 SEMICOLON
+    (28) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> ID . EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (82) function_call -> ID . LPAREN function_call_params0 RPAREN
     (101) method_call0 -> ID . DOT function_call
 
-    COLON           shift and go to state 14
+    COLON           shift and go to state 15
     EQUALS          shift and go to state 145
-    LSQRBRACKET     shift and go to state 16
-    LPAREN          shift and go to state 61
+    LSQRBRACKET     shift and go to state 17
+    LPAREN          shift and go to state 62
     DOT             shift and go to state 146
 
 
-state 98
+state 99
 
     (127) statement -> assignment0 .
 
@@ -2224,7 +2234,7 @@ state 98
     RBRACKET        reduce using rule 127 (statement -> assignment0 .)
 
 
-state 99
+state 100
 
     (128) statement -> object_assignment .
 
@@ -2237,7 +2247,7 @@ state 99
     RBRACKET        reduce using rule 128 (statement -> object_assignment .)
 
 
-state 100
+state 101
 
     (129) statement -> condition0 .
 
@@ -2250,7 +2260,7 @@ state 100
     RBRACKET        reduce using rule 129 (statement -> condition0 .)
 
 
-state 101
+state 102
 
     (130) statement -> writing0 .
 
@@ -2263,7 +2273,7 @@ state 101
     RBRACKET        reduce using rule 130 (statement -> writing0 .)
 
 
-state 102
+state 103
 
     (131) statement -> reading .
 
@@ -2276,7 +2286,7 @@ state 102
     RBRACKET        reduce using rule 131 (statement -> reading .)
 
 
-state 103
+state 104
 
     (132) statement -> return .
 
@@ -2289,21 +2299,21 @@ state 103
     RBRACKET        reduce using rule 132 (statement -> return .)
 
 
-state 104
+state 105
 
     (133) statement -> function_call . SEMICOLON
 
     SEMICOLON       shift and go to state 147
 
 
-state 105
+state 106
 
     (134) statement -> method_call0 . SEMICOLON
 
     SEMICOLON       shift and go to state 148
 
 
-state 106
+state 107
 
     (135) statement -> while .
 
@@ -2316,28 +2326,28 @@ state 106
     RBRACKET        reduce using rule 135 (statement -> while .)
 
 
-state 107
+state 108
 
     (112) condition0 -> IF . LPAREN expression0 RPAREN block0 condition1 SEMICOLON
 
     LPAREN          shift and go to state 149
 
 
-state 108
+state 109
 
     (115) writing0 -> WRITE . LPAREN writing1 RPAREN SEMICOLON
 
     LPAREN          shift and go to state 150
 
 
-state 109
+state 110
 
     (120) reading -> READ . ID SEMICOLON
 
     ID              shift and go to state 151
 
 
-state 110
+state 111
 
     (121) return -> RETURN . expression0 SEMICOLON
     (122) return -> RETURN . SEMICOLON
@@ -2363,36 +2373,36 @@ state 110
     (101) method_call0 -> . ID DOT function_call
 
     SEMICOLON       shift and go to state 153
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression0                    shift and go to state 152
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
-state 111
+state 112
 
     (123) while -> WHILE . LPAREN expression0 RPAREN block0
 
     LPAREN          shift and go to state 154
 
 
-state 112
+state 113
 
-    (7) class0 -> CLASS ID class1 LBRACKET . class2 constructor class3 RBRACKET SEMICOLON
-    (10) class2 -> . attributes
-    (11) class2 -> . empty
+    (8) class0 -> CLASS ID class1 LBRACKET . class2 constructor class3 RBRACKET SEMICOLON
+    (11) class2 -> . attributes
+    (12) class2 -> . empty
     (31) attributes -> . data_access simple_declaration attributes
     (32) attributes -> . simple_assignment attributes
     (33) attributes -> . empty
@@ -2412,23 +2422,16 @@ state 112
     data_access                    shift and go to state 159
     simple_assignment              shift and go to state 160
 
-state 113
-
-    (8) class1 -> COLON extension0 .
-
-    LBRACKET        reduce using rule 8 (class1 -> COLON extension0 .)
-
-
 state 114
 
-    (30) extension0 -> ID .
+    (9) class1 -> COLON ID .
 
-    LBRACKET        reduce using rule 30 (extension0 -> ID .)
+    LBRACKET        reduce using rule 9 (class1 -> COLON ID .)
 
 
 state 115
 
-    (14) function0 -> DEF ID LPAREN params0 . RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (15) function0 -> DEF ID LPAREN params0 . RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
 
     RPAREN          shift and go to state 163
 
@@ -2449,7 +2452,7 @@ state 117
 
 state 118
 
-    (23) declaration1 -> type LSQRBRACKET exp0 . RSQRBRACKET declaration2
+    (24) declaration1 -> type LSQRBRACKET exp0 . RSQRBRACKET declaration2
 
     RSQRBRACKET     shift and go to state 165
 
@@ -2473,7 +2476,7 @@ state 119
     RSQRBRACKET     reduce using rule 100 (attr_access0 -> ID DOT ID .)
     RPAREN          reduce using rule 100 (attr_access0 -> ID DOT ID .)
     COMMA           reduce using rule 100 (attr_access0 -> ID DOT ID .)
-    LPAREN          shift and go to state 61
+    LPAREN          shift and go to state 62
 
 
 state 120
@@ -2591,8 +2594,8 @@ state 129
     SEMICOLON       reduce using rule 99 (expression3 -> attr_access0 .)
     COMMA           reduce using rule 99 (expression3 -> attr_access0 .)
     RPAREN          reduce using rule 99 (expression3 -> attr_access0 .)
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     MULTIPLY        reduce using rule 141 (empty -> .)
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
@@ -2602,8 +2605,8 @@ state 129
   ! COMMA           [ reduce using rule 141 (empty -> .) ]
   ! RPAREN          [ reduce using rule 141 (empty -> .) ]
 
-    power2                         shift and go to state 72
-    empty                          shift and go to state 88
+    power2                         shift and go to state 73
+    empty                          shift and go to state 89
 
 state 130
 
@@ -2736,8 +2739,8 @@ state 139
     (78) power2 -> . empty
     (141) empty -> .
 
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     MULTIPLY        reduce using rule 141 (empty -> .)
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
@@ -2752,11 +2755,11 @@ state 139
     COMMA           reduce using rule 141 (empty -> .)
 
     power2                         shift and go to state 173
-    empty                          shift and go to state 88
+    empty                          shift and go to state 89
 
 state 140
 
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET . exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET . exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (57) exp0 -> . term0 exp1
     (61) term0 -> . factor term1
     (65) factor -> . PLUS power0
@@ -2775,25 +2778,25 @@ state 140
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 174
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
 state 141
 
-    (27) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS . expression0 SEMICOLON
+    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS . expression0 SEMICOLON
     (88) expression0 -> . exp0 expression1
     (89) expression0 -> . CONST_BOOL expression1
     (90) expression0 -> . attr_access0 expression1
@@ -2815,23 +2818,23 @@ state 141
     (82) function_call -> . ID LPAREN function_call_params0 RPAREN
     (101) method_call0 -> . ID DOT function_call
 
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    exp0                           shift and go to state 35
+    exp0                           shift and go to state 36
     expression0                    shift and go to state 175
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 142
 
@@ -2856,7 +2859,7 @@ state 144
 
 state 145
 
-    (26) assignment0 -> ID EQUALS . expression0 SEMICOLON
+    (27) assignment0 -> ID EQUALS . expression0 SEMICOLON
     (136) object_assignment -> ID EQUALS . NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (88) expression0 -> . exp0 expression1
     (89) expression0 -> . CONST_BOOL expression1
@@ -2880,23 +2883,23 @@ state 145
     (101) method_call0 -> . ID DOT function_call
 
     NEW             shift and go to state 176
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    expression0                    shift and go to state 34
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    expression0                    shift and go to state 35
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 146
 
@@ -2957,23 +2960,23 @@ state 149
     (82) function_call -> . ID LPAREN function_call_params0 RPAREN
     (101) method_call0 -> . ID DOT function_call
 
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression0                    shift and go to state 178
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 150
 
@@ -3002,24 +3005,24 @@ state 150
     (101) method_call0 -> . ID DOT function_call
 
     CONST_STRING    shift and go to state 181
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     writing1                       shift and go to state 179
     expression0                    shift and go to state 180
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 151
 
@@ -3072,23 +3075,23 @@ state 154
     (82) function_call -> . ID LPAREN function_call_params0 RPAREN
     (101) method_call0 -> . ID DOT function_call
 
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression0                    shift and go to state 184
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 155
 
@@ -3099,8 +3102,8 @@ state 155
 
 state 156
 
-    (7) class0 -> CLASS ID class1 LBRACKET class2 . constructor class3 RBRACKET SEMICOLON
-    (29) constructor -> . CONSTRUCT ID LPAREN params0 RPAREN function_block0
+    (8) class0 -> CLASS ID class1 LBRACKET class2 . constructor class3 RBRACKET SEMICOLON
+    (30) constructor -> . CONSTRUCT ID LPAREN params0 RPAREN function_block0
 
     CONSTRUCT       shift and go to state 187
 
@@ -3108,18 +3111,18 @@ state 156
 
 state 157
 
-    (10) class2 -> attributes .
+    (11) class2 -> attributes .
 
-    CONSTRUCT       reduce using rule 10 (class2 -> attributes .)
+    CONSTRUCT       reduce using rule 11 (class2 -> attributes .)
 
 
 state 158
 
-    (11) class2 -> empty .
+    (12) class2 -> empty .
     (33) attributes -> empty .
 
-  ! reduce/reduce conflict for CONSTRUCT resolved using rule 11 (class2 -> empty .)
-    CONSTRUCT       reduce using rule 11 (class2 -> empty .)
+  ! reduce/reduce conflict for CONSTRUCT resolved using rule 12 (class2 -> empty .)
+    CONSTRUCT       reduce using rule 12 (class2 -> empty .)
 
   ! CONSTRUCT       [ reduce using rule 33 (attributes -> empty .) ]
 
@@ -3172,7 +3175,7 @@ state 162
 
 state 163
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN . ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (15) function0 -> DEF ID LPAREN params0 RPAREN . ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
 
     ARROW           shift and go to state 192
 
@@ -3192,9 +3195,9 @@ state 164
 
 state 165
 
-    (23) declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET . declaration2
-    (24) declaration2 -> . LSQRBRACKET exp0 RSQRBRACKET
-    (25) declaration2 -> . empty
+    (24) declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET . declaration2
+    (25) declaration2 -> . LSQRBRACKET exp0 RSQRBRACKET
+    (26) declaration2 -> . empty
     (141) empty -> .
 
     LSQRBRACKET     shift and go to state 196
@@ -3285,27 +3288,27 @@ state 169
     (101) method_call0 -> . ID DOT function_call
 
     CONST_STRING    shift and go to state 124
-    CONST_BOOL      shift and go to state 36
+    CONST_BOOL      shift and go to state 37
     COMMA           reduce using rule 141 (empty -> .)
     RPAREN          reduce using rule 141 (empty -> .)
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     function_call_params0          shift and go to state 202
     expression0                    shift and go to state 123
     empty                          shift and go to state 125
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 170
 
@@ -3348,14 +3351,14 @@ state 173
 
 state 174
 
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 . RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 . RSQRBRACKET EQUALS expression0 SEMICOLON
 
     RSQRBRACKET     shift and go to state 203
 
 
 state 175
 
-    (27) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 . SEMICOLON
+    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 . SEMICOLON
 
     SEMICOLON       shift and go to state 204
 
@@ -3371,7 +3374,7 @@ state 177
 
     (82) function_call -> ID . LPAREN function_call_params0 RPAREN
 
-    LPAREN          shift and go to state 61
+    LPAREN          shift and go to state 62
 
 
 state 178
@@ -3471,29 +3474,29 @@ state 185
     (82) function_call -> . ID LPAREN function_call_params0 RPAREN
     (101) method_call0 -> . ID DOT function_call
 
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     expression0                    shift and go to state 213
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 186
 
-    (7) class0 -> CLASS ID class1 LBRACKET class2 constructor . class3 RBRACKET SEMICOLON
-    (12) class3 -> . methods
-    (13) class3 -> . empty
+    (8) class0 -> CLASS ID class1 LBRACKET class2 constructor . class3 RBRACKET SEMICOLON
+    (13) class3 -> . methods
+    (14) class3 -> . empty
     (34) methods -> . data_access function0 methods
     (35) methods -> . empty
     (141) empty -> .
@@ -3511,7 +3514,7 @@ state 186
 
 state 187
 
-    (29) constructor -> CONSTRUCT . ID LPAREN params0 RPAREN function_block0
+    (30) constructor -> CONSTRUCT . ID LPAREN params0 RPAREN function_block0
 
     ID              shift and go to state 218
 
@@ -3560,19 +3563,19 @@ state 191
 
 state 192
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW . function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
-    (15) function1 -> . type
-    (16) function1 -> . VOID
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW . function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (16) function1 -> . type
+    (17) function1 -> . VOID
     (43) type -> . INT
     (44) type -> . FLOAT
     (45) type -> . STRING
     (46) type -> . BOOL
 
     VOID            shift and go to state 223
-    INT             shift and go to state 29
-    FLOAT           shift and go to state 30
-    STRING          shift and go to state 31
-    BOOL            shift and go to state 32
+    INT             shift and go to state 30
+    FLOAT           shift and go to state 31
+    STRING          shift and go to state 32
+    BOOL            shift and go to state 33
 
     function1                      shift and go to state 221
     type                           shift and go to state 222
@@ -3595,10 +3598,10 @@ state 194
     (46) type -> . BOOL
     (141) empty -> .
 
-    INT             shift and go to state 29
-    FLOAT           shift and go to state 30
-    STRING          shift and go to state 31
-    BOOL            shift and go to state 32
+    INT             shift and go to state 30
+    FLOAT           shift and go to state 31
+    STRING          shift and go to state 32
+    BOOL            shift and go to state 33
     RPAREN          reduce using rule 141 (empty -> .)
 
     params0                        shift and go to state 224
@@ -3614,7 +3617,7 @@ state 195
 
 state 196
 
-    (24) declaration2 -> LSQRBRACKET . exp0 RSQRBRACKET
+    (25) declaration2 -> LSQRBRACKET . exp0 RSQRBRACKET
     (57) exp0 -> . term0 exp1
     (61) term0 -> . factor term1
     (65) factor -> . PLUS power0
@@ -3633,34 +3636,34 @@ state 196
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 225
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
 state 197
 
-    (23) declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET declaration2 .
+    (24) declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET declaration2 .
 
-    SEMICOLON       reduce using rule 23 (declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET declaration2 .)
+    SEMICOLON       reduce using rule 24 (declaration1 -> type LSQRBRACKET exp0 RSQRBRACKET declaration2 .)
 
 
 state 198
 
-    (25) declaration2 -> empty .
+    (26) declaration2 -> empty .
 
-    SEMICOLON       reduce using rule 25 (declaration2 -> empty .)
+    SEMICOLON       reduce using rule 26 (declaration2 -> empty .)
 
 
 state 199
@@ -3684,21 +3687,21 @@ state 199
     (101) method_call0 -> . ID DOT function_call
     (100) attr_access0 -> . ID DOT ID
 
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    ID              shift and go to state 49
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    ID              shift and go to state 50
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     exp0                           shift and go to state 226
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
-    attr_access0                   shift and go to state 51
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
+    attr_access0                   shift and go to state 52
 
 state 200
 
@@ -3708,8 +3711,8 @@ state 200
     (78) power2 -> . empty
     (141) empty -> .
 
-    POWER           shift and go to state 74
-    SQRT            shift and go to state 75
+    POWER           shift and go to state 75
+    SQRT            shift and go to state 76
     MULTIPLY        reduce using rule 141 (empty -> .)
     DIVIDE          reduce using rule 141 (empty -> .)
     PLUS            reduce using rule 141 (empty -> .)
@@ -3724,7 +3727,7 @@ state 200
     COMMA           reduce using rule 141 (empty -> .)
 
     power2                         shift and go to state 227
-    empty                          shift and go to state 88
+    empty                          shift and go to state 89
 
 state 201
 
@@ -3755,25 +3758,25 @@ state 202
 
 state 203
 
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET . EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET . EQUALS expression0 SEMICOLON
 
     EQUALS          shift and go to state 228
 
 
 state 204
 
-    (27) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .
+    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .
 
-    CLASS           reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    DEF             reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    ID              reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    MAIN            reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    IF              reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    WRITE           reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    READ            reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    RETURN          reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    WHILE           reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    RBRACKET        reduce using rule 27 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    CLASS           reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    DEF             reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    ID              reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    MAIN            reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    IF              reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    WRITE           reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    READ            reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    RETURN          reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    WHILE           reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    RBRACKET        reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
 
 
 state 205
@@ -3833,24 +3836,24 @@ state 209
     (101) method_call0 -> . ID DOT function_call
 
     CONST_STRING    shift and go to state 181
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     writing1                       shift and go to state 233
     expression0                    shift and go to state 180
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 210
 
@@ -3884,25 +3887,25 @@ state 213
 
 state 214
 
-    (7) class0 -> CLASS ID class1 LBRACKET class2 constructor class3 . RBRACKET SEMICOLON
+    (8) class0 -> CLASS ID class1 LBRACKET class2 constructor class3 . RBRACKET SEMICOLON
 
     RBRACKET        shift and go to state 236
 
 
 state 215
 
-    (12) class3 -> methods .
+    (13) class3 -> methods .
 
-    RBRACKET        reduce using rule 12 (class3 -> methods .)
+    RBRACKET        reduce using rule 13 (class3 -> methods .)
 
 
 state 216
 
-    (13) class3 -> empty .
+    (14) class3 -> empty .
     (35) methods -> empty .
 
-  ! reduce/reduce conflict for RBRACKET resolved using rule 13 (class3 -> empty .)
-    RBRACKET        reduce using rule 13 (class3 -> empty .)
+  ! reduce/reduce conflict for RBRACKET resolved using rule 14 (class3 -> empty .)
+    RBRACKET        reduce using rule 14 (class3 -> empty .)
 
   ! RBRACKET        [ reduce using rule 35 (methods -> empty .) ]
 
@@ -3910,15 +3913,15 @@ state 216
 state 217
 
     (34) methods -> data_access . function0 methods
-    (14) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (15) function0 -> . DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
 
-    DEF             shift and go to state 13
+    DEF             shift and go to state 14
 
     function0                      shift and go to state 237
 
 state 218
 
-    (29) constructor -> CONSTRUCT ID . LPAREN params0 RPAREN function_block0
+    (30) constructor -> CONSTRUCT ID . LPAREN params0 RPAREN function_block0
 
     LPAREN          shift and go to state 238
 
@@ -3938,32 +3941,32 @@ state 220
     (45) type -> . STRING
     (46) type -> . BOOL
 
-    INT             shift and go to state 29
-    FLOAT           shift and go to state 30
-    STRING          shift and go to state 31
-    BOOL            shift and go to state 32
+    INT             shift and go to state 30
+    FLOAT           shift and go to state 31
+    STRING          shift and go to state 32
+    BOOL            shift and go to state 33
 
     type                           shift and go to state 239
 
 state 221
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 . LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 . LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
 
     LSQRBRACKET     shift and go to state 240
 
 
 state 222
 
-    (15) function1 -> type .
+    (16) function1 -> type .
 
-    LSQRBRACKET     reduce using rule 15 (function1 -> type .)
+    LSQRBRACKET     reduce using rule 16 (function1 -> type .)
 
 
 state 223
 
-    (16) function1 -> VOID .
+    (17) function1 -> VOID .
 
-    LSQRBRACKET     reduce using rule 16 (function1 -> VOID .)
+    LSQRBRACKET     reduce using rule 17 (function1 -> VOID .)
 
 
 state 224
@@ -3975,7 +3978,7 @@ state 224
 
 state 225
 
-    (24) declaration2 -> LSQRBRACKET exp0 . RSQRBRACKET
+    (25) declaration2 -> LSQRBRACKET exp0 . RSQRBRACKET
 
     RSQRBRACKET     shift and go to state 241
 
@@ -4007,7 +4010,7 @@ state 227
 
 state 228
 
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS . expression0 SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS . expression0 SEMICOLON
     (88) expression0 -> . exp0 expression1
     (89) expression0 -> . CONST_BOOL expression1
     (90) expression0 -> . attr_access0 expression1
@@ -4029,23 +4032,23 @@ state 228
     (82) function_call -> . ID LPAREN function_call_params0 RPAREN
     (101) method_call0 -> . ID DOT function_call
 
-    CONST_BOOL      shift and go to state 36
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    CONST_BOOL      shift and go to state 37
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
-    exp0                           shift and go to state 35
+    exp0                           shift and go to state 36
     expression0                    shift and go to state 243
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 229
 
@@ -4076,27 +4079,27 @@ state 229
     (101) method_call0 -> . ID DOT function_call
 
     CONST_STRING    shift and go to state 124
-    CONST_BOOL      shift and go to state 36
+    CONST_BOOL      shift and go to state 37
     COMMA           reduce using rule 141 (empty -> .)
     RPAREN          reduce using rule 141 (empty -> .)
-    ID              shift and go to state 33
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 42
-    LPAREN          shift and go to state 43
-    CONST_INT       shift and go to state 47
-    CONST_FLOAT     shift and go to state 48
+    ID              shift and go to state 34
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 44
+    CONST_INT       shift and go to state 48
+    CONST_FLOAT     shift and go to state 49
 
     function_call_params0          shift and go to state 244
     expression0                    shift and go to state 123
     empty                          shift and go to state 125
-    exp0                           shift and go to state 35
-    attr_access0                   shift and go to state 37
-    term0                          shift and go to state 38
-    factor                         shift and go to state 39
-    power0                         shift and go to state 41
-    const_var                      shift and go to state 44
-    function_call                  shift and go to state 45
-    method_call0                   shift and go to state 46
+    exp0                           shift and go to state 36
+    attr_access0                   shift and go to state 38
+    term0                          shift and go to state 39
+    factor                         shift and go to state 40
+    power0                         shift and go to state 42
+    const_var                      shift and go to state 45
+    function_call                  shift and go to state 46
+    method_call0                   shift and go to state 47
 
 state 230
 
@@ -4126,9 +4129,9 @@ state 231
     (134) statement -> . method_call0 SEMICOLON
     (135) statement -> . while
     (141) empty -> .
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (112) condition0 -> . IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON
     (115) writing0 -> . WRITE LPAREN writing1 RPAREN SEMICOLON
@@ -4141,24 +4144,24 @@ state 231
 
     RBRACKET        reduce using rule 141 (empty -> .)
     ID              shift and go to state 251
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
     block1                         shift and go to state 248
     statement                      shift and go to state 249
     empty                          shift and go to state 250
-    assignment0                    shift and go to state 98
-    object_assignment              shift and go to state 99
-    condition0                     shift and go to state 100
-    writing0                       shift and go to state 101
-    reading                        shift and go to state 102
-    return                         shift and go to state 103
-    function_call                  shift and go to state 104
-    method_call0                   shift and go to state 105
-    while                          shift and go to state 106
+    assignment0                    shift and go to state 99
+    object_assignment              shift and go to state 100
+    condition0                     shift and go to state 101
+    writing0                       shift and go to state 102
+    reading                        shift and go to state 103
+    return                         shift and go to state 104
+    function_call                  shift and go to state 105
+    method_call0                   shift and go to state 106
+    while                          shift and go to state 107
 
 state 232
 
@@ -4212,7 +4215,7 @@ state 235
 
 state 236
 
-    (7) class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET . SEMICOLON
+    (8) class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET . SEMICOLON
 
     SEMICOLON       shift and go to state 252
 
@@ -4236,7 +4239,7 @@ state 237
 
 state 238
 
-    (29) constructor -> CONSTRUCT ID LPAREN . params0 RPAREN function_block0
+    (30) constructor -> CONSTRUCT ID LPAREN . params0 RPAREN function_block0
     (36) params0 -> . type ID params1
     (37) params0 -> . empty
     (43) type -> . INT
@@ -4245,10 +4248,10 @@ state 238
     (46) type -> . BOOL
     (141) empty -> .
 
-    INT             shift and go to state 29
-    FLOAT           shift and go to state 30
-    STRING          shift and go to state 31
-    BOOL            shift and go to state 32
+    INT             shift and go to state 30
+    FLOAT           shift and go to state 31
+    STRING          shift and go to state 32
+    BOOL            shift and go to state 33
     RPAREN          reduce using rule 141 (empty -> .)
 
     params0                        shift and go to state 255
@@ -4264,16 +4267,16 @@ state 239
 
 state 240
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET . LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET . LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
 
     LSQRBRACKET     shift and go to state 257
 
 
 state 241
 
-    (24) declaration2 -> LSQRBRACKET exp0 RSQRBRACKET .
+    (25) declaration2 -> LSQRBRACKET exp0 RSQRBRACKET .
 
-    SEMICOLON       reduce using rule 24 (declaration2 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    SEMICOLON       reduce using rule 25 (declaration2 -> LSQRBRACKET exp0 RSQRBRACKET .)
 
 
 state 242
@@ -4298,7 +4301,7 @@ state 242
 
 state 243
 
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 . SEMICOLON
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 . SEMICOLON
 
     SEMICOLON       shift and go to state 258
 
@@ -4355,9 +4358,9 @@ state 249
     (134) statement -> . method_call0 SEMICOLON
     (135) statement -> . while
     (141) empty -> .
-    (26) assignment0 -> . ID EQUALS expression0 SEMICOLON
-    (27) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (27) assignment0 -> . ID EQUALS expression0 SEMICOLON
+    (28) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> . ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (112) condition0 -> . IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON
     (115) writing0 -> . WRITE LPAREN writing1 RPAREN SEMICOLON
@@ -4370,24 +4373,24 @@ state 249
 
     RBRACKET        reduce using rule 141 (empty -> .)
     ID              shift and go to state 251
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
     statement                      shift and go to state 249
     block1                         shift and go to state 263
     empty                          shift and go to state 250
-    assignment0                    shift and go to state 98
-    object_assignment              shift and go to state 99
-    condition0                     shift and go to state 100
-    writing0                       shift and go to state 101
-    reading                        shift and go to state 102
-    return                         shift and go to state 103
-    function_call                  shift and go to state 104
-    method_call0                   shift and go to state 105
-    while                          shift and go to state 106
+    assignment0                    shift and go to state 99
+    object_assignment              shift and go to state 100
+    condition0                     shift and go to state 101
+    writing0                       shift and go to state 102
+    reading                        shift and go to state 103
+    return                         shift and go to state 104
+    function_call                  shift and go to state 105
+    method_call0                   shift and go to state 106
+    while                          shift and go to state 107
 
 state 250
 
@@ -4398,27 +4401,27 @@ state 250
 
 state 251
 
-    (26) assignment0 -> ID . EQUALS expression0 SEMICOLON
-    (27) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-    (28) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (27) assignment0 -> ID . EQUALS expression0 SEMICOLON
+    (28) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+    (29) assignment0 -> ID . LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     (136) object_assignment -> ID . EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (82) function_call -> ID . LPAREN function_call_params0 RPAREN
     (101) method_call0 -> ID . DOT function_call
 
     EQUALS          shift and go to state 145
-    LSQRBRACKET     shift and go to state 16
-    LPAREN          shift and go to state 61
+    LSQRBRACKET     shift and go to state 17
+    LPAREN          shift and go to state 62
     DOT             shift and go to state 146
 
 
 state 252
 
-    (7) class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .
+    (8) class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .
 
-    CLASS           reduce using rule 7 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
-    DEF             reduce using rule 7 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
-    ID              reduce using rule 7 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
-    MAIN            reduce using rule 7 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
+    CLASS           reduce using rule 8 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
+    DEF             reduce using rule 8 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
+    ID              reduce using rule 8 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
+    MAIN            reduce using rule 8 (class0 -> CLASS ID class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON .)
 
 
 state 253
@@ -4437,7 +4440,7 @@ state 254
 
 state 255
 
-    (29) constructor -> CONSTRUCT ID LPAREN params0 . RPAREN function_block0
+    (30) constructor -> CONSTRUCT ID LPAREN params0 . RPAREN function_block0
 
     RPAREN          shift and go to state 264
 
@@ -4455,10 +4458,10 @@ state 256
 
 state 257
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET . function2 RSQRBRACKET RSQRBRACKET function_block0
-    (17) function2 -> . simple_declaration function2
-    (18) function2 -> . simple_assignment function2
-    (19) function2 -> . empty
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET . function2 RSQRBRACKET RSQRBRACKET function_block0
+    (18) function2 -> . simple_declaration function2
+    (19) function2 -> . simple_assignment function2
+    (20) function2 -> . empty
     (47) simple_declaration -> . ID COLON type SEMICOLON
     (48) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (141) empty -> .
@@ -4473,18 +4476,18 @@ state 257
 
 state 258
 
-    (28) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .
+    (29) assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .
 
-    CLASS           reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    DEF             reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    ID              reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    MAIN            reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    IF              reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    WRITE           reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    READ            reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    RETURN          reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    WHILE           reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
-    RBRACKET        reduce using rule 28 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    CLASS           reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    DEF             reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    ID              reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    MAIN            reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    IF              reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    WRITE           reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    READ            reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    RETURN          reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    WHILE           reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
+    RBRACKET        reduce using rule 29 (assignment0 -> ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON .)
 
 
 state 259
@@ -4538,7 +4541,7 @@ state 263
 
 state 264
 
-    (29) constructor -> CONSTRUCT ID LPAREN params0 RPAREN . function_block0
+    (30) constructor -> CONSTRUCT ID LPAREN params0 RPAREN . function_block0
     (40) function_block0 -> . LBRACKET function_block1 RBRACKET
 
     LBRACKET        shift and go to state 272
@@ -4556,17 +4559,17 @@ state 265
 
 state 266
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 . RSQRBRACKET RSQRBRACKET function_block0
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 . RSQRBRACKET RSQRBRACKET function_block0
 
     RSQRBRACKET     shift and go to state 273
 
 
 state 267
 
-    (17) function2 -> simple_declaration . function2
-    (17) function2 -> . simple_declaration function2
-    (18) function2 -> . simple_assignment function2
-    (19) function2 -> . empty
+    (18) function2 -> simple_declaration . function2
+    (18) function2 -> . simple_declaration function2
+    (19) function2 -> . simple_assignment function2
+    (20) function2 -> . empty
     (47) simple_declaration -> . ID COLON type SEMICOLON
     (48) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (141) empty -> .
@@ -4581,10 +4584,10 @@ state 267
 
 state 268
 
-    (18) function2 -> simple_assignment . function2
-    (17) function2 -> . simple_declaration function2
-    (18) function2 -> . simple_assignment function2
-    (19) function2 -> . empty
+    (19) function2 -> simple_assignment . function2
+    (18) function2 -> . simple_declaration function2
+    (19) function2 -> . simple_assignment function2
+    (20) function2 -> . empty
     (47) simple_declaration -> . ID COLON type SEMICOLON
     (48) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (141) empty -> .
@@ -4599,9 +4602,9 @@ state 268
 
 state 269
 
-    (19) function2 -> empty .
+    (20) function2 -> empty .
 
-    RSQRBRACKET     reduce using rule 19 (function2 -> empty .)
+    RSQRBRACKET     reduce using rule 20 (function2 -> empty .)
 
 
 state 270
@@ -4619,11 +4622,11 @@ state 270
 
 state 271
 
-    (29) constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .
+    (30) constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .
 
-    PRIVATE         reduce using rule 29 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
-    PUBLIC          reduce using rule 29 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
-    RBRACKET        reduce using rule 29 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
+    PRIVATE         reduce using rule 30 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
+    PUBLIC          reduce using rule 30 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
+    RBRACKET        reduce using rule 30 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
 
 
 state 272
@@ -4652,11 +4655,11 @@ state 272
 
     RBRACKET        reduce using rule 141 (empty -> .)
     ID              shift and go to state 287
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
     function_block1                shift and go to state 276
     function_statement             shift and go to state 277
@@ -4672,23 +4675,23 @@ state 272
 
 state 273
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET . RSQRBRACKET function_block0
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET . RSQRBRACKET function_block0
 
     RSQRBRACKET     shift and go to state 288
 
 
 state 274
 
-    (17) function2 -> simple_declaration function2 .
+    (18) function2 -> simple_declaration function2 .
 
-    RSQRBRACKET     reduce using rule 17 (function2 -> simple_declaration function2 .)
+    RSQRBRACKET     reduce using rule 18 (function2 -> simple_declaration function2 .)
 
 
 state 275
 
-    (18) function2 -> simple_assignment function2 .
+    (19) function2 -> simple_assignment function2 .
 
-    RSQRBRACKET     reduce using rule 18 (function2 -> simple_assignment function2 .)
+    RSQRBRACKET     reduce using rule 19 (function2 -> simple_assignment function2 .)
 
 
 state 276
@@ -4724,11 +4727,11 @@ state 277
 
     RBRACKET        reduce using rule 141 (empty -> .)
     ID              shift and go to state 287
-    IF              shift and go to state 107
-    WRITE           shift and go to state 108
-    READ            shift and go to state 109
-    RETURN          shift and go to state 110
-    WHILE           shift and go to state 111
+    IF              shift and go to state 108
+    WRITE           shift and go to state 109
+    READ            shift and go to state 110
+    RETURN          shift and go to state 111
+    WHILE           shift and go to state 112
 
     function_statement             shift and go to state 277
     function_block1                shift and go to state 290
@@ -4848,13 +4851,13 @@ state 287
     (101) method_call0 -> ID . DOT function_call
 
     EQUALS          shift and go to state 185
-    LPAREN          shift and go to state 61
+    LPAREN          shift and go to state 62
     DOT             shift and go to state 146
 
 
 state 288
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET . function_block0
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET . function_block0
     (40) function_block0 -> . LBRACKET function_block1 RBRACKET
 
     LBRACKET        shift and go to state 272
@@ -4909,25 +4912,25 @@ state 292
 
 state 293
 
-    (14) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .
+    (15) function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .
 
-    CLASS           reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
-    DEF             reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
-    ID              reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
-    MAIN            reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
-    PRIVATE         reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
-    PUBLIC          reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
-    RBRACKET        reduce using rule 14 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    CLASS           reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    DEF             reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    ID              reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    MAIN            reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    PRIVATE         reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    PUBLIC          reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
+    RBRACKET        reduce using rule 15 (function0 -> DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for LTHAN in state 37 resolved as shift
-WARNING: shift/reduce conflict for GTHAN in state 37 resolved as shift
-WARNING: shift/reduce conflict for DIFFERENT in state 37 resolved as shift
-WARNING: shift/reduce conflict for EQUIVALENT in state 37 resolved as shift
-WARNING: reduce/reduce conflict in state 73 resolved using rule (power2 -> empty)
-WARNING: rejected rule (expression1 -> empty) in state 73
+WARNING: shift/reduce conflict for LTHAN in state 38 resolved as shift
+WARNING: shift/reduce conflict for GTHAN in state 38 resolved as shift
+WARNING: shift/reduce conflict for DIFFERENT in state 38 resolved as shift
+WARNING: shift/reduce conflict for EQUIVALENT in state 38 resolved as shift
+WARNING: reduce/reduce conflict in state 74 resolved using rule (power2 -> empty)
+WARNING: rejected rule (expression1 -> empty) in state 74
 WARNING: reduce/reduce conflict in state 129 resolved using rule (expression3 -> attr_access0)
 WARNING: rejected rule (empty -> <empty>) in state 129
 WARNING: reduce/reduce conflict in state 158 resolved using rule (class2 -> empty)
