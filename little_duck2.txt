@@ -10,7 +10,7 @@ class Clase1 {
 	df = gh ** 2\|4;
 	
 	construct Clase1(int gy, float v2, bool k2){
-		ig = 23;
+		
 	}
 
 	private def func1(int hola, float adios) -> int [[
@@ -39,10 +39,13 @@ def funcion71628() -> bool [[]] {
 
 main {
 	v9: float[3][-54 + 3\|7];
+	v67: int;
 	v67 = 3\|7;
 	v1[1] = 2; 
 	v1[1][2] = v5;
+	v2: string;
 	v2 = vv; 
+	v3:float;
 	v3 = v1 + v2; 
 	>>> v4;
 	<<<(v3); 
@@ -71,5 +74,4 @@ main {
 	}
 	obj: Obj7;
 	obj = new Obj7(2, 4, 6, true, hola(234), obj2.attr, obj.meth(2));
-	var23 = obj.attr23 + obj.attr4 / obj2.meth34(2, 4, 6);
 }
