@@ -5,40 +5,32 @@ from pylexer import tokens, lexer
 
 func_dir = {}
 curr_scope = 'global'
-sem_cube = {
-        'sum' : {
-            ('int', 'int') : 'int',
-            ('int', 'float') : 'float',
-            ('float', 'int') : 'float',
-            ('float', 'float') : 'float'
-        },
-        'sub' : {
-            ('int', 'int') : 'int',
-            ('int', 'float') : 'float',
-            ('float', 'int') : 'float',
-            ('float', 'float') : 'float'
-        },
-        'mul' : {
-            ('int', 'int') : 'int',
-            ('int', 'float') : 'float',
-            ('float', 'int') : 'float',
-            ('float', 'float') : 'float'
-        },
-        'div' : {
-            ('int', 'int') : 'int',
-            ('int', 'float') : 'float',
-            ('float', 'int') : 'float',
-            ('float', 'float') : 'float'
-        },
-        'exp' : {
-            ('int', 'int') : 'int',
-            ('float', 'int') : 'float'
-        },
-        'sqrt' : {
-            ('int', 'int') : 'int',
-            ('int', 'float') : 'float'
-        }
-}
+
+# TYPE CODEs
+# int: 0
+# float: 1
+# 
+# OPERATOR CODES
+# sum: 0
+# sub: 1
+# mul: 2
+# div: 3
+# exp: 4
+# sqrt: 5
+
+# RESULTING_TYPE = sem_cube[OPERATOR][OP1][OP2]
+# EX:
+# RESULTING_TYPE = sem_cube[DIV][INT][FLOAT]
+# RESULTING_TYPE = sem_cube[3][0][1] = 1 = FLOAT
+
+sem_cube = (
+    ((0, 1), (1, 1)),
+    ((0, 1), (1, 1)),
+    ((0, 1), (1, 1)),
+    ((0, 1), (1, 1)),
+    ((0, 1), (1, 1)),
+    ((0, 1), (1, 1))
+)
 
 def p_routine0(p):
     '''
