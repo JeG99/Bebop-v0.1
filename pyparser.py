@@ -110,9 +110,9 @@ def p_assignment0(p):
                 | ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
                 | ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     '''
-    global curr_scope
-    if(p[2] != "["):
-        func_dir[curr_scope][p[1]]["value"] = p[3]    
+    #global curr_scope
+    #if(p[2] != "["):
+    #    func_dir[curr_scope][p[1]]["value"] = p[3]    
     
 
 def p_constructor(p):
@@ -180,8 +180,8 @@ def p_simple_assignment(p):
     '''
     simple_assignment : ID EQUALS expression0 SEMICOLON
     '''
-    global curr_scope
-    func_dir[curr_scope][p[1]]["value"] = p[3]
+    #global curr_scope
+    #func_dir[curr_scope][p[1]]["value"] = p[3]
 
 def p_complex_type(p):
     '''
