@@ -1,6 +1,7 @@
 routine holamundo; 
 v1: int[3][1]; 
 v1: int[3]; 
+v7: int;
 v1 = true;
 
 class Clase1 {

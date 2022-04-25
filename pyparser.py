@@ -1,18 +1,21 @@
 import ply.yacc as yacc
 import sys
+import json
 
 from pylexer import tokens, lexer
 
 func_dir = {}
 curr_scope = 'global'
+declaration = False
+curr_var = ''
 
 def p_routine0(p):
     '''
     routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
     ''' 
     p[0] = 1
-    print(func_dir.keys())
-    for i in func_dir.values():print(i)
+    vars = json.dumps(func_dir, indent=4)
+    print(vars)
 
 def p_routine1(p):
     '''
@@ -22,8 +25,6 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
-   
-    
 
 def p_global_scope(p):
     '''
@@ -88,8 +89,10 @@ def p_declaration0(p):
     '''
     declaration0 : ID COLON declaration1 SEMICOLON
     '''
-    global curr_scope
-    func_dir[curr_scope][p[1]] = {}
+    global curr_scope, declaration, curr_var
+    declaration = True
+    curr_var = p[1]
+    func_dir[curr_scope][p[1]] = {"type" : p[3]}
 
 def p_declaration1(p):
     '''
@@ -168,13 +171,19 @@ def p_type(p):
          | STRING
          | BOOL
     '''
+    global declaration, curr_var
+    if declaration:
+        func_dir[curr_scope][curr_var]['type'] = p[1]
+    declaration = False
 
 def p_simple_declaration(p):
     '''
     simple_declaration : ID COLON type SEMICOLON
     '''
-    global curr_scope
-    func_dir[curr_scope][p[1]] = {"type" : p[3], "value" : None}
+    global curr_scope, declaration, curr_var
+    declaration = True
+    curr_var = p[1]
+    func_dir[curr_scope][p[1]] = {"type" : p[3]}
 
 def p_simple_assignment(p):
     '''
