@@ -5,6 +5,40 @@ from pylexer import tokens, lexer
 
 func_dir = {}
 curr_scope = 'global'
+sem_cube = {
+        'sum' : {
+            ('int', 'int') : 'int',
+            ('int', 'float') : 'float',
+            ('float', 'int') : 'float',
+            ('float', 'float') : 'float'
+        },
+        'sub' : {
+            ('int', 'int') : 'int',
+            ('int', 'float') : 'float',
+            ('float', 'int') : 'float',
+            ('float', 'float') : 'float'
+        },
+        'mul' : {
+            ('int', 'int') : 'int',
+            ('int', 'float') : 'float',
+            ('float', 'int') : 'float',
+            ('float', 'float') : 'float'
+        },
+        'div' : {
+            ('int', 'int') : 'int',
+            ('int', 'float') : 'float',
+            ('float', 'int') : 'float',
+            ('float', 'float') : 'float'
+        },
+        'exp' : {
+            ('int', 'int') : 'int',
+            ('float', 'int') : 'float'
+        },
+        'sqrt' : {
+            ('int', 'int') : 'int',
+            ('int', 'float') : 'float'
+        }
+}
 
 def p_routine0(p):
     '''
