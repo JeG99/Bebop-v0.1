@@ -5,6 +5,7 @@ from pylexer import tokens, lexer
 
 func_dir = {}
 curr_scope = 'global'
+var_id = ""
 
 # TYPE CODEs
 # int: 0
@@ -37,8 +38,7 @@ def p_routine0(p):
     routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
     ''' 
     p[0] = 1
-    print(func_dir.keys())
-    for i in func_dir.values():print(i)
+    print(func_dir)
 
 def p_routine1(p):
     '''
@@ -114,8 +114,9 @@ def p_declaration0(p):
     '''
     declaration0 : ID COLON declaration1 SEMICOLON
     '''
-    global curr_scope
-    func_dir[curr_scope][p[1]] = {}
+    global curr_scope, var_id
+    var_id = p[1]
+    func_dir[curr_scope][var_id] = {"type" : None}
 
 def p_declaration1(p):
     '''
@@ -181,7 +182,7 @@ def p_function_block0(p):
     function_block0 : LBRACKET function_block1 RBRACKET
     '''
 
-def p_function_block(p):
+def p_function_block1(p):
     '''
     function_block1 : function_statement function_block1
                     | empty
@@ -194,13 +195,17 @@ def p_type(p):
          | STRING
          | BOOL
     '''
+    global var_id
+    print(var_id, p[1])
+    func_dir[curr_scope][var_id] = {"type": p[1]}
 
 def p_simple_declaration(p):
     '''
     simple_declaration : ID COLON type SEMICOLON
     '''
-    global curr_scope
-    func_dir[curr_scope][p[1]] = {"type" : p[3], "value" : None}
+    global curr_scope, var_id
+    var_id = p[1]
+    func_dir[curr_scope][p[1]] = {}
 
 def p_simple_assignment(p):
     '''
@@ -213,6 +218,8 @@ def p_complex_type(p):
     '''
     complex_type : ID
     '''
+    global var_id
+    func_dir[curr_scope][var_id] = {"type": p[1]}
 
 def p_logic_or0(p):
     '''
