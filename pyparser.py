@@ -112,11 +112,16 @@ def p_function2(p):
 
 def p_declaration0(p):
     '''
-    declaration0 : ID COLON declaration1 SEMICOLON
+    declaration0 : decl_id_def COLON declaration1 SEMICOLON
+    '''
+    
+
+def p_decl_id_def(p):
+    '''
+    decl_id_def : ID
     '''
     global curr_scope, var_id
     var_id = p[1]
-    func_dir[curr_scope][var_id] = {"type" : None}
 
 def p_declaration1(p):
     '''
@@ -195,8 +200,8 @@ def p_type(p):
          | STRING
          | BOOL
     '''
-    global var_id
-    print(var_id, p[1])
+    global curr_scope, var_id
+    #print(var_id, p[1])
     func_dir[curr_scope][var_id] = {"type": p[1]}
 
 def p_simple_declaration(p):
@@ -205,7 +210,6 @@ def p_simple_declaration(p):
     '''
     global curr_scope, var_id
     var_id = p[1]
-    func_dir[curr_scope][p[1]] = {}
 
 def p_simple_assignment(p):
     '''
