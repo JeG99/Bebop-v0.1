@@ -1,7 +1,7 @@
 # compis-project
 
-Avance 1.2: 
-- Se han agregado los puntos neurálgicos para guardar declaraciones de variables en un diccionario
-- Ya tenemos cubo semántico, codificado por enteros (podemos checar si hay manera de hacer un enum para que sea más legible de todos modos)
-- Ya se produce una estructura que, como queríamos, solo considera alcance global y local de las variables.
-- Tenemos duda con alcances en funciones y clases
+Avance 2.0: 
+- Ampliamos el cubo semántico para cubrir casos de error y otras operaciones que nos faltaba considerar.
+- El manejo de scopes global y local ya parece funcionar ya bien para la tabla de tipos
+- Aun no trabajamos sobre la duda de almacenar variables de clases y funciones, ni sus scopes.
+- Dónde se guardan los valores de las variables?
