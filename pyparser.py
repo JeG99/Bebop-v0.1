@@ -4,7 +4,8 @@ import sys
 from pylexer import tokens, lexer
 
 func_dir = {}
-curr_scope = 'global'
+curr_scope = ''
+prev_scope = ""
 var_id = ""
 
 # TYPE CODEs
@@ -55,28 +56,41 @@ def p_global_scope(p):
     '''
     global_scope :
     '''
+    global curr_scope, func_dir
+    curr_scope = "global"
     func_dir[curr_scope] = {}
 
 def p_class0(p):
     '''
-    class0 : CLASS id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON
+    class0 : CLASS id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_scope
     '''
+    
+
+def p_revert_scope(p):
+    '''
+    revert_scope : 
+    '''
+    global curr_scope, prev_scope
+    curr_scope = prev_scope
 
 def p_id_def(p):
     '''
     id_def : ID
     '''
-    global curr_scope
+    global curr_scope, func_dir, prev_scope
+    prev_scope = curr_scope
     curr_scope = p[1]
     func_dir[curr_scope] = {}
+    #print(prev_scope, curr_scope)
 
 def p_class1(p):
     '''
     class1 : COLON ID
            | empty
     '''
-    if(p[1] == ':'):
-        func_dir[curr_scope].update(func_dir[p[2]])
+    #if(p[1] == ':'):
+    #    pass
+    #    func_dir[curr_scope].update(func_dir[p[2]])
         
         
 
@@ -91,10 +105,11 @@ def p_class3(p):
     class3 : methods 
            | empty  
     '''
+    
 
 def p_function0(p):
     '''
-    function0 : DEF ID LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
     '''
 
 def p_function1(p):
@@ -114,13 +129,14 @@ def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    
+    func_dir[curr_scope][p[1]] = {"type" : p[3]}
 
 def p_decl_id_def(p):
     '''
     decl_id_def : ID
     '''
-    global curr_scope, var_id
+    p[0] = p[1]
+    global var_id
     var_id = p[1]
 
 def p_declaration1(p):
@@ -129,6 +145,7 @@ def p_declaration1(p):
                  | complex_type
                  | type LSQRBRACKET exp0 RSQRBRACKET declaration2
     '''
+    p[0] = p[1]
 
 def p_declaration2(p):
     '''
@@ -175,6 +192,8 @@ def p_params0(p):
     params0 : type ID params1
             | empty
     '''
+    if len(p) > 2:
+        func_dir[curr_scope][p[2]] = {"type" : p[1]}
 
 def p_params1(p):
     '''
@@ -200,16 +219,20 @@ def p_type(p):
          | STRING
          | BOOL
     '''
-    global curr_scope, var_id
-    #print(var_id, p[1])
-    func_dir[curr_scope][var_id] = {"type": p[1]}
+    #global curr_scope, var_id, func_dir
+    #print(curr_scope, var_id, p[1])
+    #func_dir[curr_scope][var_id] = {"type": p[1]}
+    p[0] = p[1]
 
 def p_simple_declaration(p):
     '''
     simple_declaration : ID COLON type SEMICOLON
     '''
-    global curr_scope, var_id
-    var_id = p[1]
+    #global curr_scope, var_id, func_dir
+    #print(p[3])
+    func_dir[curr_scope][p[1]] = {"type": p[3]}
+    #print(curr_scope)
+    #var_id = p[1]
 
 def p_simple_assignment(p):
     '''
@@ -222,8 +245,7 @@ def p_complex_type(p):
     '''
     complex_type : ID
     '''
-    global var_id
-    func_dir[curr_scope][var_id] = {"type": p[1]}
+    p[0] = p[1]
 
 def p_logic_or0(p):
     '''
@@ -373,6 +395,8 @@ def p_data_access(p):
     data_access : PRIVATE
                 | PUBLIC
     '''
+    global curr_scope
+    #print(curr_scope)
 
 def p_function_statement(p):
     '''
@@ -475,7 +499,8 @@ def p_main_scope(p):
     '''
     main_scope : 
     '''
-    global curr_scope
+    global curr_scope, func_dir, prev_scope
+    prev_scope = curr_scope
     curr_scope = "main"
     func_dir[curr_scope] = {}
 
