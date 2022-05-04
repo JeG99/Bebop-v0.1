@@ -1067,19 +1067,37 @@ def p_condition1(p):
 
 def p_writing0(p):
     '''
-    writing0 : WRITE LPAREN writing1 RPAREN SEMICOLON
+    writing0 : WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
-    if len(operands_stack):
+    if operands_stack:
+        print('aperro')
         value = operands_stack.pop()
-        quad = [p[1], None, None, value]
+        op = operators_stack.pop()
+        quad = [op, None, None, value]
         quadruples.append(quad)
+
+
+def p_push_writing_op(p):
+    '''
+    push_writing_op :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    operators_stack.append(p[-1])
+
+
+def p_push_string_val(p):
+    '''
+    push_string_val :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    operands_stack.append(p[-1])
 
 
 def p_writing1(p):
     '''
     writing1 : expression0 writing2
-             | CONST_STRING writing2
+             | CONST_STRING push_string_val writing2
     '''
 
 

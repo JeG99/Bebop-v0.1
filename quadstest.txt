@@ -22,6 +22,7 @@ class Clase1 {
 
 	public def func2() -> void [[]] {
 		<<<("que onda");
+		hola = true;
 	}
 
 };

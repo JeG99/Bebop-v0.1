@@ -1,5 +1,5 @@
 routine holamundo; 
-    v3 = 3 < 2;
+    <<<("queonda");
     v2 = 3 * 33;
 main {
 
