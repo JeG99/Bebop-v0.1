@@ -1,5 +1,7 @@
+from cgi import print_environ
 import ply.yacc as yacc
 import sys
+import json
 
 from pylexer import tokens, lexer
 
@@ -8,49 +10,530 @@ curr_scope = ''
 prev_scope = ""
 var_id = ""
 
+quadruples = []
+operands_stack = []
+operators_stack = []
+types_stack = []
+temp_counter = 0
+
 # TYPE CODEs
-# int: 0
-# float: 1
-# 
+# int       : 0
+# float     : 1
+# bool      : 2
+# string    : 3
+
 # OPERATOR CODES
-# sum: 0
-# sub: 1
-# mul: 2
-# div: 3
-# exp: 4
-# sqrt: 5
+# sum       : 0
+# sub       : 1
+# mul       : 2
+# div       : 3
+# exp       : 4
+# sqrt      : 5
+# =         : 6
+# <         : 7
+# >         : 8
+# ==        : 9
+# <>        : 10
+
+# ERR       : -1
 
 # RESULTING_TYPE = sem_cube[OPERATOR][OP1][OP2]
 # EX:
 # RESULTING_TYPE = sem_cube[DIV][INT][FLOAT]
 # RESULTING_TYPE = sem_cube[3][0][1] = 1 = FLOAT
 
-sem_cube = (
-    ((0, 1), (1, 1)),
-    ((0, 1), (1, 1)),
-    ((0, 1), (1, 1)),
-    ((0, 1), (1, 1)),
-    ((0, 1), (1, 1)),
-    ((0, 1), (1, 1))
-)
+sem_cube = {
+    'sum': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'float',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'int',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    'sub': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'float',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'int',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    'mul': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'float',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'int',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    'div': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'float',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'int',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    'exp': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'float',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'int',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    'sqrt': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'float',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'int',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    '=': {
+        ('int', 'int'): 'int',
+        ('int', 'float'): 'ERR',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'ERR',
+        ('float', 'float'): 'float',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'bool',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'string'
+    },
+    '<': {
+        ('int', 'int'): 'bool',
+        ('int', 'float'): 'bool',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'bool',
+        ('float', 'float'): 'bool',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    '>': {
+        ('int', 'int'): 'bool',
+        ('int', 'float'): 'bool',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'bool',
+        ('float', 'float'): 'bool',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    '==': {
+        ('int', 'int'): 'bool',
+        ('int', 'float'): 'bool',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'bool',
+        ('float', 'float'): 'bool',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    },
+    '<>': {
+        ('int', 'int'): 'bool',
+        ('int', 'float'): 'bool',
+        ('int', 'bool'): 'ERR',
+        ('int', 'string'): 'ERR',
+
+        ('float', 'int'): 'bool',
+        ('float', 'float'): 'bool',
+        ('float', 'bool'): 'ERR',
+        ('float', 'string'): 'ERR',
+
+        ('bool', 'int'): 'ERR',
+        ('bool', 'float'): 'ERR',
+        ('bool', 'bool'): 'ERR',
+        ('bool', 'string'): 'ERR',
+
+        ('string', 'int'): 'ERR',
+        ('string', 'float'): 'ERR',
+        ('string', 'bool'): 'ERR',
+        ('string', 'string'): 'ERR'
+    }
+}
+
+sem_cube = {
+    0: {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 0,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    1: {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 0,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    2: {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 0,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    3: {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 0,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    4: {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 0,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    5: {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 0,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    6: {
+        (0, 0): 0,
+        (0, 1): -1,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): -1,
+        (1, 1): 1,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): 2,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): 3
+    },
+    7: {
+        (0, 0): 2,
+        (0, 1): 2,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 2,
+        (1, 1): 2,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    8: {
+        (0, 0): 2,
+        (0, 1): 2,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 2,
+        (1, 1): 2,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    9: {
+        (0, 0): 2,
+        (0, 1): 2,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 2,
+        (1, 1): 2,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    },
+    10: {
+        (0, 0): 2,
+        (0, 1): 2,
+        (0, 2): -1,
+        (0, 3): -1,
+
+        (1, 0): 2,
+        (1, 1): 2,
+        (1, 2): -1,
+        (1, 3): -1,
+
+        (2, 0): -1,
+        (2, 1): -1,
+        (2, 2): -1,
+        (2, 3): -1,
+
+        (3, 0): -1,
+        (3, 1): -1,
+        (3, 2): -1,
+        (3, 3): -1
+    }
+}
+
 
 def p_routine0(p):
     '''
     routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
-    ''' 
+    '''
     p[0] = 1
-    print(func_dir)
+    print(json.dumps(func_dir, indent=4))
+    print(operands_stack)
+    print(types_stack)
+    print(operators_stack)
+    print('\nquadruples:')
+    [print(quad) for quad in quadruples]
+
 
 def p_routine1(p):
     '''
-    routine1 : class0 routine1 
+    routine1 : statement routine1
+             | class0 routine1 
              | function0 routine1
              | declaration0 routine1
              | assignment0 routine1
              | empty
     '''
-   
-    
+
 
 def p_global_scope(p):
     '''
@@ -60,11 +543,12 @@ def p_global_scope(p):
     curr_scope = "global"
     func_dir[curr_scope] = {}
 
+
 def p_class0(p):
     '''
     class0 : CLASS id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_scope
     '''
-    
+
 
 def p_revert_scope(p):
     '''
@@ -72,6 +556,7 @@ def p_revert_scope(p):
     '''
     global curr_scope, prev_scope
     curr_scope = prev_scope
+
 
 def p_id_def(p):
     '''
@@ -83,16 +568,16 @@ def p_id_def(p):
     func_dir[curr_scope] = {}
     #print(prev_scope, curr_scope)
 
+
 def p_class1(p):
     '''
     class1 : COLON ID
            | empty
     '''
-    #if(p[1] == ':'):
+    # if(p[1] == ':'):
     #    pass
     #    func_dir[curr_scope].update(func_dir[p[2]])
-        
-        
+
 
 def p_class2(p):
     '''
@@ -100,23 +585,26 @@ def p_class2(p):
            | empty
     '''
 
+
 def p_class3(p):
     '''
     class3 : methods 
            | empty  
     '''
-    
+
 
 def p_function0(p):
     '''
-    function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 revert_scope
     '''
+
 
 def p_function1(p):
     '''
     function1 : type
               | VOID
     '''
+
 
 def p_function2(p):
     '''
@@ -125,11 +613,13 @@ def p_function2(p):
               | empty
     '''
 
+
 def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    func_dir[curr_scope][p[1]] = {"type" : p[3]}
+    func_dir[curr_scope][p[1]] = {"type": p[3]}
+
 
 def p_decl_id_def(p):
     '''
@@ -139,6 +629,7 @@ def p_decl_id_def(p):
     global var_id
     var_id = p[1]
 
+
 def p_declaration1(p):
     '''
     declaration1 : type
@@ -147,11 +638,13 @@ def p_declaration1(p):
     '''
     p[0] = p[1]
 
+
 def p_declaration2(p):
     '''
     declaration2 : LSQRBRACKET exp0 RSQRBRACKET
                  | empty
     '''
+
 
 def p_assignment0(p):
     '''
@@ -159,20 +652,23 @@ def p_assignment0(p):
                 | ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
                 | ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     '''
-    #global curr_scope
-    #if(p[2] != "["):
-    #    func_dir[curr_scope][p[1]]["value"] = p[3]    
-    
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    if len(p) == 5 and operands_stack:
+        value = operands_stack.pop()
+        quad = [p[2], value, None, p[1]]
+        quadruples.append(quad)
+
 
 def p_constructor(p):
     '''
     constructor : CONSTRUCT ID LPAREN params0 RPAREN function_block0
     '''
 
-#def p_extension0(p): # quitamos polimorfismo temporalmente
+# def p_extension0(p): # quitamos polimorfismo temporalmente
 #    '''
 #    extension0 : ID
 #    '''
+
 
 def p_attributes(p):
     '''
@@ -181,11 +677,13 @@ def p_attributes(p):
                | empty
     '''
 
+
 def p_methods(p):
     '''
     methods : data_access function0 methods
             | empty
     '''
+
 
 def p_params0(p):
     '''
@@ -193,7 +691,8 @@ def p_params0(p):
             | empty
     '''
     if len(p) > 2:
-        func_dir[curr_scope][p[2]] = {"type" : p[1]}
+        func_dir[curr_scope][p[2]] = {"type": p[1]}
+
 
 def p_params1(p):
     '''
@@ -201,16 +700,19 @@ def p_params1(p):
             | empty
     '''
 
+
 def p_function_block0(p):
     '''
     function_block0 : LBRACKET function_block1 RBRACKET
     '''
+
 
 def p_function_block1(p):
     '''
     function_block1 : function_statement function_block1
                     | empty
     '''
+
 
 def p_type(p):
     '''
@@ -224,22 +726,30 @@ def p_type(p):
     #func_dir[curr_scope][var_id] = {"type": p[1]}
     p[0] = p[1]
 
+
 def p_simple_declaration(p):
     '''
     simple_declaration : ID COLON type SEMICOLON
     '''
     #global curr_scope, var_id, func_dir
-    #print(p[3])
+    # print(p[3])
     func_dir[curr_scope][p[1]] = {"type": p[3]}
-    #print(curr_scope)
+    # print(curr_scope)
     #var_id = p[1]
+
 
 def p_simple_assignment(p):
     '''
     simple_assignment : ID EQUALS expression0 SEMICOLON
     '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    if len(operands_stack):
+        value = operands_stack.pop()
+        quad = [p[2], value, None, p[1]]
+        quadruples.append(quad)
     #global curr_scope
     #func_dir[curr_scope][p[1]]["value"] = p[3]
+
 
 def p_complex_type(p):
     '''
@@ -247,72 +757,148 @@ def p_complex_type(p):
     '''
     p[0] = p[1]
 
-def p_logic_or0(p):
-    '''
-    logic_or0 : logic_and0 logic_or1
-    '''
-def p_logic_or1(p):
-    '''
-    logic_or1 : OR logic_or0
-              | empty
-    '''
+# def p_logic_or0(p):
+#    '''
+#    logic_or0 : logic_and0 logic_or1
+#    '''
 
-def p_logic_and0(p):
-    '''
-    logic_and0 : logic_operand logic_and1
-    '''
+# def p_logic_or1(p):
+#    '''
+#    logic_or1 : OR logic_or0
+#              | empty
+#    '''
 
-def p_logic_and1(p):
-    '''
-    logic_and1 : AND logic_and0
-               | empty
-    '''
+# def p_logic_and0(p):
+#    '''
+#    logic_and0 : logic_operand logic_and1
+#    '''
 
-def p_logic_operand0(p):
-    '''
-    logic_operand : NOT expression0
-    '''
+# def p_logic_and1(p):
+#    '''
+#    logic_and1 : AND logic_and0
+#               | empty
+#    '''
+
+# def p_logic_operand0(p):
+#    '''
+#    logic_operand : NOT expression0
+#    '''
+
 
 def p_exp0(p):
     '''
-    exp0 : term0 exp1
+    exp0 : term0 check_last_plus_minus_operator exp1
     '''
+
 
 def p_exp1(p):
     '''
-    exp1 : PLUS exp0
-         | MINUS exp0
+    exp1 : PLUS push_plus_minus_op exp0
+         | MINUS push_plus_minus_op exp0
          | empty
     '''
 
+
+def p_push_plus_minus_op(p):
+    '''
+    push_plus_minus_op :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    operators_stack.append(p[-1])
+
+
+def p_check_last_plus_minus_operator(p):
+    '''
+    check_last_plus_minus_operator :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    # falta typematching
+    if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '+' or operators_stack[-1] == '-'):
+        right_oper = operands_stack.pop()
+        left_oper = operands_stack.pop()
+        op = operators_stack.pop()
+        operands_stack.append(('dir', temp_counter))
+        quad = [op, left_oper,
+                right_oper, ('dir', temp_counter)]
+        quadruples.append(quad)
+        temp_counter += 1
+
+
 def p_term0(p):
     '''
-    term0 : factor term1
+    term0 : power0 check_last_times_division_operator term1
     '''
+
 
 def p_term1(p):
     '''
-    term1 : MULTIPLY term0
-          | DIVIDE term0
+    term1 : MULTIPLY push_times_division_op term0
+          | DIVIDE push_times_division_op term0
           | empty
     '''
 
+
+def p_push_times_division_op(p):
+    '''
+    push_times_division_op :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    operators_stack.append(p[-1])
+
+
+def p_check_last_times_division_operator(p):
+    '''
+    check_last_times_division_operator :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '*' or operators_stack[-1] == '/'):
+        right_oper = operands_stack.pop()
+        left_oper = operands_stack.pop()
+        op = operators_stack.pop()
+        operands_stack.append(('dir', temp_counter))
+        quad = [op, left_oper,
+                right_oper, ('dir', temp_counter)]
+        quadruples.append(quad)
+        temp_counter += 1
+
+
+'''
 def p_factor(p):
-    '''
-    factor : PLUS power0
-           | MINUS power0
+    '''''''
+    factor : check_last_unary_sign_operator PLUS power0
+           | check_last_unary_sign_operator MINUS power0
            | power0 
-    '''
+    ''''''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    if (p): # Distinto de None (empty)
+        operators_stack.append(p[1])
+    print(operators_stack)
+
+def p_check_last_unary_sign_operator(p):
+    ''''''
+    check_last_unary_sign_operator :
+    ''''''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    # falta typematching
+    if len(operators_stack) > 0 and (operators_stack[-1] == 'u+' or operators_stack[-1] == 'u-'):
+        oper = operands_stack.pop()
+        operands_stack.append(('dir', temp_counter))
+        quad = [operators_stack[-1], oper, None, ('dir', temp_counter)]
+        quadruples.append(quad)
+        temp_counter += 1
+'''
+
 
 def p_power0(p):
     '''
-    power0 : LPAREN exp0 RPAREN power2
-           | const_var power2
-           | function_call power2
-           | method_call0 power2
-           | attr_access0 power2
-           | ID LSQRBRACKET exp0 RSQRBRACKET power1 power2 
+    power0 : LPAREN exp0 RPAREN check_pow_rad_operator power2
+           | const_var check_pow_rad_operator power2
+           | function_call check_pow_rad_operator power2
+           | method_call0 check_pow_rad_operator power2
+           | attr_access0 check_pow_rad_operator power2
+           | ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 
     '''
+
 
 def p_power1(p):
     '''
@@ -320,12 +906,39 @@ def p_power1(p):
            | empty
     '''
 
+
 def p_power2(p):
     '''
-    power2 : POWER power0
-           | SQRT power0
+    power2 : POWER push_pow_rad_op power0
+           | SQRT push_pow_rad_op power0
            | empty
     '''
+
+
+def p_push_pow_rad_op(p):
+    '''
+    push_pow_rad_op :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    operators_stack.append(p[-1])
+
+
+def p_check_pow_rad_operator(p):
+    '''
+    check_pow_rad_operator :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    # falta typematching
+    if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '\\|' or operators_stack[-1] == '**'):
+        right_oper = operands_stack.pop()
+        left_oper = operands_stack.pop()
+        op = operators_stack.pop()
+        operands_stack.append(('dir', temp_counter))
+        quad = [op, left_oper,
+                right_oper, ('dir', temp_counter)]
+        quadruples.append(quad)
+        temp_counter += 1
+
 
 def p_const_var(p):
     '''
@@ -333,11 +946,15 @@ def p_const_var(p):
               | CONST_FLOAT
               | ID
     '''
+    p[0] = p[1]
+    operands_stack.append(p[1])
+
 
 def p_function_call(p):
     '''
     function_call : ID LPAREN function_call_params0 RPAREN 
     '''
+
 
 def p_function_call_params0(p):
     '''
@@ -346,57 +963,81 @@ def p_function_call_params0(p):
                           | empty function_call_params1
     '''
 
+
 def p_function_call_params1(p):
     '''
     function_call_params1 : COMMA function_call_params0
                           | empty 
     '''
 
+
 def p_expression0(p):
     '''
     expression0 : exp0 expression1
-                | CONST_BOOL expression1
                 | attr_access0 expression1
-    ''' 
+    ''' # falta soporte para atributos en los cuadruplos
+
 
 def p_expression1(p):
     '''
-     expression1 : empty
-                | expression2
+    expression1 : LTHAN push_rel_op expression3 
+                | GTHAN push_rel_op expression3
+                | DIFFERENT push_rel_op expression3
+                | EQUIVALENT push_rel_op expression3
+                | empty
     '''
 
-def p_expression2(p):
+
+def p_push_rel_op(p):
     '''
-    expression2 : LTHAN expression3 
-                | GTHAN expression3
-                | DIFFERENT expression3
-                | EQUIVALENT expression3
+    push_rel_op :
     '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    operators_stack.append(p[-1])
+
+
+def p_check_rel_operator(p):
+    '''
+    check_rel_operator :
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    # falta typematching
+    if operators_stack and operands_stack and (operators_stack[-1] == '<' or operators_stack[-1] == '>' or operators_stack[-1] == '<>' or operators_stack[-1] == '=='):
+        right_oper = operands_stack.pop()
+        left_oper = operands_stack.pop()
+        op = operators_stack.pop()
+        operands_stack.append(('dir', temp_counter))
+        quad = [op, left_oper,
+                right_oper, ('dir', temp_counter)]
+        quadruples.append(quad)
+        temp_counter += 1
+
 
 def p_expression3(p):
     '''
-    expression3 : exp0
-                | CONST_BOOL
+    expression3 : exp0 check_rel_operator
                 | attr_access0
     '''
 
-def p_attr_access0(p): # eliminamos anidamiento temporalmente
+
+def p_attr_access0(p):  # eliminamos anidamiento temporalmente
     '''
     attr_access0 : ID DOT ID
     '''
 
-def p_method_call0(p): # eliminamos anidamiento temporalmente 
+
+def p_method_call0(p):  # eliminamos anidamiento temporalmente
     '''
     method_call0 : ID DOT function_call
     '''
+
 
 def p_data_access(p):
     '''
     data_access : PRIVATE
                 | PUBLIC
     '''
-    global curr_scope
-    #print(curr_scope)
+
 
 def p_function_statement(p):
     '''
@@ -410,10 +1051,12 @@ def p_function_statement(p):
                        | while
     '''
 
+
 def p_condition0(p):
     '''
     condition0 : IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON 
     '''
+
 
 def p_condition1(p):
     '''
@@ -421,10 +1064,17 @@ def p_condition1(p):
                | empty
     '''
 
+
 def p_writing0(p):
     '''
     writing0 : WRITE LPAREN writing1 RPAREN SEMICOLON
     '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    if len(operands_stack):
+        value = operands_stack.pop()
+        quad = [p[1], None, None, value]
+        quadruples.append(quad)
+
 
 def p_writing1(p):
     '''
@@ -432,39 +1082,53 @@ def p_writing1(p):
              | CONST_STRING writing2
     '''
 
+
 def p_writing2(p):
     '''
     writing2 : COMMA writing1
              | empty
     '''
 
+
 def p_reading(p):
     '''
-
     reading : READ ID SEMICOLON
     '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    quad = [p[1], None, None, p[2]]
+    quadruples.append(quad)
+
 
 def p_return(p):
     '''
     return : RETURN expression0 SEMICOLON
            | RETURN SEMICOLON
     '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    if len(p) == 4 and len(operands_stack):
+        value = operands_stack.pop()
+        quad = [p[1], None, None, value]
+        quadruples.append(quad)
+
 
 def p_while(p):
     '''
     while : WHILE LPAREN expression0 RPAREN block0
     '''
 
+
 def p_block0(p):
     '''
     block0 : LBRACKET block1 RBRACKET
     '''
+
 
 def p_block1(p):
     '''
     block1 : statement block1
            | empty
     '''
+
 
 def p_statement(p):
     '''
@@ -479,15 +1143,18 @@ def p_statement(p):
               | while
     '''
 
+
 def p_object_assignment(p):
     '''
     object_assignment : ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON  
     '''
 
+
 def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
     '''
+
 
 def p_main1(p):
     '''
@@ -495,6 +1162,8 @@ def p_main1(p):
           | statement main1 
           | empty
     '''
+
+
 def p_main_scope(p):
     '''
     main_scope : 
@@ -504,14 +1173,17 @@ def p_main_scope(p):
     curr_scope = "main"
     func_dir[curr_scope] = {}
 
+
 def p_empty(p):
     '''
     empty :  
     '''
 
+
 def p_error(p):
     print(p.value)
     print("Código inválido.")
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -522,13 +1194,13 @@ if __name__ == '__main__':
             source = _file.read()
             _file.close()
             lexer.input(source)
-            
-            #for lexem in lexer:
+
+            # for lexem in lexer:
             #    print(lexem)
 
             if parser.parse(source) == 1:
                 print("Código válido.")
-            
+
         except EOFError:
             print(EOFError)
     else:

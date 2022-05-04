@@ -1,0 +1,6 @@
+routine holamundo; 
+    v3 = 3 < 2;
+    v2 = 3 * 33;
+main {
+
+}

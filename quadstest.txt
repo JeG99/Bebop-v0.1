@@ -1,6 +1,4 @@
 routine holamundo; 
-v1: int[3][1]; 
-v1: int[3]; 
 
 class Clase1 {
 
@@ -38,40 +36,24 @@ def funcion71628() -> bool [[]] {
 }
 
 main {
-	v9: float[3][54 + 3\|7];
 	v67: int;
 	v67 = 3\|7;
-	v1[1] = 2; 
-	v1[1][2] = v5;
 	v2: string;
 	v2 = vv; 
 	v3:float;
-	v3 = v1 + v2; 
+	v3 = v1 + v2;
 	>>> v4;
 	<<<(v3); 
-	if(v3 > v2) { 
-		<<<("esmayor"); 
-	} else { 
-		<<<("noesmayor"); 
-	};
-	while(v3 < v5) {
-		>>> keonda;
-		<<<( obj.meth(), obj2.attr6 );
-		while(v7) {
-			<<<("hola");
-		}
-		if(cond) {
-			<<<("inside condition");
-			if(cond32) {
-				<<<("if anidado compadre");
-				while(holahola) {
-					<<<("hola");
-				}
-			};
-		} else {
-			<<<("no se pudo compadre");
-		};
-	}
-	obj: Obj7;
-	obj = new Obj7(2, 4, 6, true, hola(234), obj2.attr, obj.meth(2));
+	
+	
+	>>> keonda;
+	<<<("hola");
+	
+	
+	<<<("inside condition");
+
+	<<<("if anidado compadre");
+	<<<("hola");
+	<<<("no se pudo compadre");
+
 }
