@@ -33,7 +33,7 @@ class Test : Clase1 {
 	construct Test() {}
 };
 
-def funcion71628() -> bool [[]] {
+def funcion71628(int b, bool asd) -> bool [[]] {
 	return true;
 }
 

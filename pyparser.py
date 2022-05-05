@@ -1,9 +1,11 @@
 import ply.yacc as yacc
 import sys
+import json
 
 from pylexer import tokens, lexer
 
 func_dir = {}
+class_dir = {}
 curr_scope = ''
 prev_scope = ""
 var_id = ""
@@ -39,7 +41,8 @@ def p_routine0(p):
     routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
     ''' 
     p[0] = 1
-    print(func_dir)
+    print(json.dumps(func_dir, indent=5))
+    #print(json.dumps(class_dir, indent=5))
 
 def p_routine1(p):
     '''
@@ -49,6 +52,19 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
+    if(p[1] != None and 'def' in p[1][0]):
+        func_dir[p[1][1]] = {}
+        try:
+            print(p[1][1])
+            paramsAux = p[1][2]
+            while paramsAux != None:
+                func_dir[p[1][1]][paramsAux[1]] = {"type" : paramsAux[0]}
+                paramsAux = paramsAux[2]
+        except:
+            pass
+        #print(p[1])
+    #if("def" in p[1]):
+    #    print("a")
    
     
 
@@ -62,9 +78,15 @@ def p_global_scope(p):
 
 def p_class0(p):
     '''
-    class0 : CLASS id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_scope
+    class0 : CLASS class_id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_global
     '''
-    
+
+def p_revert_global(p):
+    '''
+    revert_global :
+    '''
+    global curr_scope
+    curr_scope = "global"
 
 def p_revert_scope(p):
     '''
@@ -80,8 +102,19 @@ def p_id_def(p):
     global curr_scope, func_dir, prev_scope
     prev_scope = curr_scope
     curr_scope = p[1]
-    func_dir[curr_scope] = {}
-    #print(prev_scope, curr_scope)
+    #class_dir[prev_scope]["method_table"][curr_scope] = {}
+    p[0] = p[1]
+    #print(curr_scope, prev_scope)
+
+def p_class_id_def(p):
+    '''
+    class_id_def : ID
+    '''
+    global curr_scope, func_dir, prev_scope
+    prev_scope = curr_scope
+    curr_scope = p[1]
+    class_dir[curr_scope] = {"method_table": {}, "vars_table" : {}}
+    p[0] = p[1]
 
 def p_class1(p):
     '''
@@ -109,8 +142,9 @@ def p_class3(p):
 
 def p_function0(p):
     '''
-    function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0
+    function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 revert_scope
     '''
+    p[0] = (p[1], p[2],p[4])
 
 def p_function1(p):
     '''
@@ -168,6 +202,17 @@ def p_constructor(p):
     '''
     constructor : CONSTRUCT ID LPAREN params0 RPAREN function_block0
     '''
+    class_dir[curr_scope]["method_table"][p[2]] = {}
+    if(p[4] != None):
+        try:
+            paramsAux = p[4]
+            while paramsAux != None:
+                class_dir[curr_scope]["method_table"][p[2]][paramsAux[1]] = {"type": paramsAux[0]}
+                #class_dir[curr_scope]["method_table"][p[2]][p[4][1]] = {"type":p[4][0]}
+                paramsAux = paramsAux[2]
+        except:
+            pass
+            #print(p[4])
 
 #def p_extension0(p): # quitamos polimorfismo temporalmente
 #    '''
@@ -180,26 +225,49 @@ def p_attributes(p):
                | simple_assignment attributes
                | empty
     '''
+    if(p[1] != None):
+        if(p[1] == "private" or p[1] == "public"):
+            class_dir[curr_scope]["vars_table"][p[2][0]] = p[2][1]
 
 def p_methods(p):
     '''
     methods : data_access function0 methods
             | empty
     '''
+    #for i in p: print(i)
+    if(len(p) > 2):
+        if(p[2][2] != None):
+            class_dir[curr_scope]["method_table"][p[2][1]] = {}
+            #print(p[2])
+            try:
+                paramsAux = p[2][2]
+                while(paramsAux != None):
+                    class_dir[curr_scope]["method_table"][p[2][1]][paramsAux[1]] = {"type":paramsAux[0]}
+                    paramsAux = paramsAux[2]
+            except:
+                pass
+            #class_dir[curr_scope]["method_table"][p[2][1]][p[2][2][1]] = {"type":p[2][2][0]}
+    
+
 
 def p_params0(p):
     '''
     params0 : type ID params1
             | empty
     '''
-    if len(p) > 2:
-        func_dir[curr_scope][p[2]] = {"type" : p[1]}
+    if(p[1] != None):
+        p[0] = (p[1], p[2], p[3])
+
+
+
 
 def p_params1(p):
     '''
     params1 : COMMA params0
             | empty
     '''
+    if(p[1] != None):
+        p[0] = p[2]
 
 def p_function_block0(p):
     '''
@@ -230,7 +298,8 @@ def p_simple_declaration(p):
     '''
     #global curr_scope, var_id, func_dir
     #print(p[3])
-    func_dir[curr_scope][p[1]] = {"type": p[3]}
+    p[0] = (p[1], p[3])
+    #func_dir[curr_scope][p[1]] = {"type": p[3]}
     #print(curr_scope)
     #var_id = p[1]
 
@@ -395,6 +464,7 @@ def p_data_access(p):
     data_access : PRIVATE
                 | PUBLIC
     '''
+    p[0] = p[1]
     global curr_scope
     #print(curr_scope)
 
