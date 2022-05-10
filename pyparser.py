@@ -52,19 +52,15 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
+    global func_dir
     if(p[1] != None and 'def' in p[1][0]):
-        func_dir[p[1][1]] = {}
-        try:
-            print(p[1][1])
-            paramsAux = p[1][2]
-            while paramsAux != None:
-                func_dir[p[1][1]][paramsAux[1]] = {"type" : paramsAux[0]}
-                paramsAux = paramsAux[2]
-        except:
-            pass
-        #print(p[1])
-    #if("def" in p[1]):
-    #    print("a")
+        func_dir["global"]["vars_table"][p[1][1]] = {"type":p[1][3]}
+        func_dir[p[1][1]] = {"return_type" : None, "vars_table" : {}}
+        paramsAux = p[1][2]
+        func_dir[p[1][1]]["return_type"] = p[1][3]
+        while paramsAux != None:
+            func_dir[p[1][1]]["vars_table"][paramsAux[1]] = {"type" : paramsAux[0]}
+            paramsAux = paramsAux[2]
    
     
 
@@ -74,7 +70,7 @@ def p_global_scope(p):
     '''
     global curr_scope, func_dir
     curr_scope = "global"
-    func_dir[curr_scope] = {}
+    func_dir[curr_scope] = {"return_type" : "void", "vars_table" : {}}
 
 def p_class0(p):
     '''
@@ -102,9 +98,7 @@ def p_id_def(p):
     global curr_scope, func_dir, prev_scope
     prev_scope = curr_scope
     curr_scope = p[1]
-    #class_dir[prev_scope]["method_table"][curr_scope] = {}
     p[0] = p[1]
-    #print(curr_scope, prev_scope)
 
 def p_class_id_def(p):
     '''
@@ -113,7 +107,7 @@ def p_class_id_def(p):
     global curr_scope, func_dir, prev_scope
     prev_scope = curr_scope
     curr_scope = p[1]
-    class_dir[curr_scope] = {"method_table": {}, "vars_table" : {}}
+    class_dir[curr_scope] = {"constructor" : {},"method_table": {}, "vars_table" : {}}
     p[0] = p[1]
 
 def p_class1(p):
@@ -121,9 +115,11 @@ def p_class1(p):
     class1 : COLON ID
            | empty
     '''
-    #if(p[1] == ':'):
-    #    pass
-    #    func_dir[curr_scope].update(func_dir[p[2]])
+    if(p[1] == ':'):
+        #pass
+        for i in class_dir[p[2]]["vars_table"].keys(): 
+                class_dir[curr_scope]["vars_table"][i] = class_dir[p[2]]["vars_table"][i]
+        class_dir[curr_scope]["method_table"] = class_dir[p[2]]["method_table"]
         
         
 
@@ -144,13 +140,14 @@ def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 revert_scope
     '''
-    p[0] = (p[1], p[2],p[4])
+    p[0] = (p[1], p[2],p[4], p[7])
 
 def p_function1(p):
     '''
     function1 : type
               | VOID
     '''
+    p[0] = p[1]
 
 def p_function2(p):
     '''
@@ -163,7 +160,7 @@ def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    func_dir[curr_scope][p[1]] = {"type" : p[3]}
+    func_dir[curr_scope]["vars_table"][p[1]] = {"type" : p[3]}
 
 def p_decl_id_def(p):
     '''
@@ -202,17 +199,13 @@ def p_constructor(p):
     '''
     constructor : CONSTRUCT ID LPAREN params0 RPAREN function_block0
     '''
-    class_dir[curr_scope]["method_table"][p[2]] = {}
+    class_dir[curr_scope]["constructor"][p[2]] = {}
     if(p[4] != None):
-        try:
-            paramsAux = p[4]
-            while paramsAux != None:
-                class_dir[curr_scope]["method_table"][p[2]][paramsAux[1]] = {"type": paramsAux[0]}
-                #class_dir[curr_scope]["method_table"][p[2]][p[4][1]] = {"type":p[4][0]}
-                paramsAux = paramsAux[2]
-        except:
-            pass
-            #print(p[4])
+        paramsAux = p[4]
+        while paramsAux != None:
+            class_dir[curr_scope]["constructor"][p[2]][paramsAux[1]] = {"type": paramsAux[0]}
+            #class_dir[curr_scope]["method_table"][p[2]][p[4][1]] = {"type":p[4][0]}
+            paramsAux = paramsAux[2]
 
 #def p_extension0(p): # quitamos polimorfismo temporalmente
 #    '''
@@ -227,6 +220,7 @@ def p_attributes(p):
     '''
     if(p[1] != None):
         if(p[1] == "private" or p[1] == "public"):
+            #print(curr_scope, p[2][0])
             class_dir[curr_scope]["vars_table"][p[2][0]] = p[2][1]
 
 def p_methods(p):
@@ -238,15 +232,10 @@ def p_methods(p):
     if(len(p) > 2):
         if(p[2][2] != None):
             class_dir[curr_scope]["method_table"][p[2][1]] = {}
-            #print(p[2])
-            try:
-                paramsAux = p[2][2]
-                while(paramsAux != None):
-                    class_dir[curr_scope]["method_table"][p[2][1]][paramsAux[1]] = {"type":paramsAux[0]}
-                    paramsAux = paramsAux[2]
-            except:
-                pass
-            #class_dir[curr_scope]["method_table"][p[2][1]][p[2][2][1]] = {"type":p[2][2][0]}
+            paramsAux = p[2][2]
+            while(paramsAux != None):
+                class_dir[curr_scope]["method_table"][p[2][1]][paramsAux[1]] = {"type":paramsAux[0]}
+                paramsAux = paramsAux[2]
     
 
 
@@ -572,7 +561,7 @@ def p_main_scope(p):
     global curr_scope, func_dir, prev_scope
     prev_scope = curr_scope
     curr_scope = "main"
-    func_dir[curr_scope] = {}
+    func_dir[curr_scope] = {"return_type" : "void", "vars_table" : {}}
 
 def p_empty(p):
     '''
