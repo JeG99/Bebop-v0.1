@@ -1,0 +1,6 @@
+routine holamundo; 
+    <<<("queonda");
+    v2 = 3 * 33;
+main {
+
+}

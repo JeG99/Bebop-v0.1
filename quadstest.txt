@@ -1,0 +1,60 @@
+routine holamundo; 
+
+class Clase1 {
+
+	public df: int;
+	private dX: float;
+	df = gh ** (2\|4);
+	
+	construct Clase1(int gy, float v2, bool k2){
+		
+	}
+
+	private def func1(int hola, float adios) -> int [[
+		var2: int;
+		var3: bool;
+		var: float;
+	]] {
+		>>> input;
+		<<<(hola \| adios + funcion23(adios**hola));
+		return hola + 3;
+	}
+
+	public def func2() -> void [[]] {
+		<<<("que onda");
+		hola = true;
+	}
+
+};
+
+class Test : Clase1 {
+	public varrr: float; 
+	construct Test() {}
+};
+
+def funcion71628() -> bool [[]] {
+	return true;
+}
+
+main {
+	v67: int;
+	v67 = 3\|7;
+	v2: string;
+	v2 = vv; 
+	v3:float;
+	v3 = v1 + v2;
+	>>> v4;
+	<<<(v3); 
+	
+	
+	>>> keonda;
+	<<<("hola");
+	
+	
+	<<<("inside condition");
+
+	<<<("if anidado compadre");
+	<<<("hola");
+	<<<("no se pudo compadre");
+
+}
