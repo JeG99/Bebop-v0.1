@@ -12,6 +12,7 @@ prev_scope = ""
 var_id = ""
 
 quadruples = []
+quadCounter = 0
 operands_stack = []
 operators_stack = []
 types_stack = []
@@ -687,6 +688,7 @@ def p_assignment0(p):
         value = operands_stack.pop()
         quad = [p[2], value, None, p[1]]
         quadruples.append(quad)
+        quadCounter += 1
 
 
 def p_constructor(p):
@@ -803,6 +805,7 @@ def p_simple_assignment(p):
         value = operands_stack.pop()
         quad = [p[2], value, None, p[1]]
         quadruples.append(quad)
+        quadCounter += 1
     #global curr_scope
     #func_dir[curr_scope][p[1]]["value"] = p[3]
 
@@ -877,6 +880,7 @@ def p_check_last_plus_minus_operator(p):
         quad = [op, left_oper,
                 right_oper, ('dir', temp_counter)]
         quadruples.append(quad)
+        quadCounter += 1
         temp_counter += 1
 
 
@@ -915,6 +919,7 @@ def p_check_last_times_division_operator(p):
         quad = [op, left_oper,
                 right_oper, ('dir', temp_counter)]
         quadruples.append(quad)
+        quadCounter += 1
         temp_counter += 1
 
 
@@ -993,6 +998,7 @@ def p_check_pow_rad_operator(p):
         quad = [op, left_oper,
                 right_oper, ('dir', temp_counter)]
         quadruples.append(quad)
+        quadCounter += 1
         temp_counter += 1
 
 
@@ -1066,6 +1072,7 @@ def p_check_rel_operator(p):
         quad = [op, left_oper,
                 right_oper, ('dir', temp_counter)]
         quadruples.append(quad)
+        quadCounter += 1
         temp_counter += 1
 
 
@@ -1134,6 +1141,7 @@ def p_writing0(p):
         op = operators_stack.pop()
         quad = [op, None, None, value]
         quadruples.append(quad)
+        quadCounter += 1
 
 
 def p_push_writing_op(p):
@@ -1173,6 +1181,7 @@ def p_reading(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     quad = [p[1], None, None, p[2]]
     quadruples.append(quad)
+    quadCounter += 1
 
 
 def p_return(p):
@@ -1185,6 +1194,7 @@ def p_return(p):
         value = operands_stack.pop()
         quad = [p[1], None, None, value]
         quadruples.append(quad)
+        quadCounter += 1
 
 
 def p_while(p):
