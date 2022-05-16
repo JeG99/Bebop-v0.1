@@ -17,6 +17,7 @@ operands_stack = []
 operators_stack = []
 types_stack = []
 temp_counter = 0
+pSaltos = []
 
 # TYPE CODEs
 # int       : 0
@@ -524,6 +525,7 @@ def p_routine0(p):
     print(operators_stack)
     print('\nquadruples:')
     [print(quad) for quad in quadruples]
+    print (pSaltos)
 
 
 def p_routine1(p):
@@ -683,7 +685,7 @@ def p_assignment0(p):
                 | ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
                 | ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(p) == 5 and operands_stack:
         value = operands_stack.pop()
         quad = [p[2], value, None, p[1]]
@@ -800,7 +802,7 @@ def p_simple_assignment(p):
     '''
     simple_assignment : ID EQUALS expression0 SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(operands_stack):
         value = operands_stack.pop()
         quad = [p[2], value, None, p[1]]
@@ -870,7 +872,7 @@ def p_check_last_plus_minus_operator(p):
     '''
     check_last_plus_minus_operator :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     # falta typematching
     if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '+' or operators_stack[-1] == '-'):
         right_oper = operands_stack.pop()
@@ -910,7 +912,7 @@ def p_check_last_times_division_operator(p):
     '''
     check_last_times_division_operator :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '*' or operators_stack[-1] == '/'):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
@@ -988,7 +990,7 @@ def p_check_pow_rad_operator(p):
     '''
     check_pow_rad_operator :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     # falta typematching
     if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '\\|' or operators_stack[-1] == '**'):
         right_oper = operands_stack.pop()
@@ -1062,7 +1064,7 @@ def p_check_rel_operator(p):
     '''
     check_rel_operator :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     # falta typematching
     if operators_stack and operands_stack and (operators_stack[-1] == '<' or operators_stack[-1] == '>' or operators_stack[-1] == '<>' or operators_stack[-1] == '=='):
         right_oper = operands_stack.pop()
@@ -1119,22 +1121,50 @@ def p_function_statement(p):
 
 def p_condition0(p):
     '''
-    condition0 : IF LPAREN expression0 RPAREN block0 condition1 SEMICOLON 
+    condition0 : IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
     '''
 
+
+def p_condNeur1(p):
+    '''
+    condNeur1 :
+    '''
+    global pSaltos, quadruples, quadCounter
+    pSaltos.append(quadCounter)
+    quadruples.append(["GOTOF", None, None, None])
+    quadCounter += 1
+
+def p_condNeur3(p):
+    '''
+    condNeur3 :
+    '''
+    global pSaltos, quadruples, quadCounter
+    temp = pSaltos.pop()
+    quadruples[temp][3] = quadCounter + 1
 
 def p_condition1(p):
     '''
-    condition1 : ELSE block0
+    condition1 : ELSE condNeur2 block0
                | empty
     '''
+
+def p_condNeur2(p):
+    '''
+    condNeur2 :
+    '''
+    global pSaltos, quadruples, quadCounter
+    temp = pSaltos.pop()
+    quadruples[temp][3] = quadCounter + 1
+    pSaltos.append(quadCounter)
+    quadruples.append(["GOTO", None, None, None])
+    quadCounter += 1
 
 
 def p_writing0(p):
     '''
     writing0 : WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if operands_stack:
         print('aperro')
         value = operands_stack.pop()
@@ -1178,7 +1208,7 @@ def p_reading(p):
     '''
     reading : READ ID SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     quad = [p[1], None, None, p[2]]
     quadruples.append(quad)
     quadCounter += 1
@@ -1189,7 +1219,7 @@ def p_return(p):
     return : RETURN expression0 SEMICOLON
            | RETURN SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(p) == 4 and len(operands_stack):
         value = operands_stack.pop()
         quad = [p[1], None, None, value]
@@ -1199,14 +1229,46 @@ def p_return(p):
 
 def p_while(p):
     '''
-    while : WHILE LPAREN expression0 RPAREN block0
+    while : WHILE wNeur1 LPAREN expression0 RPAREN wNeur2 block0 wNeur3
     '''
 
+def p_wNeur1(p):
+    '''
+    wNeur1 :
+    '''
+    global pSaltos, quadruples, quadCounter
+    pSaltos.append(quadCounter)
+
+
+def p_wNeur2(p):
+    '''
+    wNeur2 :
+    '''
+    global pSaltos, quadruples, quadCounter
+    pSaltos.append(quadCounter)
+    quadruples.append(["GOTOF", None, None, None])
+    quadCounter += 1
+
+
+def p_wNeur3(p):
+    '''
+    wNeur3 :
+    '''
+    global pSaltos, quadruples, quadCounter
+    temp1 = pSaltos.pop()
+    temp2 = pSaltos.pop()
+    print(temp1, temp2)
+    quadruples.append(["GOTO", None, None, temp1])
+    quadCounter += 1
+    print(quadruples[temp2])
+    quadruples[temp2][3] = quadCounter + 1
 
 def p_block0(p):
     '''
     block0 : LBRACKET block1 RBRACKET
     '''
+    
+
 
 
 def p_block1(p):
