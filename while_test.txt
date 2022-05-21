@@ -1,0 +1,10 @@
+routine holamundo; 
+
+v1: int;
+v2: int;
+
+main {
+
+	v1 = (2 + 5) * (9 - 0);
+
+}
