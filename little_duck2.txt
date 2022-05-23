@@ -64,7 +64,7 @@ main {
 			<<<("inside condition");
 			if(cond32) {
 				<<<("if anidado compadre");
-				while(holahola) {
+				while(x > 3) {
 					<<<("hola");
 				}
 			};

@@ -298,14 +298,18 @@ def p_routine0(p):
     '''
     routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
     '''
+    global quadCounter, quadruples
     p[0] = 1
-    print(json.dumps(func_dir, indent=4))
-    print(operands_stack)
-    print(types_stack)
-    print(operators_stack)
-    print('\nquadruples:')
+    quadruples.append(["END", None, None, None])
+    quadCounter+=1
+    #print(json.dumps(func_dir, indent=4))
+    #print(operands_stack)
+    #print(types_stack)
+    #print(operators_stack)
+    #print('\nquadruples:')
     [print(quad) for quad in quadruples]
-    print(pSaltos)
+    #print(pSaltos)
+
 
 
 def p_routine1(p):
@@ -812,8 +816,23 @@ def p_const_var(p):
 
 def p_function_call(p):
     '''
-    function_call : ID LPAREN function_call_params0 RPAREN 
+    function_call : id_funcCall LPAREN function_call_params0 RPAREN 
     '''
+    global quadruples, quadCounter
+    quad = ["GOSUB", p[1], None, None]
+    quadruples.append(quad)
+    quadCounter += 1
+    #print(p[3], "AaAa")
+
+def p_id_funcCall(p):
+    '''
+    id_funcCall : ID
+    '''
+    global quadruples, quadCounter
+    quad = ["ERA", p[1], None, None]
+    quadruples.append(quad)
+    quadCounter += 1
+    p[0] = p[1]
 
 
 def p_function_call_params0(p):
@@ -822,6 +841,7 @@ def p_function_call_params0(p):
                           | CONST_STRING function_call_params1
                           | empty function_call_params1
     '''
+    p[0] = (p[1], p[2])
 
 
 def p_function_call_params1(p):
@@ -829,6 +849,8 @@ def p_function_call_params1(p):
     function_call_params1 : COMMA function_call_params0
                           | empty 
     '''
+    if(p[1] != None):
+        p[0] = p[2]
 
 
 def p_expression0(p):
@@ -966,7 +988,7 @@ def p_writing0(p):
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if operands_stack:
-        print('aperro')
+        #print('aperro')
         value = operands_stack.pop()
         op = operators_stack.pop()
         quad = [op, None, None, value]
@@ -1039,6 +1061,7 @@ def p_wNeur1(p):
     '''
     global pSaltos, quadruples, quadCounter
     pSaltos.append(quadCounter)
+   
 
 
 def p_wNeur2(p):
@@ -1049,6 +1072,8 @@ def p_wNeur2(p):
     pSaltos.append(quadCounter)
     quadruples.append(["GOTOF", None, None, None])
     quadCounter += 1
+    print(pSaltos)
+    
 
 
 def p_wNeur3(p):
@@ -1058,11 +1083,11 @@ def p_wNeur3(p):
     global pSaltos, quadruples, quadCounter
     temp1 = pSaltos.pop()
     temp2 = pSaltos.pop()
-    print(temp1, temp2)
-    quadruples.append(["GOTO", None, None, temp1])
+    #print(temp1, temp2)
+    quadruples.append(["GOTO", None, None, temp2])
     quadCounter += 1
-    print(quadruples[temp2])
-    quadruples[temp2][3] = quadCounter + 1
+    print(temp1, temp2, quadruples[temp1])
+    quadruples[temp1][3] = quadCounter + 1
 
 
 def p_block0(p):
