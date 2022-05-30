@@ -18,6 +18,14 @@ operators_stack = []
 types_stack = []
 temp_counter = 0
 pSaltos = []
+Gi = 0
+Gf = 2001
+Li = 5000
+Lf = 7001
+Ti = 10000
+Tf = 12001
+Ci = 15000
+Cf = 17001
 
 # TYPE CODEs
 # int       : 0
@@ -296,7 +304,7 @@ sem_cube = (
 
 def p_routine0(p):
     '''
-    routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
+    routine0 : goto_main_neur ROUTINE ID SEMICOLON global_scope routine1 main0
     '''
     global quadCounter, quadruples
     p[0] = 1
@@ -309,6 +317,12 @@ def p_routine0(p):
     #print('\nquadruples:')
     [print(quad) for quad in quadruples]
     #print(pSaltos)
+
+def p_goto_main_neur(p):
+    '''
+    goto_main_neur :
+    '''
+    quadruples.append(["GOTO", "main", None, None])
 
 
 
@@ -417,7 +431,11 @@ def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 revert_scope
     '''
+    global quadruples, quadCounter
     p[0] = (p[1], p[2], p[4], p[7])
+    quadruples.append(["ENDPROC",None,None,None])
+    quadCounter += 1
+
 
 
 def p_function1(p):
@@ -1072,7 +1090,6 @@ def p_wNeur2(p):
     pSaltos.append(quadCounter)
     quadruples.append(["GOTOF", None, None, None])
     quadCounter += 1
-    print(pSaltos)
     
 
 
@@ -1086,7 +1103,6 @@ def p_wNeur3(p):
     #print(temp1, temp2)
     quadruples.append(["GOTO", None, None, temp2])
     quadCounter += 1
-    print(temp1, temp2, quadruples[temp1])
     quadruples[temp1][3] = quadCounter + 1
 
 
