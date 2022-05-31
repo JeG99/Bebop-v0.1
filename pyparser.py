@@ -20,12 +20,20 @@ temp_counter = 0
 pSaltos = []
 Gi = 0
 Gf = 2001
+Gb = 3001
+Go = 4001
 Li = 5000
 Lf = 7001
-Ti = 10000
+Lb = 9001
+Lo = 10001
+Ti = 11000
 Tf = 12001
+Tb = 13001
+To = 14001
 Ci = 15000
 Cf = 17001
+Cb = 18001
+Co = 19001
 
 # TYPE CODEs
 # int       : 0
@@ -310,19 +318,21 @@ def p_routine0(p):
     p[0] = 1
     quadruples.append(["END", None, None, None])
     quadCounter+=1
-    #print(json.dumps(func_dir, indent=4))
+    print(json.dumps(func_dir, indent=4))
     #print(operands_stack)
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    [print(quad) for quad in quadruples]
+    #[print(quad) for quad in quadruples]
     #print(pSaltos)
 
 def p_goto_main_neur(p):
     '''
     goto_main_neur :
     '''
+    global quadruples, quadCounter
     quadruples.append(["GOTO", "main", None, None])
+    quadCounter = quadCounter + 1
 
 
 
@@ -335,16 +345,46 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
-    global func_dir
+    global func_dir, Gi, Gf, Gb, Go, Li, Lf, Lb, Lo
     if(p[1] != None and 'def' in p[1][0]):
-        func_dir["global"]["vars_table"][p[1][1]] = {"type": p[1][3]}
+        if p[1][3] == "int":
+            direc = Gi
+            Gi += 1
+        elif p[1][3] == "float":
+            direc = Gf
+            Gf += 1
+        elif p[1][3] == "bool":
+            direc = Gb
+            Gb += 1
+        else:
+            direc = Go
+            Go += 1
+        print(Gi, "a")
+        func_dir["global"]["vars_table"][p[1][1]] = {"type": p[1][3], "dirV": direc}
         func_dir[p[1][1]] = {"return_type": None, "vars_table": {}}
         paramsAux = p[1][2]
         func_dir[p[1][1]]["return_type"] = p[1][3]
         while paramsAux != None:
+            if paramsAux[0] == "int":
+                direc = Li
+                Li += 1
+            elif paramsAux == "float":
+                direc = Lf
+                Lf += 1
+            elif paramsAux == "bool":
+                direc = Lb
+                Lb += 1
+            else:
+                direc = Lo
+                Lo += 1
+            print(direc)
             func_dir[p[1][1]]["vars_table"][paramsAux[1]] = {
-                "type": paramsAux[0]}
+                "type": paramsAux[0], "dirV":direc}
             paramsAux = paramsAux[2]
+        Li = 5000
+        Lf = 7001
+        Lb = 9001
+        Lo = 10001
 
 
 def p_global_scope(p):
@@ -458,7 +498,20 @@ def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    func_dir[curr_scope]["vars_table"][p[1]] = {"type": p[3]}
+    global Li, Lf, Lb, Lo
+    if p[3] == "int":
+        direc = Li
+        Li += 1
+    elif p[3] == "float":
+        direc = Lf
+        Lf += 1
+    elif p[3] == "bool":
+        direc = Lb
+        Lb += 1
+    else:
+        direc = Lo
+        Lo += 1
+    func_dir[curr_scope]["vars_table"][p[1]] = {"Name": p[3], "dirV" : direc}
 
 
 def p_decl_id_def(p):
@@ -498,6 +551,8 @@ def p_assignment0(p):
         quad = [p[2], value, None, p[1]]
         quadruples.append(quad)
         quadCounter += 1
+    elif len(p) == 8 and operands_stack:
+        pass
 
 
 def p_constructor(p):
@@ -508,8 +563,7 @@ def p_constructor(p):
     if(p[4] != None):
         paramsAux = p[4]
         while paramsAux != None:
-            class_dir[curr_scope]["constructor"][p[2]
-                                                 ][paramsAux[1]] = {"type": paramsAux[0]}
+            class_dir[curr_scope]["constructor"][p[2]][paramsAux[1]] = {"type": paramsAux[0]}
             #class_dir[curr_scope]["method_table"][p[2]][p[4][1]] = {"type":p[4][0]}
             paramsAux = paramsAux[2]
 
@@ -814,6 +868,7 @@ def p_check_pow_rad_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
+        print(right_oper, left_oper)
         operands_stack.append(('dir', temp_counter))
         quad = [op, left_oper,
                 right_oper, ('dir', temp_counter)]
@@ -1103,6 +1158,7 @@ def p_wNeur3(p):
     #print(temp1, temp2)
     quadruples.append(["GOTO", None, None, temp2])
     quadCounter += 1
+    #print(quadruples[temp2], end = "\n\n\n")
     quadruples[temp1][3] = quadCounter + 1
 
 
@@ -1143,7 +1199,11 @@ def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
     '''
-
+    global Li, Lf, Lb, Lo
+    Li = 5000
+    Lf = 7001
+    Lb = 9001
+    Lo = 10001
 
 def p_main1(p):
     '''
@@ -1151,6 +1211,7 @@ def p_main1(p):
           | statement main1 
           | empty
     '''
+    
 
 
 def p_main_scope(p):
