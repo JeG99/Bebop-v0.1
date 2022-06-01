@@ -20,20 +20,17 @@ temp_counter = 0
 pSaltos = []
 Gi = 0
 Gf = 2001
-Gb = 3001
 Go = 4001
 Li = 5000
 Lf = 7001
-Lb = 9001
 Lo = 10001
 Ti = 11000
 Tf = 12001
 Tb = 13001
 To = 14001
-Ci = 15000
+Ts = 15001
+Ci = 16000
 Cf = 17001
-Cb = 18001
-Co = 19001
 
 # TYPE CODEs
 # int       : 0
@@ -345,7 +342,7 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
-    global func_dir, Gi, Gf, Gb, Go, Li, Lf, Lb, Lo
+    global func_dir, Gi, Gf, Go, Li, Lf, Lo
     if(p[1] != None and 'def' in p[1][0]):
         if p[1][3] == "int":
             direc = Gi
@@ -353,9 +350,6 @@ def p_routine1(p):
         elif p[1][3] == "float":
             direc = Gf
             Gf += 1
-        elif p[1][3] == "bool":
-            direc = Gb
-            Gb += 1
         else:
             direc = Go
             Go += 1
@@ -371,9 +365,6 @@ def p_routine1(p):
             elif paramsAux == "float":
                 direc = Lf
                 Lf += 1
-            elif paramsAux == "bool":
-                direc = Lb
-                Lb += 1
             else:
                 direc = Lo
                 Lo += 1
@@ -383,7 +374,6 @@ def p_routine1(p):
             paramsAux = paramsAux[2]
         Li = 5000
         Lf = 7001
-        Lb = 9001
         Lo = 10001
 
 
@@ -498,20 +488,17 @@ def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    global Li, Lf, Lb, Lo
+    global Li, Lf, Lo
     if p[3] == "int":
         direc = Li
         Li += 1
     elif p[3] == "float":
         direc = Lf
         Lf += 1
-    elif p[3] == "bool":
-        direc = Lb
-        Lb += 1
     else:
         direc = Lo
         Lo += 1
-    func_dir[curr_scope]["vars_table"][p[1]] = {"Name": p[3], "dirV" : direc}
+    func_dir[curr_scope]["vars_table"][p[1]] = {"type": p[3], "dirV" : direc}
 
 
 def p_decl_id_def(p):
@@ -527,9 +514,37 @@ def p_declaration1(p):
     '''
     declaration1 : type
                  | complex_type
-                 | type LSQRBRACKET exp0 RSQRBRACKET declaration2
+                 | type LSQRBRACKET exp0 RSQRBRACKET neurMemory declaration2
     '''
     p[0] = p[1]
+
+def p_neurMemory(p):
+    '''
+    neurMemory :
+    '''
+    global Li, Lf, Lo, func_dir, curr_scope, var_id, Gi, Gf, Go, operands_stack
+    print("Si entra", p[-4])
+    if curr_scope != "global":
+        if p[-4] == "int":
+            direc = Li
+            Li += 1
+        elif p[-4] == "float":
+            direc = Lf
+            Lf += 1
+        else:
+            direc = Lo
+            Lo += 1
+    else:
+        if p[-4] == "int":
+            direc = Gi
+            Gi += 1
+        elif p[-4] == "float":
+            direc = Gf
+            Gf += 1
+        else:
+            direc = Go
+            Go += 1
+    func_dir[curr_scope]["vars_table"][var_id] = {"type": p[-4], "dirv" : direc, "IsArray": True}
 
 
 def p_declaration2(p):
@@ -552,7 +567,8 @@ def p_assignment0(p):
         quadruples.append(quad)
         quadCounter += 1
     elif len(p) == 8 and operands_stack:
-        pass
+        value = operands_stack.pop()
+
 
 
 def p_constructor(p):
@@ -606,6 +622,7 @@ def p_params0(p):
     params0 : type ID params1
             | empty
     '''
+    
     if(p[1] != None):
         p[0] = (p[1], p[2], p[3])
 
@@ -862,7 +879,7 @@ def p_check_pow_rad_operator(p):
     '''
     check_pow_rad_operator :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, Ti, Tf, Tb, To
     # falta typematching
     if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '\\|' or operators_stack[-1] == '**'):
         right_oper = operands_stack.pop()
@@ -879,13 +896,26 @@ def p_check_pow_rad_operator(p):
 
 def p_const_var(p):
     '''
-    const_var : CONST_INT
-              | CONST_FLOAT
+    const_var : CONST_INT neurInt
+              | CONST_FLOAT neurFloat
               | ID
     '''
     p[0] = p[1]
     operands_stack.append(p[1])
 
+def p_neurInt(p):
+    '''
+    neurInt :
+    '''
+    global types_stack
+    types_stack.append("int")
+
+def p_neurFloat(p):
+    '''
+    neurFloat :
+    '''
+    global types_stack
+    types_stack.append("float")
 
 def p_function_call(p):
     '''
@@ -910,11 +940,20 @@ def p_id_funcCall(p):
 
 def p_function_call_params0(p):
     '''
-    function_call_params0 : expression0 function_call_params1
-                          | CONST_STRING function_call_params1
+    function_call_params0 : expression0 neurFuncCallParams1 function_call_params1
+                          | CONST_STRING neurFuncCallParams1 function_call_params1
                           | empty function_call_params1
     '''
-    p[0] = (p[1], p[2])
+
+
+def p_neurFuncCallParams1(p):
+    '''
+    neurFuncCallParams1 : 
+    '''
+    global quadruples, quadCounter, operands_stack
+    aux = operands_stack.pop()
+    quadruples.append(["PARAM",None, None, aux])
+    quadCounter+=1
 
 
 def p_function_call_params1(p):
@@ -1199,10 +1238,9 @@ def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
     '''
-    global Li, Lf, Lb, Lo
+    global Li, Lf, Lo
     Li = 5000
     Lf = 7001
-    Lb = 9001
     Lo = 10001
 
 def p_main1(p):
