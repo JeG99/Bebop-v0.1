@@ -1,0 +1,41 @@
+routine holamundo; 
+
+def funcion71628(int b, bool asd) -> bool [[]] {
+	
+	return true;
+}
+
+main {
+	funcion71628(3, 45);
+	v67: int;
+	v67 = 3\|7;
+	v2: string;
+	v2 = vv; 
+	v3: float;
+	v3 = v1 + v2; 
+	>>> v4;
+	<<<(v3); 
+	if(v3 > v2) { 
+		<<<("esmayor"); 
+	} else { 
+		<<<("noesmayor"); 
+	};
+	while(v3 < v5) {
+		>>> keonda;
+		while(v7) {
+			<<<("hola");
+		}
+		if(cond) {
+			<<<("inside condition");
+			if(cond32) {
+				<<<("if anidado compadre");
+				while(x > 3) {
+					<<<("hola");
+				}
+			};
+		} else {
+			<<<("no se pudo compadre");
+		};
+	}
+	func();
+}

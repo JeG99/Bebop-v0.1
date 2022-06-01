@@ -1,4 +1,5 @@
 from cgi import print_environ
+from numpy import empty
 import ply.yacc as yacc
 import sys
 import json
@@ -320,7 +321,7 @@ def p_routine0(p):
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    #[print(quad) for quad in quadruples]
+    [print(quad) for quad in quadruples]
     #print(pSaltos)
 
 def p_goto_main_neur(p):
@@ -931,11 +932,14 @@ def p_id_funcCall(p):
     '''
     id_funcCall : ID
     '''
-    global quadruples, quadCounter
-    quad = ["ERA", p[1], None, None]
-    quadruples.append(quad)
-    quadCounter += 1
-    p[0] = p[1]
+    global quadruples, quadCounter, func_dir
+    if p[1] in func_dir.keys():
+        quad = ["ERA", p[1], None, None]
+        quadruples.append(quad)
+        quadCounter += 1
+        p[0] = p[1]
+    else:
+        raise NameError('Function not defined')
 
 
 def p_function_call_params0(p):
