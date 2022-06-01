@@ -8,7 +8,7 @@ def funcion71628(int b, bool asd) -> bool [[]] {
 main {
 	funcion71628(3, 45);
 	v67: int;
-	v67 = 3\|7;
+	v67 = 3\|7.90;
 	v2: string;
 	v2 = vv; 
 	v3: float;
@@ -37,5 +37,4 @@ main {
 			<<<("no se pudo compadre");
 		};
 	}
-	func();
 }

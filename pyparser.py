@@ -1,3 +1,4 @@
+from asyncio import constants
 from cgi import print_environ
 from numpy import empty
 import ply.yacc as yacc
@@ -11,6 +12,7 @@ class_dir = {}
 curr_scope = ''
 prev_scope = ""
 var_id = ""
+const_table = {}
 
 quadruples = []
 quadCounter = 0
@@ -321,8 +323,9 @@ def p_routine0(p):
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    [print(quad) for quad in quadruples]
+    [print(idx, quad) for idx, quad in enumerate(quadruples)]
     #print(pSaltos)
+    print(const_table)
 
 def p_goto_main_neur(p):
     '''
@@ -908,14 +911,20 @@ def p_neurInt(p):
     '''
     neurInt :
     '''
-    global types_stack
+    global types_stack, const_table, Ci
+    if p[-1] not in const_table.keys():
+        const_table[p[-1]] = Ci
+        Ci += 1
     types_stack.append("int")
 
 def p_neurFloat(p):
     '''
     neurFloat :
     '''
-    global types_stack
+    global types_stack, const_table, Cf
+    if p[-1] not in const_table.keys():
+        const_table[p[-1]] = Cf
+        Cf += 1
     types_stack.append("float")
 
 def p_function_call(p):
@@ -1064,9 +1073,10 @@ def p_condNeur1(p):
     '''
     condNeur1 :
     '''
-    global pSaltos, quadruples, quadCounter
+    global operands_stack, pSaltos, quadruples, quadCounter
     pSaltos.append(quadCounter)
-    quadruples.append(["GOTOF", None, None, None])
+    temp = operands_stack.pop()
+    quadruples.append(["GOTOF", temp, None, None])
     quadCounter += 1
 
 
@@ -1184,9 +1194,10 @@ def p_wNeur2(p):
     '''
     wNeur2 :
     '''
-    global pSaltos, quadruples, quadCounter
+    global operands_stack, pSaltos, quadruples, quadCounter
     pSaltos.append(quadCounter)
-    quadruples.append(["GOTOF", None, None, None])
+    temp = operands_stack.pop()
+    quadruples.append(["GOTOF", temp, None, None])
     quadCounter += 1
     
 
