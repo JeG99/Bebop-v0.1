@@ -1,5 +1,6 @@
 from cgi import print_environ
-from numpy import empty
+#from curses import has_key
+#from numpy import empty
 import ply.yacc as yacc
 import sys
 import json
@@ -18,7 +19,11 @@ operands_stack = []
 operators_stack = []
 types_stack = []
 temp_counter = 0
+prev_table = {}
 pSaltos = []
+paramCounter = 0
+paramTableCounter = 0
+currFuncCall = ""
 Gi = 0
 Gf = 2001
 Go = 4001
@@ -344,7 +349,7 @@ def p_routine1(p):
              | empty
     '''
     global func_dir, Gi, Gf, Go, Li, Lf, Lo
-    if(p[1] != None and 'def' in p[1][0]):
+    '''if(p[1] != None and 'def' in p[1][0]):
         if p[1][3] == "int":
             direc = Gi
             Gi += 1
@@ -355,10 +360,9 @@ def p_routine1(p):
             direc = Go
             Go += 1
         print(Gi, "a")
-        func_dir["global"]["vars_table"][p[1][1]] = {"type": p[1][3], "dirV": direc}
-        func_dir[p[1][1]] = {"return_type": None, "vars_table": {}}
+        #func_dir["global"]["vars_table"][p[1][1]] = {"type": p[1][3], "dirV": direc}
+        #func_dir[p[1][1]] = {"return_type": p[1][3], "vars_table": {}}
         paramsAux = p[1][2]
-        func_dir[p[1][1]]["return_type"] = p[1][3]
         while paramsAux != None:
             if paramsAux[0] == "int":
                 direc = Li
@@ -370,12 +374,12 @@ def p_routine1(p):
                 direc = Lo
                 Lo += 1
             print(direc)
-            func_dir[p[1][1]]["vars_table"][paramsAux[1]] = {
-                "type": paramsAux[0], "dirV":direc}
+            #func_dir[p[1][1]]["vars_table"][paramsAux[1]] = {"type": paramsAux[0], "dirV":direc}
             paramsAux = paramsAux[2]
-        Li = 5000
-        Lf = 7001
-        Lo = 10001
+            '''
+    Li = 5000
+    Lf = 7001
+    Lo = 10001
 
 
 def p_global_scope(p):
@@ -413,10 +417,15 @@ def p_id_def(p):
     '''
     id_def : ID
     '''
-    global curr_scope, func_dir, prev_scope
-    prev_scope = curr_scope
-    curr_scope = p[1]
-    p[0] = p[1]
+    global curr_scope, func_dir, prev_scope, prev_table
+    if p[1] in func_dir.keys():
+        print("Error: La funcion ya existe.")
+    else:
+        func_dir["global"]["vars_table"][p[1]] = {"type": None, "dirV" : None}
+        func_dir[p[1]] = {"return_type": None, "vars_table": {}, "params_table":[]}
+        prev_scope = curr_scope
+        curr_scope = p[1]
+        p[0] = p[1]
 
 
 def p_class_id_def(p):
@@ -460,21 +469,58 @@ def p_class3(p):
 
 def p_function0(p):
     '''
-    function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 revert_scope
+    function0 : DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
     '''
-    global quadruples, quadCounter
+    global quadruples, quadCounter, prev_table, Li, Lf, Lo
     p[0] = (p[1], p[2], p[4], p[7])
     quadruples.append(["ENDPROC",None,None,None])
     quadCounter += 1
+    #func_dir[p[2]]["vars_table"] = {}
+    #func_dir[p[2]]["params_number"] = 0
+    #func_dir[p[2]]["params_table"] = []
+    Li = 5000
+    Lf = 7001
+    Lo = 10001
 
+def p_endParamNeur(p):
+    '''
+    endParamNeur :
+    '''
+    global func_dir, curr_scope
+    func_dir[curr_scope]["params_number"] = len(func_dir[curr_scope]["params_table"])
 
+def p_startFuncNeur(p):
+    '''
+    startFuncNeur :
+    '''
+    global func_dir, curr_scope, quadCounter
+    func_dir[curr_scope]["quad_number"] = quadCounter
 
 def p_function1(p):
     '''
     function1 : type
               | VOID
     '''
+    
+    global curr_scope, func_dir, Li, Lf, Lo
+    print(p[-6], "asdasdas")
+    func_dir[p[-6]]["return_type"] = p[1]
+    func_dir['global']["vars_table"][p[-6]]["type"] = p[1]
+    direc = 0
+    if(p[1] != "void"):
+        if p[1] == "int":
+            direc = Li
+            Li += 1
+        elif p[1] == "float":
+            direc = Lf
+            Lf += 1
+        else:
+            direc = Lo
+            Lo += 1
+    func_dir['global']["vars_table"][p[-6]]["dirV"] = direc
+    
     p[0] = p[1]
+    
 
 
 def p_function2(p):
@@ -620,12 +666,33 @@ def p_methods(p):
 
 def p_params0(p):
     '''
-    params0 : type ID params1
+    params0 : type ID paramsNeur params1
             | empty
     '''
-    
     if(p[1] != None):
         p[0] = (p[1], p[2], p[3])
+        
+
+def p_paramsNeur(p):
+    '''
+    paramsNeur : 
+    '''
+    global func_dir, quadruples, quadCounter, Li, Lf, Lo, curr_scope
+    if p[-2] == "int":
+        direc = Li
+        Li += 1
+    elif p[-2] == "float":
+        direc = Lf
+        Lf += 1
+    else:
+        direc = Lo
+        Lo += 1
+    print(curr_scope)
+    func_dir[curr_scope]["vars_table"]
+    func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc}
+    func_dir[curr_scope]["params_table"].append(p[-2])
+
+    
 
 
 def p_params1(p):
@@ -920,26 +987,36 @@ def p_neurFloat(p):
 
 def p_function_call(p):
     '''
-    function_call : id_funcCall LPAREN function_call_params0 RPAREN 
+    function_call : id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN 
     '''
-    global quadruples, quadCounter
+    global quadruples, quadCounter, paramCounter, paramTableCounter, currFuncCall
     quad = ["GOSUB", p[1], None, None]
     quadruples.append(quad)
     quadCounter += 1
-    #print(p[3], "AaAa")
+    paramTableCounter = 0
+    currFuncCall = ""
+
+def p_neurFuncCall(p):
+    '''
+    neurFuncCall : 
+    '''
+    global paramCounter
+    paramCounter = 0
 
 def p_id_funcCall(p):
     '''
     id_funcCall : ID
     '''
-    global quadruples, quadCounter, func_dir
+    global quadruples, quadCounter, func_dir, paramCounter, currFuncCall
     if p[1] in func_dir.keys():
         quad = ["ERA", p[1], None, None]
         quadruples.append(quad)
         quadCounter += 1
         p[0] = p[1]
+        currFuncCall = p[1]
     else:
-        raise NameError('Function not defined')
+        pass
+        #raise NameError('Function not defined')
 
 
 def p_function_call_params0(p):
@@ -954,10 +1031,16 @@ def p_neurFuncCallParams1(p):
     '''
     neurFuncCallParams1 : 
     '''
-    global quadruples, quadCounter, operands_stack
+    global quadruples, quadCounter, operands_stack, paramCounter, types_stack, curr_scope, paramTableCounter
     aux = operands_stack.pop()
-    quadruples.append(["PARAM",None, None, aux])
-    quadCounter+=1
+    auxType = types_stack.pop()
+    if func_dir[currFuncCall]["params_table"][paramTableCounter] != auxType:
+        print("Error - Param type does not match")
+    else:
+        quadruples.append(["PARAM",aux, "param"+str(paramCounter), None])
+        quadCounter += 1
+        paramCounter += 1
+        paramTableCounter += 1
 
 
 def p_function_call_params1(p):
@@ -1076,7 +1159,7 @@ def p_condNeur3(p):
     '''
     global pSaltos, quadruples, quadCounter
     temp = pSaltos.pop()
-    quadruples[temp][3] = quadCounter + 1
+    quadruples[temp][3] = quadCounter
 
 
 def p_condition1(p):

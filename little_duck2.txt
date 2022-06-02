@@ -73,6 +73,6 @@ main {
 		};
 	}
 	obj: Obj7;
-	obj = new Obj7(2, 4, 6, true, hola(234), obj2.attr, obj.meth(2));
+	obj = new Obj7(2, 4, 6, true, obj2.attr);
 	a = func(3+2, 5-1*3);
 }
