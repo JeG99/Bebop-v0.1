@@ -1,4 +1,6 @@
+from calendar import c
 from cgi import print_environ
+import types
 #from curses import has_key
 #from numpy import empty
 import ply.yacc as yacc
@@ -12,6 +14,12 @@ class_dir = {}
 curr_scope = ''
 prev_scope = ""
 var_id = ""
+dim1Node = {}
+dimNodes = [
+    {"ls":0, "li":0,"r": 1, "m": 0},
+    {"ls":0, "li":0,"r": 1, "m": 0}
+]
+dimCounter = 0
 
 quadruples = []
 quadCounter = 0
@@ -24,6 +32,7 @@ pSaltos = []
 paramCounter = 0
 paramTableCounter = 0
 currFuncCall = ""
+dimAssign  = 0
 Gi = 0
 Gf = 2001
 Go = 4001
@@ -503,7 +512,6 @@ def p_function1(p):
     '''
     
     global curr_scope, func_dir, Li, Lf, Lo
-    print(p[-6], "asdasdas")
     func_dir[p[-6]]["return_type"] = p[1]
     func_dir['global']["vars_table"][p[-6]]["type"] = p[1]
     direc = 0
@@ -535,17 +543,9 @@ def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    global Li, Lf, Lo
-    if p[3] == "int":
-        direc = Li
-        Li += 1
-    elif p[3] == "float":
-        direc = Lf
-        Lf += 1
-    else:
-        direc = Lo
-        Lo += 1
-    func_dir[curr_scope]["vars_table"][p[1]] = {"type": p[3], "dirV" : direc}
+    global dimNodes, dimCounter
+    for i in dimNodes: print (dimNodes, "//**--++", dimCounter)
+    
 
 
 def p_decl_id_def(p):
@@ -553,68 +553,188 @@ def p_decl_id_def(p):
     decl_id_def : ID
     '''
     p[0] = p[1]
-    global var_id
+    global var_id, func_dir, curr_scope
     var_id = p[1]
+    func_dir[curr_scope]["vars_table"][p[1]] = {"type": None, "dirV" : None, "isArray" : False}
 
 
 def p_declaration1(p):
     '''
-    declaration1 : type
-                 | complex_type
-                 | type LSQRBRACKET exp0 RSQRBRACKET neurMemory declaration2
+    declaration1 : type simpleMemoryNeur
+                 | complex_type simpleMemoryNeur
+                 | type isArrayNeur LSQRBRACKET exp0 limitNeur RSQRBRACKET declaration2 neurMemory
     '''
     p[0] = p[1]
+    global Li, Lf, Lo, func_dir, curr_scope, dimNodes, dimCounter
+    func_dir[curr_scope]["vars_table"][p[-2]]["type"] = p[1]
+
+def p_limitNeur(p):
+    '''
+    limitNeur : 
+    '''
+    global operands_stack, types_stack, dimNodes, dimCounter
+    aux = operands_stack.pop()
+    auxType = types_stack.pop()
+
+    if(auxType != "int"):
+        print("Error - index type not valid")
+    else:
+        
+        Ls = aux
+        Li = 0
+        dimNodes[dimCounter]["ls"] = Ls
+        dimNodes[dimCounter]["li"] = Li
+        dimNodes[dimCounter]["r"] = 1 * (Ls - Li + 1)
+        dimCounter += 1
+        
+        #dim1Node["r"] = dim1Node["r"] * (Ls - Li + 1)
+
+def p_simpleMemoryNeur(p):
+    '''
+    simpleMemoryNeur :
+    '''
+    global Li, Lf, Lo, func_dir, curr_scope
+    if p[-1] == "int":
+        direc = Li
+        Li += 1
+        val = 0
+    elif p[-1] == "float":
+        direc = Lf
+        Lf += 1
+        val = 0.0
+    else:
+        direc = Lo
+        Lo += 1
+        val = None
+    func_dir[curr_scope]["vars_table"][p[-3]]["dirV"] = direc
+    func_dir[curr_scope]["vars_table"][p[-3]]["value"] = val
+
+def p_isArrayNeur(p):
+    '''
+    isArrayNeur :
+    '''
+    global func_dir, curr_scope, operands_stack, dimCounter
+    #print(func_dir[curr_scope])
+    func_dir[curr_scope]["vars_table"][p[-3]]["isArray"] = True
+    dimCounter = 0
+    dimNodes[0] = {"ls":0, "li":0, "r":1, "m":0}
+    dimNodes[1] = {"ls":0, "li":0, "r":1, "m":0}
+
 
 def p_neurMemory(p):
     '''
     neurMemory :
     '''
-    global Li, Lf, Lo, func_dir, curr_scope, var_id, Gi, Gf, Go, operands_stack
-    print("Si entra", p[-4])
+    global Li, Lf, Lo, func_dir, curr_scope, var_id, Gi, Gf, Go, operands_stack, dimCounter, dimNodes
+    if(dimCounter > 1):
+        size = dimNodes[1]["r"]
+    else:
+        size = dimNodes[0]["r"]
+
     if curr_scope != "global":
-        if p[-4] == "int":
+        if p[-7] == "int":
             direc = Li
-            Li += 1
-        elif p[-4] == "float":
+            Li += size
+        elif p[-7] == "float":
             direc = Lf
-            Lf += 1
+            Lf += size
         else:
             direc = Lo
-            Lo += 1
+            Lo += size
     else:
-        if p[-4] == "int":
+        if p[-7] == "int":
             direc = Gi
-            Gi += 1
-        elif p[-4] == "float":
+            Gi += size
+        elif p[-7] == "float":
             direc = Gf
-            Gf += 1
+            Gf += size
         else:
             direc = Go
-            Go += 1
-    func_dir[curr_scope]["vars_table"][var_id] = {"type": p[-4], "dirv" : direc, "IsArray": True}
+            Go += size
+    print(var_id, dimNodes)
+    func_dir[curr_scope]["vars_table"][var_id]["dirV"] = direc
+    aux = dimNodes
+    func_dir[curr_scope]["vars_table"][var_id]["dimNodes1"] = aux
+    func_dir[curr_scope]["vars_table"][var_id]["dimNodes2"] = dimNodes
 
 
 def p_declaration2(p):
     '''
-    declaration2 : LSQRBRACKET exp0 RSQRBRACKET
+    declaration2 : dim2Neur LSQRBRACKET exp0 limitNeur2 RSQRBRACKET
                  | empty
     '''
 
+def p_dim2Neur(p):
+    '''
+    dim2Neur :
+    '''
+    
+
+
+def p_limitNeur2(p):
+    '''
+    limitNeur2 : 
+    '''
+    global dimNodes, dimCounter, operands_stack, types_stack
+    aux = operands_stack.pop()
+    auxType = types_stack.pop()
+    if(auxType != "int"):
+        print("Error - index type not valid")
+    else:
+        Ls = aux
+        Li = 0
+        dimNodes[dimCounter]["ls"] = Ls
+        dimNodes[dimCounter]["li"] = Li
+        dimNodes[dimCounter]["r"] = dimNodes[dimCounter-1]["r"] * (Ls - Li + 1)
+        dimCounter += 1
 
 def p_assignment0(p):
     '''
     assignment0 : ID EQUALS expression0 SEMICOLON
-                | ID LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
-                | ID LSQRBRACKET exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+                | assign_id_def lsqrbracket_assign exp0 RSQRBRACKET EQUALS expression0 SEMICOLON 
+                | assign_id_def lsqrbracket_assign exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
+    print(len(p), "amogus")
     if len(p) == 5 and operands_stack:
         value = operands_stack.pop()
         quad = [p[2], value, None, p[1]]
         quadruples.append(quad)
         quadCounter += 1
     elif len(p) == 8 and operands_stack:
-        value = operands_stack.pop()
+        print("asdasdsa")
+
+def p_lsqrbracket_assign(p):
+    '''
+    lsqrbracket_assign : LSQRBRACKET
+    '''
+    global operands_stack, types_stack, operators_stack, dimAssign
+    p[0] = p[1]
+    id = operands_stack.pop()
+    idType = types_stack.pop()
+    operators_stack.append(")")
+    dimAssign = 1
+
+        
+
+def p_assign_id_def(p):
+    '''
+    assign_id_def : ID
+    '''
+    global operands_stack, types_stack
+    p[0] = p[1]
+    operands_stack.append(p[1])
+    types_stack.append(func_dir[curr_scope]["vars_table"][p[1]]["type"])
+
+    
+def p_arrAccNeur1(p):
+    '''
+    arrAccNeur1 : 
+    '''
+    global types_stack, operands_stack
+    id_type = types_stack.pop()
+    id = operands_stack.pop()
+    print(id, id_type, "&&&&&")
 
 
 
@@ -627,7 +747,6 @@ def p_constructor(p):
         paramsAux = p[4]
         while paramsAux != None:
             class_dir[curr_scope]["constructor"][p[2]][paramsAux[1]] = {"type": paramsAux[0]}
-            #class_dir[curr_scope]["method_table"][p[2]][p[4][1]] = {"type":p[4][0]}
             paramsAux = paramsAux[2]
 
 # def p_extension0(p): # quitamos polimorfismo temporalmente
@@ -678,6 +797,7 @@ def p_paramsNeur(p):
     paramsNeur : 
     '''
     global func_dir, quadruples, quadCounter, Li, Lf, Lo, curr_scope
+    print(class_dir)
     if p[-2] == "int":
         direc = Li
         Li += 1
@@ -687,10 +807,14 @@ def p_paramsNeur(p):
     else:
         direc = Lo
         Lo += 1
-    print(curr_scope)
-    func_dir[curr_scope]["vars_table"]
-    func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc}
-    func_dir[curr_scope]["params_table"].append(p[-2])
+    if curr_scope in class_dir.keys():
+        class_dir[curr_scope]["vars_table"]
+        class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc}
+        class_dir[curr_scope]["params_table"].append(p[-2])
+    else:
+        func_dir[curr_scope]["vars_table"]
+        func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc}
+        func_dir[curr_scope]["params_table"].append(p[-2])
 
     
 
