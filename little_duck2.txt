@@ -1,16 +1,15 @@
 routine holamundo; 
 v1: int[3][1]; 
 v1: int[3]; 
-v1 = true;
 
-class Clase1 : Clase3 {
+class Clase1 {
 
 	public df: int;
 	private dX: float;
-	df = gh ** 2\|4;
+	df = gh ** (2\|4);
 	
 	construct Clase1(int gy, float v2, bool k2){
-		ig = 23;
+		
 	}
 
 	private def func1(int hola, float adios) -> int [[
@@ -29,16 +28,24 @@ class Clase1 : Clase3 {
 
 };
 
-def funcion71628() -> bool [[]] {
+class Test : Clase1 {
+	public varrr: float; 
+	construct Test() {}
+};
+
+def funcion71628(int b, bool asd) -> bool [[]] {
 	return true;
 }
 
 main {
-	v9: float[3][-54 + 3\|7];
+	v9: float[3][54 + 3\|7];
+	v67: int;
 	v67 = 3\|7;
 	v1[1] = 2; 
 	v1[1][2] = v5;
+	v2: string;
 	v2 = vv; 
+	v3:float;
 	v3 = v1 + v2; 
 	>>> v4;
 	<<<(v3); 
@@ -57,7 +64,7 @@ main {
 			<<<("inside condition");
 			if(cond32) {
 				<<<("if anidado compadre");
-				while(holahola) {
+				while(x > 3) {
 					<<<("hola");
 				}
 			};
@@ -66,6 +73,6 @@ main {
 		};
 	}
 	obj: Obj7;
-	obj = new Obj7(2, 4, 6, true, hola(234), obj2.attr, obj.meth(2));
-	var23 = obj.attr23 + obj.attr4 / obj2.meth34(2, 4, 6);
+	obj = new Obj7(2, 4, 6, true, obj2.attr);
+	a = func(3+2, 5-1*3);
 }

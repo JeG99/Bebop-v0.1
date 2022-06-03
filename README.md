@@ -1,7 +1,6 @@
 # compis-project
 
-Avance 1.1: 
-- El léxico y sintaxis ya están definidos
-- Tenemos 14 shift/reduce conflicts
-- Tenemos 10 reduce/reduce conflicts
-- El lenguaje es reconocido exitosamente y las estructuras son evaluadas correctamente.
+Avance 7: 
+- Faltan errores y manejo de errores de semantica (ya se pudiera agregar por que tenemos la tabla de variables).
+- Ya hay direcciones virtuales para variables
+- Solo faltan los parametros de las funciones para terminar manejo con cuadruplos
