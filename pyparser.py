@@ -1,3 +1,4 @@
+from turtle import right
 from semCube import typeMatch
 import ply.yacc as yacc
 import sys
@@ -60,6 +61,68 @@ Cf = 17001
 Tp = 18000
 
 
+def tempCalculator(left_oper, right_oper, op):
+    global Ti, Tf, To, curr_scope
+
+    ### RIGHT
+    if right_oper in const_table.keys():
+            rOperDir = const_table[right_oper]
+            if rOperDir >= 16000 and rOperDir < 17001 :
+                rOperType = "int"
+            elif rOperDir >= 17001 and rOperDir < 18000:
+                rOperType = "float"
+    elif curr_scope == "global":
+        rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
+    else:
+        if right_oper in func_dir[curr_scope]["vars_table"].keys():
+           rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
+        else:
+            if right_oper >= 11000 and right_oper < 12001 :
+                rOperType = "int"
+            elif right_oper >= 12001 and right_oper < 13001:
+                rOperType = "float"
+            rOperDir = right_oper
+
+    ### LEFT
+    if left_oper in const_table.keys():
+            lOperDir = const_table[left_oper]
+            if lOperDir >= 16000 and lOperDir < 17001 :
+                lOperType = "int"
+            elif lOperDir >= 17001 and lOperDir < 18000:
+                lOperType = "float"
+    elif curr_scope == "global":
+        lOperType =  func_dir[curr_scope]["vars_table"][left_oper]["type"]
+    else:
+        if left_oper in func_dir[curr_scope]["vars_table"].keys():
+           lOperType =  func_dir[curr_scope]["vars_table"][left_oper]["type"]
+        else:
+            if left_oper >= 11000 and left_oper < 12001 :
+                lOperType = "int"
+            elif left_oper >= 12001 and left_oper < 13001:
+                lOperType = "float"
+            lOperDir = left_oper
+    if op == "+":
+        typeRes = typeMatch("SUM",rOperType, lOperType)
+    elif op == "-":
+        typeRes = typeMatch("SUB", rOperType, lOperType)
+    elif op == "*":
+        typeRes = typeMatch("MUL", rOperType, lOperType)
+    elif op == "/":
+        typeRes = typeMatch("DIV", rOperType, lOperType)
+    if typeRes == "INT":
+            direc = Ti
+            Ti += 1
+    elif typeRes == "FLOAT":
+        direc = Tf
+        Tf += 1
+    else:
+        direc = To
+        To += 1
+    print(lOperDir, left_oper)
+    print(rOperDir, right_oper)
+    print(typeRes)
+    return direc, lOperDir, rOperDir
+
 def p_routine0(p):
     '''
     routine0 : goto_main_neur ROUTINE ID SEMICOLON global_scope routine1 main0
@@ -76,6 +139,7 @@ def p_routine0(p):
     [print(idx, quad) for idx, quad in enumerate(quadruples)]
     #print(pSaltos)
     print(const_table)
+    print(operands_stack)
 
 def p_goto_main_neur(p):
     '''
@@ -97,34 +161,7 @@ def p_routine1(p):
              | empty
     '''
     global func_dir, Gi, Gf, Go, Li, Lf, Lo
-    '''if(p[1] != None and 'def' in p[1][0]):
-        if p[1][3] == "int":
-            direc = Gi
-            Gi += 1
-        elif p[1][3] == "float":
-            direc = Gf
-            Gf += 1
-        else:
-            direc = Go
-            Go += 1
-        print(Gi, "a")
-        #func_dir["global"]["vars_table"][p[1][1]] = {"type": p[1][3], "dirV": direc}
-        #func_dir[p[1][1]] = {"return_type": p[1][3], "vars_table": {}}
-        paramsAux = p[1][2]
-        while paramsAux != None:
-            if paramsAux[0] == "int":
-                direc = Li
-                Li += 1
-            elif paramsAux == "float":
-                direc = Lf
-                Lf += 1
-            else:
-                direc = Lo
-                Lo += 1
-            print(direc)
-            #func_dir[p[1][1]]["vars_table"][paramsAux[1]] = {"type": paramsAux[0], "dirV":direc}
-            paramsAux = paramsAux[2]
-            '''
+            
     Li = 5000
     Lf = 7001
     Lo = 10001
@@ -282,8 +319,7 @@ def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
     '''
-    global dimNodes, dimCounter
-    for i in dimNodes: print (dimNodes, "//**--++", dimCounter)
+    
     
 
 
@@ -332,19 +368,33 @@ def p_simpleMemoryNeur(p):
     '''
     simpleMemoryNeur :
     '''
-    global Li, Lf, Lo, func_dir, curr_scope
-    if p[-1] == "int":
-        direc = Li
-        Li += 1
-        val = 0
-    elif p[-1] == "float":
-        direc = Lf
-        Lf += 1
-        val = 0.0
+    global Li, Lf, Lo, func_dir, curr_scope, Gi, Gf, Go
+    if(curr_scope == "global"):
+        if p[-1] == "int":
+            direc = Gi
+            Gi += 1
+            val = 0
+        elif p[-1] == "float":
+            direc = Gf
+            Gf += 1
+            val = 0.0
+        else:
+            direc = Go
+            Go += 1
+            val = None
     else:
-        direc = Lo
-        Lo += 1
-        val = None
+        if p[-1] == "int":
+            direc = Li
+            Li += 1
+            val = 0
+        elif p[-1] == "float":
+            direc = Lf
+            Lf += 1
+            val = 0.0
+        else:
+            direc = Lo
+            Lo += 1
+            val = None
     func_dir[curr_scope]["vars_table"][p[-3]]["dirV"] = direc
     func_dir[curr_scope]["vars_table"][p[-3]]["value"] = val
 
@@ -452,10 +502,22 @@ def p_assignment0(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     print(len(p), "amogus")
     if len(p) == 5 and operands_stack:
-        value = operands_stack.pop()
-        quad = [p[2], value, None, p[1]]
-        quadruples.append(quad)
-        quadCounter += 1
+        if p[1] not in func_dir["global"]["vars_table"] and p[1] not in func_dir[curr_scope]["vars_table"]:
+            raise NameError("Variable does not exist")
+        else:
+            value = operands_stack.pop()
+            valType = types_stack.pop()
+            if p[1] not in func_dir["global"]["vars_table"]:
+                validation = typeMatch("EQUAL",valType,func_dir[curr_scope]["vars_table"][p[1]]["type"])
+                direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
+            else:
+                validation = typeMatch("EQUAL",valType,func_dir["global"]["vars_table"][p[1]]["type"])
+                direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
+            print(validation, direc, func_dir["global"]["vars_table"][p[1]]["type"])
+            
+            quad = [p[2], value, None, direc]
+            quadruples.append(quad)
+            quadCounter += 1
     elif len(p) == 8 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
@@ -679,7 +741,6 @@ def p_type(p):
     type : INT
          | FLOAT
          | STRING
-         | BOOL
     '''
     #global curr_scope, var_id, func_dir
     #print(curr_scope, var_id, p[1])
@@ -773,19 +834,17 @@ def p_check_last_plus_minus_operator(p):
     '''
     check_last_plus_minus_operator :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, const_table
     # falta typematching
+    # Ci = 16000   Cf = 17001
     if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '+' or operators_stack[-1] == '-'):
         right_oper = operands_stack.pop()
-        #right_oper = types_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
-        '''if op == "+":
-            typeRes = typeMatch("SUM", )'''
-
-        operands_stack.append(('dir', temp_counter))
-        quad = [op, left_oper,
-                right_oper, ('dir', temp_counter)]
+        direc,lOperDir,rOperDir = tempCalculator(left_oper,right_oper, op)
+        operands_stack.append(direc)
+        quad = [op, lOperDir,
+                rOperDir, direc]
         quadruples.append(quad)
         quadCounter += 1
         temp_counter += 1
@@ -822,9 +881,10 @@ def p_check_last_times_division_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
-        operands_stack.append(('dir', temp_counter))
-        quad = [op, left_oper,
-                right_oper, ('dir', temp_counter)]
+        direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, op) 
+        operands_stack.append(direc)
+        quad = [op, lOperDir,
+                rOperDir, direc]
         quadruples.append(quad)
         quadCounter += 1
         temp_counter += 1
@@ -927,10 +987,23 @@ def p_const_var(p):
     '''
     const_var : CONST_INT neurInt
               | CONST_FLOAT neurFloat
-              | ID
+              | ID neurID
     '''
     p[0] = p[1]
     operands_stack.append(p[1])
+
+def p_neurID(p):
+    '''
+    neurID :
+    '''
+    global func_dir, curr_scope
+    if(p[-1] not in func_dir[curr_scope]["vars_table"].keys()):
+        pass
+        #raise NameError("Variable " + p[-1] + " not defined")
+    print(p[-1])
+    print(func_dir[curr_scope]["vars_table"][p[-1]], "aver")
+    id_type = func_dir[curr_scope]["vars_table"][p[-1]]["type"]
+    types_stack.append(id_type)
 
 def p_neurInt(p):
     '''
@@ -1180,7 +1253,7 @@ def p_push_string_val(p):
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operands_stack.append(p[-1])
-    #types_stack.append("string")
+    types_stack.append("string")
 
 
 def p_writing1(p):

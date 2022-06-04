@@ -3,6 +3,7 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     AND
+    BOOL
     CONST_BOOL
     NOT
     OR
@@ -77,40 +78,40 @@ Rule 64    function_block1 -> empty
 Rule 65    type -> INT
 Rule 66    type -> FLOAT
 Rule 67    type -> STRING
-Rule 68    type -> BOOL
-Rule 69    simple_declaration -> ID COLON type SEMICOLON
-Rule 70    simple_assignment -> ID EQUALS expression0 SEMICOLON
-Rule 71    complex_type -> ID
-Rule 72    exp0 -> term0 check_last_plus_minus_operator exp1
-Rule 73    exp1 -> PLUS push_plus_minus_op exp0
-Rule 74    exp1 -> MINUS push_plus_minus_op exp0
-Rule 75    exp1 -> empty
-Rule 76    push_plus_minus_op -> <empty>
-Rule 77    check_last_plus_minus_operator -> <empty>
-Rule 78    term0 -> power0 check_last_times_division_operator term1
-Rule 79    term1 -> MULTIPLY push_times_division_op term0
-Rule 80    term1 -> DIVIDE push_times_division_op term0
-Rule 81    term1 -> empty
-Rule 82    push_times_division_op -> <empty>
-Rule 83    check_last_times_division_operator -> <empty>
-Rule 84    power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-Rule 85    power0 -> const_var check_pow_rad_operator power2
-Rule 86    power0 -> function_call check_pow_rad_operator power2
-Rule 87    power0 -> method_call0 check_pow_rad_operator power2
-Rule 88    power0 -> attr_access0 check_pow_rad_operator power2
-Rule 89    power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-Rule 90    open_paren -> <empty>
-Rule 91    close_paren -> <empty>
-Rule 92    power1 -> LSQRBRACKET exp0 RSQRBRACKET
-Rule 93    power1 -> empty
-Rule 94    power2 -> POWER push_pow_rad_op power0
-Rule 95    power2 -> SQRT push_pow_rad_op power0
-Rule 96    power2 -> empty
-Rule 97    push_pow_rad_op -> <empty>
-Rule 98    check_pow_rad_operator -> <empty>
-Rule 99    const_var -> CONST_INT neurInt
-Rule 100   const_var -> CONST_FLOAT neurFloat
-Rule 101   const_var -> ID
+Rule 68    simple_declaration -> ID COLON type SEMICOLON
+Rule 69    simple_assignment -> ID EQUALS expression0 SEMICOLON
+Rule 70    complex_type -> ID
+Rule 71    exp0 -> term0 check_last_plus_minus_operator exp1
+Rule 72    exp1 -> PLUS push_plus_minus_op exp0
+Rule 73    exp1 -> MINUS push_plus_minus_op exp0
+Rule 74    exp1 -> empty
+Rule 75    push_plus_minus_op -> <empty>
+Rule 76    check_last_plus_minus_operator -> <empty>
+Rule 77    term0 -> power0 check_last_times_division_operator term1
+Rule 78    term1 -> MULTIPLY push_times_division_op term0
+Rule 79    term1 -> DIVIDE push_times_division_op term0
+Rule 80    term1 -> empty
+Rule 81    push_times_division_op -> <empty>
+Rule 82    check_last_times_division_operator -> <empty>
+Rule 83    power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+Rule 84    power0 -> const_var check_pow_rad_operator power2
+Rule 85    power0 -> function_call check_pow_rad_operator power2
+Rule 86    power0 -> method_call0 check_pow_rad_operator power2
+Rule 87    power0 -> attr_access0 check_pow_rad_operator power2
+Rule 88    power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+Rule 89    open_paren -> <empty>
+Rule 90    close_paren -> <empty>
+Rule 91    power1 -> LSQRBRACKET exp0 RSQRBRACKET
+Rule 92    power1 -> empty
+Rule 93    power2 -> POWER push_pow_rad_op power0
+Rule 94    power2 -> SQRT push_pow_rad_op power0
+Rule 95    power2 -> empty
+Rule 96    push_pow_rad_op -> <empty>
+Rule 97    check_pow_rad_operator -> <empty>
+Rule 98    const_var -> CONST_INT neurInt
+Rule 99    const_var -> CONST_FLOAT neurFloat
+Rule 100   const_var -> ID neurID
+Rule 101   neurID -> <empty>
 Rule 102   neurInt -> <empty>
 Rule 103   neurFloat -> <empty>
 Rule 104   function_call -> id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
@@ -189,49 +190,49 @@ Terminals, with rules where they appear
 
 AND                  : 
 ARROW                : 21
-BOOL                 : 68
+BOOL                 : 
 CLASS                : 10
-COLON                : 15 29 69
+COLON                : 15 29 68
 COMMA                : 60 111 147
 CONSTRUCT            : 51
 CONST_BOOL           : 
-CONST_FLOAT          : 100
-CONST_INT            : 99
+CONST_FLOAT          : 99
+CONST_INT            : 98
 CONST_STRING         : 108 146
 DEF                  : 21
 DIFFERENT            : 117
-DIVIDE               : 80
+DIVIDE               : 79
 DOT                  : 124 125
 ELSE                 : 139
-EQUALS               : 42 43 44 70 168
+EQUALS               : 42 43 44 69 168
 EQUIVALENT           : 118
 FLOAT                : 66
 GTHAN                : 116
-ID                   : 1 13 14 15 30 42 49 51 57 69 70 71 89 101 106 124 124 125 149 168 168
+ID                   : 1 13 14 15 30 42 49 51 57 68 69 70 88 100 106 124 124 125 149 168 168
 IF                   : 136
 INT                  : 65
 LBRACKET             : 10 62 156 169
-LPAREN               : 21 51 84 104 136 142 152 168
-LSQRBRACKET          : 21 21 33 38 44 48 89 92
+LPAREN               : 21 51 83 104 136 142 152 168
+LSQRBRACKET          : 21 21 33 38 44 48 88 91
 LTHAN                : 115
 MAIN                 : 169
-MINUS                : 74
-MULTIPLY             : 79
+MINUS                : 73
+MULTIPLY             : 78
 NEW                  : 168
 NOT                  : 
 OR                   : 
-PLUS                 : 73
-POWER                : 94
+PLUS                 : 72
+POWER                : 93
 PRIVATE              : 126
 PUBLIC               : 127
 RBRACKET             : 10 62 156 169
 READ                 : 149
 RETURN               : 150 151
 ROUTINE              : 1
-RPAREN               : 21 51 84 104 136 142 152 168
-RSQRBRACKET          : 21 21 33 38 44 46 47 89 92
-SEMICOLON            : 1 10 29 42 43 44 69 70 133 134 136 142 149 150 151 165 166 168
-SQRT                 : 95
+RPAREN               : 21 51 83 104 136 142 152 168
+RSQRBRACKET          : 21 21 33 38 44 46 47 88 91
+SEMICOLON            : 1 10 29 42 43 44 68 69 133 134 136 142 149 150 151 165 166 168
+SQRT                 : 94
 STRING               : 67
 VOID                 : 25
 WHILE                : 152
@@ -244,27 +245,27 @@ arrAccNeur1          :
 arrAccdim2           : 44
 assign_id_def        : 43 44
 assignment0          : 7 159
-attr_access0         : 88 114 123
+attr_access0         : 87 114 123
 attributes           : 17 52 53
 block0               : 136 139 152
 block1               : 156 157
-check_last_plus_minus_operator : 72
-check_last_times_division_operator : 78
-check_pow_rad_operator : 84 85 86 87 88 89
+check_last_plus_minus_operator : 71
+check_last_times_division_operator : 77
+check_pow_rad_operator : 83 84 85 86 87 88
 check_rel_operator   : 122
 class0               : 4
 class1               : 10
 class2               : 10
 class3               : 10
 class_id_def         : 10
-close_paren          : 84
+close_paren          : 83
 complex_type         : 32
 condNeur1            : 136
 condNeur2            : 139
 condNeur3            : 136
 condition0           : 129 161
 condition1           : 136
-const_var            : 85
+const_var            : 84
 constructor          : 10
 data_access          : 52 55
 decl_id_def          : 29
@@ -272,11 +273,11 @@ declaration0         : 6 170
 declaration1         : 29
 declaration2         : 33
 dim2Neur             : 38
-empty                : 8 16 18 20 28 39 54 56 58 61 64 75 81 93 96 109 112 119 140 148 158 172
+empty                : 8 16 18 20 28 39 54 56 58 61 64 74 80 92 95 109 112 119 140 148 158 172
 endParamNeur         : 21
-exp0                 : 33 38 43 44 44 73 74 84 89 92 113 122
-exp1                 : 72
-expression0          : 42 43 44 70 107 136 145 150 152
+exp0                 : 33 38 43 44 44 72 73 83 88 91 113 122
+exp1                 : 71
+expression0          : 42 43 44 69 107 136 145 150 152
 expression1          : 113 114
 expression3          : 115 116 117 118
 function0            : 5 55
@@ -284,7 +285,7 @@ function1            : 21
 function2            : 21 26 27
 function_block0      : 21 51
 function_block1      : 62 63
-function_call        : 86 125 133 165
+function_call        : 85 125 133 165
 function_call_params0 : 104 111 168
 function_call_params1 : 107 108 109
 function_statement   : 63
@@ -299,26 +300,27 @@ lsqrbracket_assign   : 43 44
 main0                : 1
 main1                : 169 170 171
 main_scope           : 169
-method_call0         : 87 134 166
+method_call0         : 86 134 166
 methods              : 19 55
-neurFloat            : 100
+neurFloat            : 99
 neurFuncCall         : 104
 neurFuncCallParams1  : 107 108
-neurInt              : 99
+neurID               : 100
+neurInt              : 98
 neurMemory           : 33
 object_assignment    : 160
-open_paren           : 84
+open_paren           : 83
 params0              : 21 51 60
 params1              : 57
 paramsNeur           : 57
-power0               : 78 94 95
-power1               : 89
-power2               : 84 85 86 87 88 89
-push_plus_minus_op   : 73 74
-push_pow_rad_op      : 94 95
+power0               : 77 93 94
+power1               : 88
+power2               : 83 84 85 86 87 88
+push_plus_minus_op   : 72 73
+push_pow_rad_op      : 93 94
 push_rel_op          : 115 116 117 118
 push_string_val      : 146
-push_times_division_op : 79 80
+push_times_division_op : 78 79
 push_writing_op      : 142
 reading              : 131 163
 return               : 132 164
@@ -333,9 +335,9 @@ simple_assignment    : 27 53 128
 simple_declaration   : 26 52
 startFuncNeur        : 21
 statement            : 3 157 171
-term0                : 72 79 80
-term1                : 78
-type                 : 24 31 33 57 69
+term0                : 71 78 79
+term1                : 77
+type                 : 24 31 33 57 68
 wNeur1               : 152
 wNeur2               : 152
 wNeur3               : 152
@@ -1029,18 +1031,18 @@ state 30
     (151) return -> RETURN . SEMICOLON
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -1083,18 +1085,18 @@ state 33
     (168) object_assignment -> ID EQUALS . NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -1253,14 +1255,12 @@ state 48
     (65) type -> . INT
     (66) type -> . FLOAT
     (67) type -> . STRING
-    (68) type -> . BOOL
-    (71) complex_type -> . ID
+    (70) complex_type -> . ID
 
     INT             shift and go to state 81
     FLOAT           shift and go to state 82
     STRING          shift and go to state 83
-    BOOL            shift and go to state 84
-    ID              shift and go to state 85
+    ID              shift and go to state 84
 
     declaration1                   shift and go to state 78
     type                           shift and go to state 79
@@ -1270,34 +1270,34 @@ state 49
 
     (43) assignment0 -> assign_id_def lsqrbracket_assign . exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> assign_id_def lsqrbracket_assign . exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
-    exp0                           shift and go to state 86
+    exp0                           shift and go to state 85
     term0                          shift and go to state 58
     power0                         shift and go to state 60
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 50
@@ -1315,18 +1315,18 @@ state 51
     (136) condition0 -> IF LPAREN . expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -1336,7 +1336,7 @@ state 51
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
-    expression0                    shift and go to state 89
+    expression0                    shift and go to state 88
     exp0                           shift and go to state 56
     attr_access0                   shift and go to state 57
     term0                          shift and go to state 58
@@ -1350,21 +1350,21 @@ state 52
 
     (142) writing0 -> WRITE push_writing_op . LPAREN writing1 RPAREN SEMICOLON
 
-    LPAREN          shift and go to state 90
+    LPAREN          shift and go to state 89
 
 
 state 53
 
     (149) reading -> READ ID . SEMICOLON
 
-    SEMICOLON       shift and go to state 91
+    SEMICOLON       shift and go to state 90
 
 
 state 54
 
     (150) return -> RETURN expression0 . SEMICOLON
 
-    SEMICOLON       shift and go to state 92
+    SEMICOLON       shift and go to state 91
 
 
 state 55
@@ -1393,207 +1393,209 @@ state 56
     (119) expression1 -> . empty
     (174) empty -> .
 
-    LTHAN           shift and go to state 94
-    GTHAN           shift and go to state 95
-    DIFFERENT       shift and go to state 96
-    EQUIVALENT      shift and go to state 97
+    LTHAN           shift and go to state 93
+    GTHAN           shift and go to state 94
+    DIFFERENT       shift and go to state 95
+    EQUIVALENT      shift and go to state 96
     SEMICOLON       reduce using rule 174 (empty -> .)
     RPAREN          reduce using rule 174 (empty -> .)
     COMMA           reduce using rule 174 (empty -> .)
 
-    expression1                    shift and go to state 93
-    empty                          shift and go to state 98
+    expression1                    shift and go to state 92
+    empty                          shift and go to state 97
 
 state 57
 
     (114) expression0 -> attr_access0 . expression1
-    (88) power0 -> attr_access0 . check_pow_rad_operator power2
+    (87) power0 -> attr_access0 . check_pow_rad_operator power2
     (115) expression1 -> . LTHAN push_rel_op expression3
     (116) expression1 -> . GTHAN push_rel_op expression3
     (117) expression1 -> . DIFFERENT push_rel_op expression3
     (118) expression1 -> . EQUIVALENT push_rel_op expression3
     (119) expression1 -> . empty
-    (98) check_pow_rad_operator -> .
+    (97) check_pow_rad_operator -> .
     (174) empty -> .
 
   ! shift/reduce conflict for LTHAN resolved as shift
   ! shift/reduce conflict for GTHAN resolved as shift
   ! shift/reduce conflict for DIFFERENT resolved as shift
   ! shift/reduce conflict for EQUIVALENT resolved as shift
-  ! reduce/reduce conflict for SEMICOLON resolved using rule 98 (check_pow_rad_operator -> .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 98 (check_pow_rad_operator -> .)
-  ! reduce/reduce conflict for COMMA resolved using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           shift and go to state 94
-    GTHAN           shift and go to state 95
-    DIFFERENT       shift and go to state 96
-    EQUIVALENT      shift and go to state 97
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 97 (check_pow_rad_operator -> .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 97 (check_pow_rad_operator -> .)
+  ! reduce/reduce conflict for COMMA resolved using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           shift and go to state 93
+    GTHAN           shift and go to state 94
+    DIFFERENT       shift and go to state 95
+    EQUIVALENT      shift and go to state 96
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
-  ! LTHAN           [ reduce using rule 98 (check_pow_rad_operator -> .) ]
-  ! GTHAN           [ reduce using rule 98 (check_pow_rad_operator -> .) ]
-  ! DIFFERENT       [ reduce using rule 98 (check_pow_rad_operator -> .) ]
-  ! EQUIVALENT      [ reduce using rule 98 (check_pow_rad_operator -> .) ]
+  ! LTHAN           [ reduce using rule 97 (check_pow_rad_operator -> .) ]
+  ! GTHAN           [ reduce using rule 97 (check_pow_rad_operator -> .) ]
+  ! DIFFERENT       [ reduce using rule 97 (check_pow_rad_operator -> .) ]
+  ! EQUIVALENT      [ reduce using rule 97 (check_pow_rad_operator -> .) ]
   ! SEMICOLON       [ reduce using rule 174 (empty -> .) ]
   ! RPAREN          [ reduce using rule 174 (empty -> .) ]
   ! COMMA           [ reduce using rule 174 (empty -> .) ]
 
-    expression1                    shift and go to state 99
-    check_pow_rad_operator         shift and go to state 100
-    empty                          shift and go to state 98
+    expression1                    shift and go to state 98
+    check_pow_rad_operator         shift and go to state 99
+    empty                          shift and go to state 97
 
 state 58
 
-    (72) exp0 -> term0 . check_last_plus_minus_operator exp1
-    (77) check_last_plus_minus_operator -> .
+    (71) exp0 -> term0 . check_last_plus_minus_operator exp1
+    (76) check_last_plus_minus_operator -> .
 
-    PLUS            reduce using rule 77 (check_last_plus_minus_operator -> .)
-    MINUS           reduce using rule 77 (check_last_plus_minus_operator -> .)
-    LTHAN           reduce using rule 77 (check_last_plus_minus_operator -> .)
-    GTHAN           reduce using rule 77 (check_last_plus_minus_operator -> .)
-    DIFFERENT       reduce using rule 77 (check_last_plus_minus_operator -> .)
-    EQUIVALENT      reduce using rule 77 (check_last_plus_minus_operator -> .)
-    SEMICOLON       reduce using rule 77 (check_last_plus_minus_operator -> .)
-    RSQRBRACKET     reduce using rule 77 (check_last_plus_minus_operator -> .)
-    RPAREN          reduce using rule 77 (check_last_plus_minus_operator -> .)
-    COMMA           reduce using rule 77 (check_last_plus_minus_operator -> .)
+    PLUS            reduce using rule 76 (check_last_plus_minus_operator -> .)
+    MINUS           reduce using rule 76 (check_last_plus_minus_operator -> .)
+    LTHAN           reduce using rule 76 (check_last_plus_minus_operator -> .)
+    GTHAN           reduce using rule 76 (check_last_plus_minus_operator -> .)
+    DIFFERENT       reduce using rule 76 (check_last_plus_minus_operator -> .)
+    EQUIVALENT      reduce using rule 76 (check_last_plus_minus_operator -> .)
+    SEMICOLON       reduce using rule 76 (check_last_plus_minus_operator -> .)
+    RSQRBRACKET     reduce using rule 76 (check_last_plus_minus_operator -> .)
+    RPAREN          reduce using rule 76 (check_last_plus_minus_operator -> .)
+    COMMA           reduce using rule 76 (check_last_plus_minus_operator -> .)
 
-    check_last_plus_minus_operator shift and go to state 101
+    check_last_plus_minus_operator shift and go to state 100
 
 state 59
 
     (124) attr_access0 -> ID . DOT ID
-    (89) power0 -> ID . LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (101) const_var -> ID .
+    (88) power0 -> ID . LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (100) const_var -> ID . neurID
     (125) method_call0 -> ID . DOT function_call
     (106) id_funcCall -> ID .
+    (101) neurID -> .
 
-    DOT             shift and go to state 102
-    LSQRBRACKET     shift and go to state 103
-    POWER           reduce using rule 101 (const_var -> ID .)
-    SQRT            reduce using rule 101 (const_var -> ID .)
-    MULTIPLY        reduce using rule 101 (const_var -> ID .)
-    DIVIDE          reduce using rule 101 (const_var -> ID .)
-    PLUS            reduce using rule 101 (const_var -> ID .)
-    MINUS           reduce using rule 101 (const_var -> ID .)
-    LTHAN           reduce using rule 101 (const_var -> ID .)
-    GTHAN           reduce using rule 101 (const_var -> ID .)
-    DIFFERENT       reduce using rule 101 (const_var -> ID .)
-    EQUIVALENT      reduce using rule 101 (const_var -> ID .)
-    SEMICOLON       reduce using rule 101 (const_var -> ID .)
-    RPAREN          reduce using rule 101 (const_var -> ID .)
-    COMMA           reduce using rule 101 (const_var -> ID .)
+    DOT             shift and go to state 101
+    LSQRBRACKET     shift and go to state 102
     LPAREN          reduce using rule 106 (id_funcCall -> ID .)
+    POWER           reduce using rule 101 (neurID -> .)
+    SQRT            reduce using rule 101 (neurID -> .)
+    MULTIPLY        reduce using rule 101 (neurID -> .)
+    DIVIDE          reduce using rule 101 (neurID -> .)
+    PLUS            reduce using rule 101 (neurID -> .)
+    MINUS           reduce using rule 101 (neurID -> .)
+    LTHAN           reduce using rule 101 (neurID -> .)
+    GTHAN           reduce using rule 101 (neurID -> .)
+    DIFFERENT       reduce using rule 101 (neurID -> .)
+    EQUIVALENT      reduce using rule 101 (neurID -> .)
+    SEMICOLON       reduce using rule 101 (neurID -> .)
+    RPAREN          reduce using rule 101 (neurID -> .)
+    COMMA           reduce using rule 101 (neurID -> .)
 
+    neurID                         shift and go to state 103
 
 state 60
 
-    (78) term0 -> power0 . check_last_times_division_operator term1
-    (83) check_last_times_division_operator -> .
+    (77) term0 -> power0 . check_last_times_division_operator term1
+    (82) check_last_times_division_operator -> .
 
-    MULTIPLY        reduce using rule 83 (check_last_times_division_operator -> .)
-    DIVIDE          reduce using rule 83 (check_last_times_division_operator -> .)
-    PLUS            reduce using rule 83 (check_last_times_division_operator -> .)
-    MINUS           reduce using rule 83 (check_last_times_division_operator -> .)
-    LTHAN           reduce using rule 83 (check_last_times_division_operator -> .)
-    GTHAN           reduce using rule 83 (check_last_times_division_operator -> .)
-    DIFFERENT       reduce using rule 83 (check_last_times_division_operator -> .)
-    EQUIVALENT      reduce using rule 83 (check_last_times_division_operator -> .)
-    SEMICOLON       reduce using rule 83 (check_last_times_division_operator -> .)
-    RSQRBRACKET     reduce using rule 83 (check_last_times_division_operator -> .)
-    RPAREN          reduce using rule 83 (check_last_times_division_operator -> .)
-    COMMA           reduce using rule 83 (check_last_times_division_operator -> .)
+    MULTIPLY        reduce using rule 82 (check_last_times_division_operator -> .)
+    DIVIDE          reduce using rule 82 (check_last_times_division_operator -> .)
+    PLUS            reduce using rule 82 (check_last_times_division_operator -> .)
+    MINUS           reduce using rule 82 (check_last_times_division_operator -> .)
+    LTHAN           reduce using rule 82 (check_last_times_division_operator -> .)
+    GTHAN           reduce using rule 82 (check_last_times_division_operator -> .)
+    DIFFERENT       reduce using rule 82 (check_last_times_division_operator -> .)
+    EQUIVALENT      reduce using rule 82 (check_last_times_division_operator -> .)
+    SEMICOLON       reduce using rule 82 (check_last_times_division_operator -> .)
+    RSQRBRACKET     reduce using rule 82 (check_last_times_division_operator -> .)
+    RPAREN          reduce using rule 82 (check_last_times_division_operator -> .)
+    COMMA           reduce using rule 82 (check_last_times_division_operator -> .)
 
     check_last_times_division_operator shift and go to state 104
 
 state 61
 
-    (84) power0 -> LPAREN . open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (90) open_paren -> .
+    (83) power0 -> LPAREN . open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (89) open_paren -> .
 
-    LPAREN          reduce using rule 90 (open_paren -> .)
-    ID              reduce using rule 90 (open_paren -> .)
-    CONST_INT       reduce using rule 90 (open_paren -> .)
-    CONST_FLOAT     reduce using rule 90 (open_paren -> .)
+    LPAREN          reduce using rule 89 (open_paren -> .)
+    ID              reduce using rule 89 (open_paren -> .)
+    CONST_INT       reduce using rule 89 (open_paren -> .)
+    CONST_FLOAT     reduce using rule 89 (open_paren -> .)
 
     open_paren                     shift and go to state 105
 
 state 62
 
-    (85) power0 -> const_var . check_pow_rad_operator power2
-    (98) check_pow_rad_operator -> .
+    (84) power0 -> const_var . check_pow_rad_operator power2
+    (97) check_pow_rad_operator -> .
 
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    GTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    DIFFERENT       reduce using rule 98 (check_pow_rad_operator -> .)
-    EQUIVALENT      reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    GTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    DIFFERENT       reduce using rule 97 (check_pow_rad_operator -> .)
+    EQUIVALENT      reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
     check_pow_rad_operator         shift and go to state 106
 
 state 63
 
-    (86) power0 -> function_call . check_pow_rad_operator power2
-    (98) check_pow_rad_operator -> .
+    (85) power0 -> function_call . check_pow_rad_operator power2
+    (97) check_pow_rad_operator -> .
 
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    GTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    DIFFERENT       reduce using rule 98 (check_pow_rad_operator -> .)
-    EQUIVALENT      reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    GTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    DIFFERENT       reduce using rule 97 (check_pow_rad_operator -> .)
+    EQUIVALENT      reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
     check_pow_rad_operator         shift and go to state 107
 
 state 64
 
-    (87) power0 -> method_call0 . check_pow_rad_operator power2
-    (98) check_pow_rad_operator -> .
+    (86) power0 -> method_call0 . check_pow_rad_operator power2
+    (97) check_pow_rad_operator -> .
 
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    GTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    DIFFERENT       reduce using rule 98 (check_pow_rad_operator -> .)
-    EQUIVALENT      reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    GTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    DIFFERENT       reduce using rule 97 (check_pow_rad_operator -> .)
+    EQUIVALENT      reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
     check_pow_rad_operator         shift and go to state 108
 
 state 65
 
-    (99) const_var -> CONST_INT . neurInt
+    (98) const_var -> CONST_INT . neurInt
     (102) neurInt -> .
 
     POWER           reduce using rule 102 (neurInt -> .)
@@ -1615,7 +1617,7 @@ state 65
 
 state 66
 
-    (100) const_var -> CONST_FLOAT . neurFloat
+    (99) const_var -> CONST_FLOAT . neurFloat
     (103) neurFloat -> .
 
     POWER           reduce using rule 103 (neurFloat -> .)
@@ -1734,13 +1736,11 @@ state 77
     (65) type -> . INT
     (66) type -> . FLOAT
     (67) type -> . STRING
-    (68) type -> . BOOL
     (174) empty -> .
 
     INT             shift and go to state 81
     FLOAT           shift and go to state 82
     STRING          shift and go to state 83
-    BOOL            shift and go to state 84
     RPAREN          reduce using rule 174 (empty -> .)
 
     params0                        shift and go to state 118
@@ -1805,21 +1805,12 @@ state 83
 
 state 84
 
-    (68) type -> BOOL .
+    (70) complex_type -> ID .
 
-    LSQRBRACKET     reduce using rule 68 (type -> BOOL .)
-    SEMICOLON       reduce using rule 68 (type -> BOOL .)
-    ID              reduce using rule 68 (type -> BOOL .)
+    SEMICOLON       reduce using rule 70 (complex_type -> ID .)
 
 
 state 85
-
-    (71) complex_type -> ID .
-
-    SEMICOLON       reduce using rule 71 (complex_type -> ID .)
-
-
-state 86
 
     (43) assignment0 -> assign_id_def lsqrbracket_assign exp0 . rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> assign_id_def lsqrbracket_assign exp0 . rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
@@ -1831,56 +1822,58 @@ state 86
     rsqrbracket_assign             shift and go to state 125
     rsqrbracket_assign_2dim1       shift and go to state 126
 
+state 86
+
+    (87) power0 -> attr_access0 . check_pow_rad_operator power2
+    (97) check_pow_rad_operator -> .
+
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    RSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    GTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    DIFFERENT       reduce using rule 97 (check_pow_rad_operator -> .)
+    EQUIVALENT      reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
+
+    check_pow_rad_operator         shift and go to state 99
+
 state 87
 
-    (88) power0 -> attr_access0 . check_pow_rad_operator power2
-    (98) check_pow_rad_operator -> .
-
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    RSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    GTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    DIFFERENT       reduce using rule 98 (check_pow_rad_operator -> .)
-    EQUIVALENT      reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
-
-    check_pow_rad_operator         shift and go to state 100
-
-state 88
-
-    (89) power0 -> ID . LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (101) const_var -> ID .
+    (88) power0 -> ID . LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (100) const_var -> ID . neurID
     (125) method_call0 -> ID . DOT function_call
     (124) attr_access0 -> ID . DOT ID
     (106) id_funcCall -> ID .
+    (101) neurID -> .
 
-    LSQRBRACKET     shift and go to state 103
-    POWER           reduce using rule 101 (const_var -> ID .)
-    SQRT            reduce using rule 101 (const_var -> ID .)
-    MULTIPLY        reduce using rule 101 (const_var -> ID .)
-    DIVIDE          reduce using rule 101 (const_var -> ID .)
-    PLUS            reduce using rule 101 (const_var -> ID .)
-    MINUS           reduce using rule 101 (const_var -> ID .)
-    RSQRBRACKET     reduce using rule 101 (const_var -> ID .)
-    RPAREN          reduce using rule 101 (const_var -> ID .)
-    LTHAN           reduce using rule 101 (const_var -> ID .)
-    GTHAN           reduce using rule 101 (const_var -> ID .)
-    DIFFERENT       reduce using rule 101 (const_var -> ID .)
-    EQUIVALENT      reduce using rule 101 (const_var -> ID .)
-    SEMICOLON       reduce using rule 101 (const_var -> ID .)
-    COMMA           reduce using rule 101 (const_var -> ID .)
+    LSQRBRACKET     shift and go to state 102
     DOT             shift and go to state 128
     LPAREN          reduce using rule 106 (id_funcCall -> ID .)
+    POWER           reduce using rule 101 (neurID -> .)
+    SQRT            reduce using rule 101 (neurID -> .)
+    MULTIPLY        reduce using rule 101 (neurID -> .)
+    DIVIDE          reduce using rule 101 (neurID -> .)
+    PLUS            reduce using rule 101 (neurID -> .)
+    MINUS           reduce using rule 101 (neurID -> .)
+    RSQRBRACKET     reduce using rule 101 (neurID -> .)
+    RPAREN          reduce using rule 101 (neurID -> .)
+    LTHAN           reduce using rule 101 (neurID -> .)
+    GTHAN           reduce using rule 101 (neurID -> .)
+    DIFFERENT       reduce using rule 101 (neurID -> .)
+    EQUIVALENT      reduce using rule 101 (neurID -> .)
+    SEMICOLON       reduce using rule 101 (neurID -> .)
+    COMMA           reduce using rule 101 (neurID -> .)
 
+    neurID                         shift and go to state 103
 
-state 89
+state 88
 
     (136) condition0 -> IF LPAREN expression0 . condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
     (137) condNeur1 -> .
@@ -1889,25 +1882,25 @@ state 89
 
     condNeur1                      shift and go to state 129
 
-state 90
+state 89
 
     (142) writing0 -> WRITE push_writing_op LPAREN . writing1 RPAREN SEMICOLON
     (145) writing1 -> . expression0 writing2
     (146) writing1 -> . CONST_STRING push_string_val writing2
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -1929,7 +1922,7 @@ state 90
     method_call0                   shift and go to state 64
     id_funcCall                    shift and go to state 31
 
-state 91
+state 90
 
     (149) reading -> READ ID SEMICOLON .
 
@@ -1945,7 +1938,7 @@ state 91
     RBRACKET        reduce using rule 149 (reading -> READ ID SEMICOLON .)
 
 
-state 92
+state 91
 
     (150) return -> RETURN expression0 SEMICOLON .
 
@@ -1961,7 +1954,7 @@ state 92
     RBRACKET        reduce using rule 150 (return -> RETURN expression0 SEMICOLON .)
 
 
-state 93
+state 92
 
     (113) expression0 -> exp0 expression1 .
 
@@ -1970,7 +1963,7 @@ state 93
     COMMA           reduce using rule 113 (expression0 -> exp0 expression1 .)
 
 
-state 94
+state 93
 
     (115) expression1 -> LTHAN . push_rel_op expression3
     (120) push_rel_op -> .
@@ -1982,7 +1975,7 @@ state 94
 
     push_rel_op                    shift and go to state 133
 
-state 95
+state 94
 
     (116) expression1 -> GTHAN . push_rel_op expression3
     (120) push_rel_op -> .
@@ -1994,7 +1987,7 @@ state 95
 
     push_rel_op                    shift and go to state 134
 
-state 96
+state 95
 
     (117) expression1 -> DIFFERENT . push_rel_op expression3
     (120) push_rel_op -> .
@@ -2006,7 +1999,7 @@ state 96
 
     push_rel_op                    shift and go to state 135
 
-state 97
+state 96
 
     (118) expression1 -> EQUIVALENT . push_rel_op expression3
     (120) push_rel_op -> .
@@ -2018,7 +2011,7 @@ state 97
 
     push_rel_op                    shift and go to state 136
 
-state 98
+state 97
 
     (119) expression1 -> empty .
 
@@ -2027,7 +2020,7 @@ state 98
     COMMA           reduce using rule 119 (expression1 -> empty .)
 
 
-state 99
+state 98
 
     (114) expression0 -> attr_access0 expression1 .
 
@@ -2036,12 +2029,12 @@ state 99
     COMMA           reduce using rule 114 (expression0 -> attr_access0 expression1 .)
 
 
-state 100
+state 99
 
-    (88) power0 -> attr_access0 check_pow_rad_operator . power2
-    (94) power2 -> . POWER push_pow_rad_op power0
-    (95) power2 -> . SQRT push_pow_rad_op power0
-    (96) power2 -> . empty
+    (87) power0 -> attr_access0 check_pow_rad_operator . power2
+    (93) power2 -> . POWER push_pow_rad_op power0
+    (94) power2 -> . SQRT push_pow_rad_op power0
+    (95) power2 -> . empty
     (174) empty -> .
 
     POWER           shift and go to state 138
@@ -2062,12 +2055,12 @@ state 100
     power2                         shift and go to state 137
     empty                          shift and go to state 140
 
-state 101
+state 100
 
-    (72) exp0 -> term0 check_last_plus_minus_operator . exp1
-    (73) exp1 -> . PLUS push_plus_minus_op exp0
-    (74) exp1 -> . MINUS push_plus_minus_op exp0
-    (75) exp1 -> . empty
+    (71) exp0 -> term0 check_last_plus_minus_operator . exp1
+    (72) exp1 -> . PLUS push_plus_minus_op exp0
+    (73) exp1 -> . MINUS push_plus_minus_op exp0
+    (74) exp1 -> . empty
     (174) empty -> .
 
     PLUS            shift and go to state 142
@@ -2084,7 +2077,7 @@ state 101
     exp1                           shift and go to state 141
     empty                          shift and go to state 144
 
-state 102
+state 101
 
     (124) attr_access0 -> ID DOT . ID
     (125) method_call0 -> ID DOT . function_call
@@ -2096,27 +2089,27 @@ state 102
     function_call                  shift and go to state 72
     id_funcCall                    shift and go to state 31
 
-state 103
+state 102
 
-    (89) power0 -> ID LSQRBRACKET . exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (88) power0 -> ID LSQRBRACKET . exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -2126,15 +2119,35 @@ state 103
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
+
+state 103
+
+    (100) const_var -> ID neurID .
+
+    POWER           reduce using rule 100 (const_var -> ID neurID .)
+    SQRT            reduce using rule 100 (const_var -> ID neurID .)
+    MULTIPLY        reduce using rule 100 (const_var -> ID neurID .)
+    DIVIDE          reduce using rule 100 (const_var -> ID neurID .)
+    PLUS            reduce using rule 100 (const_var -> ID neurID .)
+    MINUS           reduce using rule 100 (const_var -> ID neurID .)
+    LTHAN           reduce using rule 100 (const_var -> ID neurID .)
+    GTHAN           reduce using rule 100 (const_var -> ID neurID .)
+    DIFFERENT       reduce using rule 100 (const_var -> ID neurID .)
+    EQUIVALENT      reduce using rule 100 (const_var -> ID neurID .)
+    SEMICOLON       reduce using rule 100 (const_var -> ID neurID .)
+    RSQRBRACKET     reduce using rule 100 (const_var -> ID neurID .)
+    RPAREN          reduce using rule 100 (const_var -> ID neurID .)
+    COMMA           reduce using rule 100 (const_var -> ID neurID .)
+
 
 state 104
 
-    (78) term0 -> power0 check_last_times_division_operator . term1
-    (79) term1 -> . MULTIPLY push_times_division_op term0
-    (80) term1 -> . DIVIDE push_times_division_op term0
-    (81) term1 -> . empty
+    (77) term0 -> power0 check_last_times_division_operator . term1
+    (78) term1 -> . MULTIPLY push_times_division_op term0
+    (79) term1 -> . DIVIDE push_times_division_op term0
+    (80) term1 -> . empty
     (174) empty -> .
 
     MULTIPLY        shift and go to state 148
@@ -2155,25 +2168,25 @@ state 104
 
 state 105
 
-    (84) power0 -> LPAREN open_paren . exp0 RPAREN close_paren check_pow_rad_operator power2
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (83) power0 -> LPAREN open_paren . exp0 RPAREN close_paren check_pow_rad_operator power2
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -2183,15 +2196,15 @@ state 105
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 106
 
-    (85) power0 -> const_var check_pow_rad_operator . power2
-    (94) power2 -> . POWER push_pow_rad_op power0
-    (95) power2 -> . SQRT push_pow_rad_op power0
-    (96) power2 -> . empty
+    (84) power0 -> const_var check_pow_rad_operator . power2
+    (93) power2 -> . POWER push_pow_rad_op power0
+    (94) power2 -> . SQRT push_pow_rad_op power0
+    (95) power2 -> . empty
     (174) empty -> .
 
     POWER           shift and go to state 138
@@ -2214,10 +2227,10 @@ state 106
 
 state 107
 
-    (86) power0 -> function_call check_pow_rad_operator . power2
-    (94) power2 -> . POWER push_pow_rad_op power0
-    (95) power2 -> . SQRT push_pow_rad_op power0
-    (96) power2 -> . empty
+    (85) power0 -> function_call check_pow_rad_operator . power2
+    (93) power2 -> . POWER push_pow_rad_op power0
+    (94) power2 -> . SQRT push_pow_rad_op power0
+    (95) power2 -> . empty
     (174) empty -> .
 
     POWER           shift and go to state 138
@@ -2240,10 +2253,10 @@ state 107
 
 state 108
 
-    (87) power0 -> method_call0 check_pow_rad_operator . power2
-    (94) power2 -> . POWER push_pow_rad_op power0
-    (95) power2 -> . SQRT push_pow_rad_op power0
-    (96) power2 -> . empty
+    (86) power0 -> method_call0 check_pow_rad_operator . power2
+    (93) power2 -> . POWER push_pow_rad_op power0
+    (94) power2 -> . SQRT push_pow_rad_op power0
+    (95) power2 -> . empty
     (174) empty -> .
 
     POWER           shift and go to state 138
@@ -2266,42 +2279,42 @@ state 108
 
 state 109
 
-    (99) const_var -> CONST_INT neurInt .
+    (98) const_var -> CONST_INT neurInt .
 
-    POWER           reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    SQRT            reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    MULTIPLY        reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    DIVIDE          reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    PLUS            reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    MINUS           reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    LTHAN           reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    GTHAN           reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    DIFFERENT       reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    EQUIVALENT      reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    SEMICOLON       reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    RSQRBRACKET     reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    RPAREN          reduce using rule 99 (const_var -> CONST_INT neurInt .)
-    COMMA           reduce using rule 99 (const_var -> CONST_INT neurInt .)
+    POWER           reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    SQRT            reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    MULTIPLY        reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    DIVIDE          reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    PLUS            reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    MINUS           reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    LTHAN           reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    GTHAN           reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    DIFFERENT       reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    EQUIVALENT      reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    SEMICOLON       reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    RSQRBRACKET     reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    RPAREN          reduce using rule 98 (const_var -> CONST_INT neurInt .)
+    COMMA           reduce using rule 98 (const_var -> CONST_INT neurInt .)
 
 
 state 110
 
-    (100) const_var -> CONST_FLOAT neurFloat .
+    (99) const_var -> CONST_FLOAT neurFloat .
 
-    POWER           reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    SQRT            reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    MULTIPLY        reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    DIVIDE          reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    PLUS            reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    MINUS           reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    LTHAN           reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    GTHAN           reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    DIFFERENT       reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    EQUIVALENT      reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    SEMICOLON       reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    RSQRBRACKET     reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    RPAREN          reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
-    COMMA           reduce using rule 100 (const_var -> CONST_FLOAT neurFloat .)
+    POWER           reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    SQRT            reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    MULTIPLY        reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    DIVIDE          reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    PLUS            reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    MINUS           reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    LTHAN           reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    GTHAN           reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    DIFFERENT       reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    EQUIVALENT      reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    SEMICOLON       reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    RSQRBRACKET     reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    RPAREN          reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
+    COMMA           reduce using rule 99 (const_var -> CONST_FLOAT neurFloat .)
 
 
 state 111
@@ -2313,18 +2326,18 @@ state 111
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
     (174) empty -> .
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -2354,18 +2367,18 @@ state 112
     (152) while -> WHILE wNeur1 LPAREN . expression0 RPAREN wNeur2 block0 wNeur3
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -2477,7 +2490,7 @@ state 116
     (174) empty -> .
     (126) data_access -> . PRIVATE
     (127) data_access -> . PUBLIC
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
 
     CONSTRUCT       reduce using rule 174 (empty -> .)
     PRIVATE         shift and go to state 172
@@ -2632,18 +2645,18 @@ state 133
     (115) expression1 -> LTHAN push_rel_op . expression3
     (122) expression3 -> . exp0 check_rel_operator
     (123) expression3 -> . attr_access0
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -2668,18 +2681,18 @@ state 134
     (116) expression1 -> GTHAN push_rel_op . expression3
     (122) expression3 -> . exp0 check_rel_operator
     (123) expression3 -> . attr_access0
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -2704,18 +2717,18 @@ state 135
     (117) expression1 -> DIFFERENT push_rel_op . expression3
     (122) expression3 -> . exp0 check_rel_operator
     (123) expression3 -> . attr_access0
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -2740,18 +2753,18 @@ state 136
     (118) expression1 -> EQUIVALENT push_rel_op . expression3
     (122) expression3 -> . exp0 check_rel_operator
     (123) expression3 -> . attr_access0
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -2773,114 +2786,114 @@ state 136
 
 state 137
 
-    (88) power0 -> attr_access0 check_pow_rad_operator power2 .
+    (87) power0 -> attr_access0 check_pow_rad_operator power2 .
 
-    MULTIPLY        reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    DIVIDE          reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    PLUS            reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    MINUS           reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    LTHAN           reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    GTHAN           reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    DIFFERENT       reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    EQUIVALENT      reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    SEMICOLON       reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    RSQRBRACKET     reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    RPAREN          reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
-    COMMA           reduce using rule 88 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    MULTIPLY        reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    DIVIDE          reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    PLUS            reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    MINUS           reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    LTHAN           reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    GTHAN           reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    DIFFERENT       reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    EQUIVALENT      reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    SEMICOLON       reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    RSQRBRACKET     reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    RPAREN          reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
+    COMMA           reduce using rule 87 (power0 -> attr_access0 check_pow_rad_operator power2 .)
 
 
 state 138
 
-    (94) power2 -> POWER . push_pow_rad_op power0
-    (97) push_pow_rad_op -> .
+    (93) power2 -> POWER . push_pow_rad_op power0
+    (96) push_pow_rad_op -> .
 
-    LPAREN          reduce using rule 97 (push_pow_rad_op -> .)
-    ID              reduce using rule 97 (push_pow_rad_op -> .)
-    CONST_INT       reduce using rule 97 (push_pow_rad_op -> .)
-    CONST_FLOAT     reduce using rule 97 (push_pow_rad_op -> .)
+    LPAREN          reduce using rule 96 (push_pow_rad_op -> .)
+    ID              reduce using rule 96 (push_pow_rad_op -> .)
+    CONST_INT       reduce using rule 96 (push_pow_rad_op -> .)
+    CONST_FLOAT     reduce using rule 96 (push_pow_rad_op -> .)
 
     push_pow_rad_op                shift and go to state 192
 
 state 139
 
-    (95) power2 -> SQRT . push_pow_rad_op power0
-    (97) push_pow_rad_op -> .
+    (94) power2 -> SQRT . push_pow_rad_op power0
+    (96) push_pow_rad_op -> .
 
-    LPAREN          reduce using rule 97 (push_pow_rad_op -> .)
-    ID              reduce using rule 97 (push_pow_rad_op -> .)
-    CONST_INT       reduce using rule 97 (push_pow_rad_op -> .)
-    CONST_FLOAT     reduce using rule 97 (push_pow_rad_op -> .)
+    LPAREN          reduce using rule 96 (push_pow_rad_op -> .)
+    ID              reduce using rule 96 (push_pow_rad_op -> .)
+    CONST_INT       reduce using rule 96 (push_pow_rad_op -> .)
+    CONST_FLOAT     reduce using rule 96 (push_pow_rad_op -> .)
 
     push_pow_rad_op                shift and go to state 193
 
 state 140
 
-    (96) power2 -> empty .
+    (95) power2 -> empty .
 
-    MULTIPLY        reduce using rule 96 (power2 -> empty .)
-    DIVIDE          reduce using rule 96 (power2 -> empty .)
-    PLUS            reduce using rule 96 (power2 -> empty .)
-    MINUS           reduce using rule 96 (power2 -> empty .)
-    LTHAN           reduce using rule 96 (power2 -> empty .)
-    GTHAN           reduce using rule 96 (power2 -> empty .)
-    DIFFERENT       reduce using rule 96 (power2 -> empty .)
-    EQUIVALENT      reduce using rule 96 (power2 -> empty .)
-    SEMICOLON       reduce using rule 96 (power2 -> empty .)
-    RSQRBRACKET     reduce using rule 96 (power2 -> empty .)
-    RPAREN          reduce using rule 96 (power2 -> empty .)
-    COMMA           reduce using rule 96 (power2 -> empty .)
+    MULTIPLY        reduce using rule 95 (power2 -> empty .)
+    DIVIDE          reduce using rule 95 (power2 -> empty .)
+    PLUS            reduce using rule 95 (power2 -> empty .)
+    MINUS           reduce using rule 95 (power2 -> empty .)
+    LTHAN           reduce using rule 95 (power2 -> empty .)
+    GTHAN           reduce using rule 95 (power2 -> empty .)
+    DIFFERENT       reduce using rule 95 (power2 -> empty .)
+    EQUIVALENT      reduce using rule 95 (power2 -> empty .)
+    SEMICOLON       reduce using rule 95 (power2 -> empty .)
+    RSQRBRACKET     reduce using rule 95 (power2 -> empty .)
+    RPAREN          reduce using rule 95 (power2 -> empty .)
+    COMMA           reduce using rule 95 (power2 -> empty .)
 
 
 state 141
 
-    (72) exp0 -> term0 check_last_plus_minus_operator exp1 .
+    (71) exp0 -> term0 check_last_plus_minus_operator exp1 .
 
-    LTHAN           reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    GTHAN           reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    DIFFERENT       reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    EQUIVALENT      reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    SEMICOLON       reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    RSQRBRACKET     reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    RPAREN          reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
-    COMMA           reduce using rule 72 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    LTHAN           reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    GTHAN           reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    DIFFERENT       reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    EQUIVALENT      reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    SEMICOLON       reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    RSQRBRACKET     reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    RPAREN          reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
+    COMMA           reduce using rule 71 (exp0 -> term0 check_last_plus_minus_operator exp1 .)
 
 
 state 142
 
-    (73) exp1 -> PLUS . push_plus_minus_op exp0
-    (76) push_plus_minus_op -> .
+    (72) exp1 -> PLUS . push_plus_minus_op exp0
+    (75) push_plus_minus_op -> .
 
-    LPAREN          reduce using rule 76 (push_plus_minus_op -> .)
-    ID              reduce using rule 76 (push_plus_minus_op -> .)
-    CONST_INT       reduce using rule 76 (push_plus_minus_op -> .)
-    CONST_FLOAT     reduce using rule 76 (push_plus_minus_op -> .)
+    LPAREN          reduce using rule 75 (push_plus_minus_op -> .)
+    ID              reduce using rule 75 (push_plus_minus_op -> .)
+    CONST_INT       reduce using rule 75 (push_plus_minus_op -> .)
+    CONST_FLOAT     reduce using rule 75 (push_plus_minus_op -> .)
 
     push_plus_minus_op             shift and go to state 194
 
 state 143
 
-    (74) exp1 -> MINUS . push_plus_minus_op exp0
-    (76) push_plus_minus_op -> .
+    (73) exp1 -> MINUS . push_plus_minus_op exp0
+    (75) push_plus_minus_op -> .
 
-    LPAREN          reduce using rule 76 (push_plus_minus_op -> .)
-    ID              reduce using rule 76 (push_plus_minus_op -> .)
-    CONST_INT       reduce using rule 76 (push_plus_minus_op -> .)
-    CONST_FLOAT     reduce using rule 76 (push_plus_minus_op -> .)
+    LPAREN          reduce using rule 75 (push_plus_minus_op -> .)
+    ID              reduce using rule 75 (push_plus_minus_op -> .)
+    CONST_INT       reduce using rule 75 (push_plus_minus_op -> .)
+    CONST_FLOAT     reduce using rule 75 (push_plus_minus_op -> .)
 
     push_plus_minus_op             shift and go to state 195
 
 state 144
 
-    (75) exp1 -> empty .
+    (74) exp1 -> empty .
 
-    LTHAN           reduce using rule 75 (exp1 -> empty .)
-    GTHAN           reduce using rule 75 (exp1 -> empty .)
-    DIFFERENT       reduce using rule 75 (exp1 -> empty .)
-    EQUIVALENT      reduce using rule 75 (exp1 -> empty .)
-    SEMICOLON       reduce using rule 75 (exp1 -> empty .)
-    RSQRBRACKET     reduce using rule 75 (exp1 -> empty .)
-    RPAREN          reduce using rule 75 (exp1 -> empty .)
-    COMMA           reduce using rule 75 (exp1 -> empty .)
+    LTHAN           reduce using rule 74 (exp1 -> empty .)
+    GTHAN           reduce using rule 74 (exp1 -> empty .)
+    DIFFERENT       reduce using rule 74 (exp1 -> empty .)
+    EQUIVALENT      reduce using rule 74 (exp1 -> empty .)
+    SEMICOLON       reduce using rule 74 (exp1 -> empty .)
+    RSQRBRACKET     reduce using rule 74 (exp1 -> empty .)
+    RPAREN          reduce using rule 74 (exp1 -> empty .)
+    COMMA           reduce using rule 74 (exp1 -> empty .)
 
 
 state 145
@@ -2907,126 +2920,126 @@ state 145
 
 state 146
 
-    (89) power0 -> ID LSQRBRACKET exp0 . RSQRBRACKET check_pow_rad_operator power1 power2
+    (88) power0 -> ID LSQRBRACKET exp0 . RSQRBRACKET check_pow_rad_operator power1 power2
 
     RSQRBRACKET     shift and go to state 196
 
 
 state 147
 
-    (78) term0 -> power0 check_last_times_division_operator term1 .
+    (77) term0 -> power0 check_last_times_division_operator term1 .
 
-    PLUS            reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    MINUS           reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    LTHAN           reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    GTHAN           reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    DIFFERENT       reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    EQUIVALENT      reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    SEMICOLON       reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    RSQRBRACKET     reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    RPAREN          reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
-    COMMA           reduce using rule 78 (term0 -> power0 check_last_times_division_operator term1 .)
+    PLUS            reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    MINUS           reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    LTHAN           reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    GTHAN           reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    DIFFERENT       reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    EQUIVALENT      reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    SEMICOLON       reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    RSQRBRACKET     reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    RPAREN          reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
+    COMMA           reduce using rule 77 (term0 -> power0 check_last_times_division_operator term1 .)
 
 
 state 148
 
-    (79) term1 -> MULTIPLY . push_times_division_op term0
-    (82) push_times_division_op -> .
+    (78) term1 -> MULTIPLY . push_times_division_op term0
+    (81) push_times_division_op -> .
 
-    LPAREN          reduce using rule 82 (push_times_division_op -> .)
-    ID              reduce using rule 82 (push_times_division_op -> .)
-    CONST_INT       reduce using rule 82 (push_times_division_op -> .)
-    CONST_FLOAT     reduce using rule 82 (push_times_division_op -> .)
+    LPAREN          reduce using rule 81 (push_times_division_op -> .)
+    ID              reduce using rule 81 (push_times_division_op -> .)
+    CONST_INT       reduce using rule 81 (push_times_division_op -> .)
+    CONST_FLOAT     reduce using rule 81 (push_times_division_op -> .)
 
     push_times_division_op         shift and go to state 197
 
 state 149
 
-    (80) term1 -> DIVIDE . push_times_division_op term0
-    (82) push_times_division_op -> .
+    (79) term1 -> DIVIDE . push_times_division_op term0
+    (81) push_times_division_op -> .
 
-    LPAREN          reduce using rule 82 (push_times_division_op -> .)
-    ID              reduce using rule 82 (push_times_division_op -> .)
-    CONST_INT       reduce using rule 82 (push_times_division_op -> .)
-    CONST_FLOAT     reduce using rule 82 (push_times_division_op -> .)
+    LPAREN          reduce using rule 81 (push_times_division_op -> .)
+    ID              reduce using rule 81 (push_times_division_op -> .)
+    CONST_INT       reduce using rule 81 (push_times_division_op -> .)
+    CONST_FLOAT     reduce using rule 81 (push_times_division_op -> .)
 
     push_times_division_op         shift and go to state 198
 
 state 150
 
-    (81) term1 -> empty .
+    (80) term1 -> empty .
 
-    PLUS            reduce using rule 81 (term1 -> empty .)
-    MINUS           reduce using rule 81 (term1 -> empty .)
-    LTHAN           reduce using rule 81 (term1 -> empty .)
-    GTHAN           reduce using rule 81 (term1 -> empty .)
-    DIFFERENT       reduce using rule 81 (term1 -> empty .)
-    EQUIVALENT      reduce using rule 81 (term1 -> empty .)
-    SEMICOLON       reduce using rule 81 (term1 -> empty .)
-    RSQRBRACKET     reduce using rule 81 (term1 -> empty .)
-    RPAREN          reduce using rule 81 (term1 -> empty .)
-    COMMA           reduce using rule 81 (term1 -> empty .)
+    PLUS            reduce using rule 80 (term1 -> empty .)
+    MINUS           reduce using rule 80 (term1 -> empty .)
+    LTHAN           reduce using rule 80 (term1 -> empty .)
+    GTHAN           reduce using rule 80 (term1 -> empty .)
+    DIFFERENT       reduce using rule 80 (term1 -> empty .)
+    EQUIVALENT      reduce using rule 80 (term1 -> empty .)
+    SEMICOLON       reduce using rule 80 (term1 -> empty .)
+    RSQRBRACKET     reduce using rule 80 (term1 -> empty .)
+    RPAREN          reduce using rule 80 (term1 -> empty .)
+    COMMA           reduce using rule 80 (term1 -> empty .)
 
 
 state 151
 
-    (84) power0 -> LPAREN open_paren exp0 . RPAREN close_paren check_pow_rad_operator power2
+    (83) power0 -> LPAREN open_paren exp0 . RPAREN close_paren check_pow_rad_operator power2
 
     RPAREN          shift and go to state 199
 
 
 state 152
 
-    (85) power0 -> const_var check_pow_rad_operator power2 .
+    (84) power0 -> const_var check_pow_rad_operator power2 .
 
-    MULTIPLY        reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    DIVIDE          reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    PLUS            reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    MINUS           reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    LTHAN           reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    GTHAN           reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    DIFFERENT       reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    EQUIVALENT      reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    SEMICOLON       reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    RSQRBRACKET     reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    RPAREN          reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
-    COMMA           reduce using rule 85 (power0 -> const_var check_pow_rad_operator power2 .)
+    MULTIPLY        reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    DIVIDE          reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    PLUS            reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    MINUS           reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    LTHAN           reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    GTHAN           reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    DIFFERENT       reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    EQUIVALENT      reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    SEMICOLON       reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    RSQRBRACKET     reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    RPAREN          reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
+    COMMA           reduce using rule 84 (power0 -> const_var check_pow_rad_operator power2 .)
 
 
 state 153
 
-    (86) power0 -> function_call check_pow_rad_operator power2 .
+    (85) power0 -> function_call check_pow_rad_operator power2 .
 
-    MULTIPLY        reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    DIVIDE          reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    PLUS            reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    MINUS           reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    LTHAN           reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    GTHAN           reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    DIFFERENT       reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    EQUIVALENT      reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    SEMICOLON       reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    RSQRBRACKET     reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    RPAREN          reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
-    COMMA           reduce using rule 86 (power0 -> function_call check_pow_rad_operator power2 .)
+    MULTIPLY        reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    DIVIDE          reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    PLUS            reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    MINUS           reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    LTHAN           reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    GTHAN           reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    DIFFERENT       reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    EQUIVALENT      reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    SEMICOLON       reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    RSQRBRACKET     reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    RPAREN          reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
+    COMMA           reduce using rule 85 (power0 -> function_call check_pow_rad_operator power2 .)
 
 
 state 154
 
-    (87) power0 -> method_call0 check_pow_rad_operator power2 .
+    (86) power0 -> method_call0 check_pow_rad_operator power2 .
 
-    MULTIPLY        reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    DIVIDE          reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    PLUS            reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    MINUS           reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    LTHAN           reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    GTHAN           reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    DIFFERENT       reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    EQUIVALENT      reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    SEMICOLON       reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    RSQRBRACKET     reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    RPAREN          reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
-    COMMA           reduce using rule 87 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    MULTIPLY        reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    DIVIDE          reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    PLUS            reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    MINUS           reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    LTHAN           reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    GTHAN           reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    DIFFERENT       reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    EQUIVALENT      reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    SEMICOLON       reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    RSQRBRACKET     reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    RPAREN          reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
+    COMMA           reduce using rule 86 (power0 -> method_call0 check_pow_rad_operator power2 .)
 
 
 state 155
@@ -3085,18 +3098,18 @@ state 160
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
     (174) empty -> .
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -3310,7 +3323,7 @@ state 169
 state 170
 
     (52) attributes -> data_access . simple_declaration attributes
-    (69) simple_declaration -> . ID COLON type SEMICOLON
+    (68) simple_declaration -> . ID COLON type SEMICOLON
 
     ID              shift and go to state 214
 
@@ -3324,7 +3337,7 @@ state 171
     (54) attributes -> . empty
     (126) data_access -> . PRIVATE
     (127) data_access -> . PUBLIC
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
     PRIVATE         shift and go to state 172
@@ -3355,7 +3368,7 @@ state 173
 
 state 174
 
-    (70) simple_assignment -> ID . EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> ID . EQUALS expression0 SEMICOLON
 
     EQUALS          shift and go to state 217
 
@@ -3382,24 +3395,24 @@ state 176
 state 177
 
     (33) declaration1 -> type isArrayNeur LSQRBRACKET . exp0 limitNeur RSQRBRACKET declaration2 neurMemory
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3409,7 +3422,7 @@ state 177
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 178
@@ -3417,18 +3430,18 @@ state 178
     (43) assignment0 -> assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS . expression0 SEMICOLON
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -3451,24 +3464,24 @@ state 178
 state 179
 
     (44) assignment0 -> assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET . exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3478,7 +3491,7 @@ state 179
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 180
@@ -3511,18 +3524,18 @@ state 183
     (146) writing1 -> . CONST_STRING push_string_val writing2
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -3587,27 +3600,27 @@ state 187
 state 188
 
     (123) expression3 -> attr_access0 .
-    (88) power0 -> attr_access0 . check_pow_rad_operator power2
-    (98) check_pow_rad_operator -> .
+    (87) power0 -> attr_access0 . check_pow_rad_operator power2
+    (97) check_pow_rad_operator -> .
 
-  ! reduce/reduce conflict for SEMICOLON resolved using rule 98 (check_pow_rad_operator -> .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 98 (check_pow_rad_operator -> .)
-  ! reduce/reduce conflict for COMMA resolved using rule 98 (check_pow_rad_operator -> .)
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 97 (check_pow_rad_operator -> .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 97 (check_pow_rad_operator -> .)
+  ! reduce/reduce conflict for COMMA resolved using rule 97 (check_pow_rad_operator -> .)
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
   ! SEMICOLON       [ reduce using rule 123 (expression3 -> attr_access0 .) ]
   ! RPAREN          [ reduce using rule 123 (expression3 -> attr_access0 .) ]
   ! COMMA           [ reduce using rule 123 (expression3 -> attr_access0 .) ]
 
-    check_pow_rad_operator         shift and go to state 100
+    check_pow_rad_operator         shift and go to state 99
 
 state 189
 
@@ -3638,23 +3651,23 @@ state 191
 
 state 192
 
-    (94) power2 -> POWER push_pow_rad_op . power0
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (93) power2 -> POWER push_pow_rad_op . power0
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3662,28 +3675,28 @@ state 192
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 193
 
-    (95) power2 -> SQRT push_pow_rad_op . power0
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (94) power2 -> SQRT push_pow_rad_op . power0
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3691,30 +3704,30 @@ state 193
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 194
 
-    (73) exp1 -> PLUS push_plus_minus_op . exp0
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (72) exp1 -> PLUS push_plus_minus_op . exp0
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3724,30 +3737,30 @@ state 194
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 195
 
-    (74) exp1 -> MINUS push_plus_minus_op . exp0
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (73) exp1 -> MINUS push_plus_minus_op . exp0
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3757,52 +3770,52 @@ state 195
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 196
 
-    (89) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET . check_pow_rad_operator power1 power2
-    (98) check_pow_rad_operator -> .
+    (88) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET . check_pow_rad_operator power1 power2
+    (97) check_pow_rad_operator -> .
 
-    LSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    GTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    DIFFERENT       reduce using rule 98 (check_pow_rad_operator -> .)
-    EQUIVALENT      reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+    LSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    GTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    DIFFERENT       reduce using rule 97 (check_pow_rad_operator -> .)
+    EQUIVALENT      reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
     check_pow_rad_operator         shift and go to state 233
 
 state 197
 
-    (79) term1 -> MULTIPLY push_times_division_op . term0
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (78) term1 -> MULTIPLY push_times_division_op . term0
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3811,29 +3824,29 @@ state 197
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 198
 
-    (80) term1 -> DIVIDE push_times_division_op . term0
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (79) term1 -> DIVIDE push_times_division_op . term0
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -3842,28 +3855,28 @@ state 198
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 199
 
-    (84) power0 -> LPAREN open_paren exp0 RPAREN . close_paren check_pow_rad_operator power2
-    (91) close_paren -> .
+    (83) power0 -> LPAREN open_paren exp0 RPAREN . close_paren check_pow_rad_operator power2
+    (90) close_paren -> .
 
-    POWER           reduce using rule 91 (close_paren -> .)
-    SQRT            reduce using rule 91 (close_paren -> .)
-    MULTIPLY        reduce using rule 91 (close_paren -> .)
-    DIVIDE          reduce using rule 91 (close_paren -> .)
-    PLUS            reduce using rule 91 (close_paren -> .)
-    MINUS           reduce using rule 91 (close_paren -> .)
-    LTHAN           reduce using rule 91 (close_paren -> .)
-    GTHAN           reduce using rule 91 (close_paren -> .)
-    DIFFERENT       reduce using rule 91 (close_paren -> .)
-    EQUIVALENT      reduce using rule 91 (close_paren -> .)
-    SEMICOLON       reduce using rule 91 (close_paren -> .)
-    RSQRBRACKET     reduce using rule 91 (close_paren -> .)
-    RPAREN          reduce using rule 91 (close_paren -> .)
-    COMMA           reduce using rule 91 (close_paren -> .)
+    POWER           reduce using rule 90 (close_paren -> .)
+    SQRT            reduce using rule 90 (close_paren -> .)
+    MULTIPLY        reduce using rule 90 (close_paren -> .)
+    DIVIDE          reduce using rule 90 (close_paren -> .)
+    PLUS            reduce using rule 90 (close_paren -> .)
+    MINUS           reduce using rule 90 (close_paren -> .)
+    LTHAN           reduce using rule 90 (close_paren -> .)
+    GTHAN           reduce using rule 90 (close_paren -> .)
+    DIFFERENT       reduce using rule 90 (close_paren -> .)
+    EQUIVALENT      reduce using rule 90 (close_paren -> .)
+    SEMICOLON       reduce using rule 90 (close_paren -> .)
+    RSQRBRACKET     reduce using rule 90 (close_paren -> .)
+    RPAREN          reduce using rule 90 (close_paren -> .)
+    COMMA           reduce using rule 90 (close_paren -> .)
 
     close_paren                    shift and go to state 236
 
@@ -3936,18 +3949,18 @@ state 205
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
     (174) empty -> .
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -4044,7 +4057,7 @@ state 213
     (54) attributes -> . empty
     (126) data_access -> . PRIVATE
     (127) data_access -> . PUBLIC
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
     PRIVATE         shift and go to state 172
@@ -4059,7 +4072,7 @@ state 213
 
 state 214
 
-    (69) simple_declaration -> ID . COLON type SEMICOLON
+    (68) simple_declaration -> ID . COLON type SEMICOLON
 
     COLON           shift and go to state 248
 
@@ -4080,21 +4093,21 @@ state 216
 
 state 217
 
-    (70) simple_assignment -> ID EQUALS . expression0 SEMICOLON
+    (69) simple_assignment -> ID EQUALS . expression0 SEMICOLON
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -4264,73 +4277,73 @@ state 228
 
 state 229
 
-    (94) power2 -> POWER push_pow_rad_op power0 .
+    (93) power2 -> POWER push_pow_rad_op power0 .
 
-    MULTIPLY        reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    DIVIDE          reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    PLUS            reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    MINUS           reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    LTHAN           reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    GTHAN           reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    DIFFERENT       reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    EQUIVALENT      reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    SEMICOLON       reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    RSQRBRACKET     reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    RPAREN          reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
-    COMMA           reduce using rule 94 (power2 -> POWER push_pow_rad_op power0 .)
+    MULTIPLY        reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    DIVIDE          reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    PLUS            reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    MINUS           reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    LTHAN           reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    GTHAN           reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    DIFFERENT       reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    EQUIVALENT      reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    SEMICOLON       reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    RSQRBRACKET     reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    RPAREN          reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
+    COMMA           reduce using rule 93 (power2 -> POWER push_pow_rad_op power0 .)
 
 
 state 230
 
-    (95) power2 -> SQRT push_pow_rad_op power0 .
+    (94) power2 -> SQRT push_pow_rad_op power0 .
 
-    MULTIPLY        reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    DIVIDE          reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    PLUS            reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    MINUS           reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    LTHAN           reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    GTHAN           reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    DIFFERENT       reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    EQUIVALENT      reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    SEMICOLON       reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    RSQRBRACKET     reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    RPAREN          reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
-    COMMA           reduce using rule 95 (power2 -> SQRT push_pow_rad_op power0 .)
+    MULTIPLY        reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    DIVIDE          reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    PLUS            reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    MINUS           reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    LTHAN           reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    GTHAN           reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    DIFFERENT       reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    EQUIVALENT      reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    SEMICOLON       reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    RSQRBRACKET     reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    RPAREN          reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
+    COMMA           reduce using rule 94 (power2 -> SQRT push_pow_rad_op power0 .)
 
 
 state 231
 
-    (73) exp1 -> PLUS push_plus_minus_op exp0 .
+    (72) exp1 -> PLUS push_plus_minus_op exp0 .
 
-    LTHAN           reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    GTHAN           reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    DIFFERENT       reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    EQUIVALENT      reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    SEMICOLON       reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    RSQRBRACKET     reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    RPAREN          reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
-    COMMA           reduce using rule 73 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    LTHAN           reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    GTHAN           reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    DIFFERENT       reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    EQUIVALENT      reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    SEMICOLON       reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    RSQRBRACKET     reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    RPAREN          reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
+    COMMA           reduce using rule 72 (exp1 -> PLUS push_plus_minus_op exp0 .)
 
 
 state 232
 
-    (74) exp1 -> MINUS push_plus_minus_op exp0 .
+    (73) exp1 -> MINUS push_plus_minus_op exp0 .
 
-    LTHAN           reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    GTHAN           reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    DIFFERENT       reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    EQUIVALENT      reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    SEMICOLON       reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    RSQRBRACKET     reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    RPAREN          reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
-    COMMA           reduce using rule 74 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    LTHAN           reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    GTHAN           reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    DIFFERENT       reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    EQUIVALENT      reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    SEMICOLON       reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    RSQRBRACKET     reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    RPAREN          reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
+    COMMA           reduce using rule 73 (exp1 -> MINUS push_plus_minus_op exp0 .)
 
 
 state 233
 
-    (89) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator . power1 power2
-    (92) power1 -> . LSQRBRACKET exp0 RSQRBRACKET
-    (93) power1 -> . empty
+    (88) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator . power1 power2
+    (91) power1 -> . LSQRBRACKET exp0 RSQRBRACKET
+    (92) power1 -> . empty
     (174) empty -> .
 
     LSQRBRACKET     shift and go to state 264
@@ -4354,55 +4367,55 @@ state 233
 
 state 234
 
-    (79) term1 -> MULTIPLY push_times_division_op term0 .
+    (78) term1 -> MULTIPLY push_times_division_op term0 .
 
-    PLUS            reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    MINUS           reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    LTHAN           reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    GTHAN           reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    DIFFERENT       reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    EQUIVALENT      reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    SEMICOLON       reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    RSQRBRACKET     reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    RPAREN          reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
-    COMMA           reduce using rule 79 (term1 -> MULTIPLY push_times_division_op term0 .)
+    PLUS            reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    MINUS           reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    LTHAN           reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    GTHAN           reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    DIFFERENT       reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    EQUIVALENT      reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    SEMICOLON       reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    RSQRBRACKET     reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    RPAREN          reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
+    COMMA           reduce using rule 78 (term1 -> MULTIPLY push_times_division_op term0 .)
 
 
 state 235
 
-    (80) term1 -> DIVIDE push_times_division_op term0 .
+    (79) term1 -> DIVIDE push_times_division_op term0 .
 
-    PLUS            reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    MINUS           reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    LTHAN           reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    GTHAN           reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    DIFFERENT       reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    EQUIVALENT      reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    SEMICOLON       reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    RSQRBRACKET     reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    RPAREN          reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
-    COMMA           reduce using rule 80 (term1 -> DIVIDE push_times_division_op term0 .)
+    PLUS            reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    MINUS           reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    LTHAN           reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    GTHAN           reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    DIFFERENT       reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    EQUIVALENT      reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    SEMICOLON       reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    RSQRBRACKET     reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    RPAREN          reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
+    COMMA           reduce using rule 79 (term1 -> DIVIDE push_times_division_op term0 .)
 
 
 state 236
 
-    (84) power0 -> LPAREN open_paren exp0 RPAREN close_paren . check_pow_rad_operator power2
-    (98) check_pow_rad_operator -> .
+    (83) power0 -> LPAREN open_paren exp0 RPAREN close_paren . check_pow_rad_operator power2
+    (97) check_pow_rad_operator -> .
 
-    POWER           reduce using rule 98 (check_pow_rad_operator -> .)
-    SQRT            reduce using rule 98 (check_pow_rad_operator -> .)
-    MULTIPLY        reduce using rule 98 (check_pow_rad_operator -> .)
-    DIVIDE          reduce using rule 98 (check_pow_rad_operator -> .)
-    PLUS            reduce using rule 98 (check_pow_rad_operator -> .)
-    MINUS           reduce using rule 98 (check_pow_rad_operator -> .)
-    LTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    GTHAN           reduce using rule 98 (check_pow_rad_operator -> .)
-    DIFFERENT       reduce using rule 98 (check_pow_rad_operator -> .)
-    EQUIVALENT      reduce using rule 98 (check_pow_rad_operator -> .)
-    SEMICOLON       reduce using rule 98 (check_pow_rad_operator -> .)
-    RSQRBRACKET     reduce using rule 98 (check_pow_rad_operator -> .)
-    RPAREN          reduce using rule 98 (check_pow_rad_operator -> .)
-    COMMA           reduce using rule 98 (check_pow_rad_operator -> .)
+    POWER           reduce using rule 97 (check_pow_rad_operator -> .)
+    SQRT            reduce using rule 97 (check_pow_rad_operator -> .)
+    MULTIPLY        reduce using rule 97 (check_pow_rad_operator -> .)
+    DIVIDE          reduce using rule 97 (check_pow_rad_operator -> .)
+    PLUS            reduce using rule 97 (check_pow_rad_operator -> .)
+    MINUS           reduce using rule 97 (check_pow_rad_operator -> .)
+    LTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    GTHAN           reduce using rule 97 (check_pow_rad_operator -> .)
+    DIFFERENT       reduce using rule 97 (check_pow_rad_operator -> .)
+    EQUIVALENT      reduce using rule 97 (check_pow_rad_operator -> .)
+    SEMICOLON       reduce using rule 97 (check_pow_rad_operator -> .)
+    RSQRBRACKET     reduce using rule 97 (check_pow_rad_operator -> .)
+    RPAREN          reduce using rule 97 (check_pow_rad_operator -> .)
+    COMMA           reduce using rule 97 (check_pow_rad_operator -> .)
 
     check_pow_rad_operator         shift and go to state 267
 
@@ -4493,22 +4506,20 @@ state 247
 
 state 248
 
-    (69) simple_declaration -> ID COLON . type SEMICOLON
+    (68) simple_declaration -> ID COLON . type SEMICOLON
     (65) type -> . INT
     (66) type -> . FLOAT
     (67) type -> . STRING
-    (68) type -> . BOOL
 
     INT             shift and go to state 81
     FLOAT           shift and go to state 82
     STRING          shift and go to state 83
-    BOOL            shift and go to state 84
 
     type                           shift and go to state 273
 
 state 249
 
-    (70) simple_assignment -> ID EQUALS expression0 . SEMICOLON
+    (69) simple_assignment -> ID EQUALS expression0 . SEMICOLON
 
     SEMICOLON       shift and go to state 274
 
@@ -4521,13 +4532,11 @@ state 250
     (65) type -> . INT
     (66) type -> . FLOAT
     (67) type -> . STRING
-    (68) type -> . BOOL
 
     VOID            shift and go to state 277
     INT             shift and go to state 81
     FLOAT           shift and go to state 82
     STRING          shift and go to state 83
-    BOOL            shift and go to state 84
 
     function1                      shift and go to state 275
     type                           shift and go to state 276
@@ -4547,13 +4556,11 @@ state 252
     (65) type -> . INT
     (66) type -> . FLOAT
     (67) type -> . STRING
-    (68) type -> . BOOL
     (174) empty -> .
 
     INT             shift and go to state 81
     FLOAT           shift and go to state 82
     STRING          shift and go to state 83
-    BOOL            shift and go to state 84
     RPAREN          reduce using rule 174 (empty -> .)
 
     params0                        shift and go to state 278
@@ -4705,25 +4712,25 @@ state 263
 
 state 264
 
-    (92) power1 -> LSQRBRACKET . exp0 RSQRBRACKET
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (91) power1 -> LSQRBRACKET . exp0 RSQRBRACKET
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -4733,15 +4740,15 @@ state 264
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 265
 
-    (89) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 . power2
-    (94) power2 -> . POWER push_pow_rad_op power0
-    (95) power2 -> . SQRT push_pow_rad_op power0
-    (96) power2 -> . empty
+    (88) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 . power2
+    (93) power2 -> . POWER push_pow_rad_op power0
+    (94) power2 -> . SQRT push_pow_rad_op power0
+    (95) power2 -> . empty
     (174) empty -> .
 
     POWER           shift and go to state 138
@@ -4764,30 +4771,30 @@ state 265
 
 state 266
 
-    (93) power1 -> empty .
+    (92) power1 -> empty .
 
-    POWER           reduce using rule 93 (power1 -> empty .)
-    SQRT            reduce using rule 93 (power1 -> empty .)
-    MULTIPLY        reduce using rule 93 (power1 -> empty .)
-    DIVIDE          reduce using rule 93 (power1 -> empty .)
-    PLUS            reduce using rule 93 (power1 -> empty .)
-    MINUS           reduce using rule 93 (power1 -> empty .)
-    LTHAN           reduce using rule 93 (power1 -> empty .)
-    GTHAN           reduce using rule 93 (power1 -> empty .)
-    DIFFERENT       reduce using rule 93 (power1 -> empty .)
-    EQUIVALENT      reduce using rule 93 (power1 -> empty .)
-    SEMICOLON       reduce using rule 93 (power1 -> empty .)
-    RSQRBRACKET     reduce using rule 93 (power1 -> empty .)
-    RPAREN          reduce using rule 93 (power1 -> empty .)
-    COMMA           reduce using rule 93 (power1 -> empty .)
+    POWER           reduce using rule 92 (power1 -> empty .)
+    SQRT            reduce using rule 92 (power1 -> empty .)
+    MULTIPLY        reduce using rule 92 (power1 -> empty .)
+    DIVIDE          reduce using rule 92 (power1 -> empty .)
+    PLUS            reduce using rule 92 (power1 -> empty .)
+    MINUS           reduce using rule 92 (power1 -> empty .)
+    LTHAN           reduce using rule 92 (power1 -> empty .)
+    GTHAN           reduce using rule 92 (power1 -> empty .)
+    DIFFERENT       reduce using rule 92 (power1 -> empty .)
+    EQUIVALENT      reduce using rule 92 (power1 -> empty .)
+    SEMICOLON       reduce using rule 92 (power1 -> empty .)
+    RSQRBRACKET     reduce using rule 92 (power1 -> empty .)
+    RPAREN          reduce using rule 92 (power1 -> empty .)
+    COMMA           reduce using rule 92 (power1 -> empty .)
 
 
 state 267
 
-    (84) power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator . power2
-    (94) power2 -> . POWER push_pow_rad_op power0
-    (95) power2 -> . SQRT push_pow_rad_op power0
-    (96) power2 -> . empty
+    (83) power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator . power2
+    (93) power2 -> . POWER push_pow_rad_op power0
+    (94) power2 -> . SQRT push_pow_rad_op power0
+    (95) power2 -> . empty
     (174) empty -> .
 
     POWER           shift and go to state 138
@@ -4874,13 +4881,11 @@ state 272
     (65) type -> . INT
     (66) type -> . FLOAT
     (67) type -> . STRING
-    (68) type -> . BOOL
     (174) empty -> .
 
     INT             shift and go to state 81
     FLOAT           shift and go to state 82
     STRING          shift and go to state 83
-    BOOL            shift and go to state 84
     RPAREN          reduce using rule 174 (empty -> .)
 
     params0                        shift and go to state 292
@@ -4889,26 +4894,26 @@ state 272
 
 state 273
 
-    (69) simple_declaration -> ID COLON type . SEMICOLON
+    (68) simple_declaration -> ID COLON type . SEMICOLON
 
     SEMICOLON       shift and go to state 293
 
 
 state 274
 
-    (70) simple_assignment -> ID EQUALS expression0 SEMICOLON .
+    (69) simple_assignment -> ID EQUALS expression0 SEMICOLON .
 
-    PRIVATE         reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    PUBLIC          reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    ID              reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    CONSTRUCT       reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    RSQRBRACKET     reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    IF              reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    WRITE           reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    READ            reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    RETURN          reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    WHILE           reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
-    RBRACKET        reduce using rule 70 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    PRIVATE         reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    PUBLIC          reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    ID              reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    CONSTRUCT       reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    RSQRBRACKET     reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    IF              reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    WRITE           reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    READ            reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    RETURN          reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    WHILE           reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
+    RBRACKET        reduce using rule 69 (simple_assignment -> ID EQUALS expression0 SEMICOLON .)
 
 
 state 275
@@ -5015,45 +5020,45 @@ state 284
 
 state 285
 
-    (92) power1 -> LSQRBRACKET exp0 . RSQRBRACKET
+    (91) power1 -> LSQRBRACKET exp0 . RSQRBRACKET
 
     RSQRBRACKET     shift and go to state 301
 
 
 state 286
 
-    (89) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .
+    (88) power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .
 
-    MULTIPLY        reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    DIVIDE          reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    PLUS            reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    MINUS           reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    LTHAN           reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    GTHAN           reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    DIFFERENT       reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    EQUIVALENT      reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    SEMICOLON       reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    RSQRBRACKET     reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    RPAREN          reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
-    COMMA           reduce using rule 89 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    MULTIPLY        reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    DIVIDE          reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    PLUS            reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    MINUS           reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    LTHAN           reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    GTHAN           reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    DIFFERENT       reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    EQUIVALENT      reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    SEMICOLON       reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    RSQRBRACKET     reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    RPAREN          reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
+    COMMA           reduce using rule 88 (power0 -> ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2 .)
 
 
 state 287
 
-    (84) power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .
+    (83) power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .
 
-    MULTIPLY        reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    DIVIDE          reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    PLUS            reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    MINUS           reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    LTHAN           reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    GTHAN           reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    DIFFERENT       reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    EQUIVALENT      reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    SEMICOLON       reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    RSQRBRACKET     reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    RPAREN          reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
-    COMMA           reduce using rule 84 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    MULTIPLY        reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    DIVIDE          reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    PLUS            reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    MINUS           reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    LTHAN           reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    GTHAN           reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    DIFFERENT       reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    EQUIVALENT      reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    SEMICOLON       reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    RSQRBRACKET     reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    RPAREN          reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
+    COMMA           reduce using rule 83 (power0 -> LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2 .)
 
 
 state 288
@@ -5112,13 +5117,13 @@ state 292
 
 state 293
 
-    (69) simple_declaration -> ID COLON type SEMICOLON .
+    (68) simple_declaration -> ID COLON type SEMICOLON .
 
-    PRIVATE         reduce using rule 69 (simple_declaration -> ID COLON type SEMICOLON .)
-    PUBLIC          reduce using rule 69 (simple_declaration -> ID COLON type SEMICOLON .)
-    ID              reduce using rule 69 (simple_declaration -> ID COLON type SEMICOLON .)
-    CONSTRUCT       reduce using rule 69 (simple_declaration -> ID COLON type SEMICOLON .)
-    RSQRBRACKET     reduce using rule 69 (simple_declaration -> ID COLON type SEMICOLON .)
+    PRIVATE         reduce using rule 68 (simple_declaration -> ID COLON type SEMICOLON .)
+    PUBLIC          reduce using rule 68 (simple_declaration -> ID COLON type SEMICOLON .)
+    ID              reduce using rule 68 (simple_declaration -> ID COLON type SEMICOLON .)
+    CONSTRUCT       reduce using rule 68 (simple_declaration -> ID COLON type SEMICOLON .)
+    RSQRBRACKET     reduce using rule 68 (simple_declaration -> ID COLON type SEMICOLON .)
 
 
 state 294
@@ -5156,18 +5161,18 @@ state 298
     (44) assignment0 -> assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS . expression0 SEMICOLON
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
     (124) attr_access0 -> . ID DOT ID
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (106) id_funcCall -> . ID
@@ -5212,22 +5217,22 @@ state 300
 
 state 301
 
-    (92) power1 -> LSQRBRACKET exp0 RSQRBRACKET .
+    (91) power1 -> LSQRBRACKET exp0 RSQRBRACKET .
 
-    POWER           reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    SQRT            reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    MULTIPLY        reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    DIVIDE          reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    PLUS            reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    MINUS           reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    LTHAN           reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    GTHAN           reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    DIFFERENT       reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    EQUIVALENT      reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    SEMICOLON       reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    RSQRBRACKET     reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    RPAREN          reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
-    COMMA           reduce using rule 92 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    POWER           reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    SQRT            reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    MULTIPLY        reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    DIVIDE          reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    PLUS            reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    MINUS           reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    LTHAN           reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    GTHAN           reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    DIFFERENT       reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    EQUIVALENT      reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    SEMICOLON       reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    RPAREN          reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
+    COMMA           reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
 
 
 state 302
@@ -5260,8 +5265,8 @@ state 304
     (26) function2 -> . simple_declaration function2
     (27) function2 -> . simple_assignment function2
     (28) function2 -> . empty
-    (69) simple_declaration -> . ID COLON type SEMICOLON
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (68) simple_declaration -> . ID COLON type SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
     ID              shift and go to state 314
@@ -5282,24 +5287,24 @@ state 305
 state 306
 
     (38) declaration2 -> dim2Neur LSQRBRACKET . exp0 limitNeur2 RSQRBRACKET
-    (72) exp0 -> . term0 check_last_plus_minus_operator exp1
-    (78) term0 -> . power0 check_last_times_division_operator term1
-    (84) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
-    (85) power0 -> . const_var check_pow_rad_operator power2
-    (86) power0 -> . function_call check_pow_rad_operator power2
-    (87) power0 -> . method_call0 check_pow_rad_operator power2
-    (88) power0 -> . attr_access0 check_pow_rad_operator power2
-    (89) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
-    (99) const_var -> . CONST_INT neurInt
-    (100) const_var -> . CONST_FLOAT neurFloat
-    (101) const_var -> . ID
+    (71) exp0 -> . term0 check_last_plus_minus_operator exp1
+    (77) term0 -> . power0 check_last_times_division_operator term1
+    (83) power0 -> . LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
+    (84) power0 -> . const_var check_pow_rad_operator power2
+    (85) power0 -> . function_call check_pow_rad_operator power2
+    (86) power0 -> . method_call0 check_pow_rad_operator power2
+    (87) power0 -> . attr_access0 check_pow_rad_operator power2
+    (88) power0 -> . ID LSQRBRACKET exp0 RSQRBRACKET check_pow_rad_operator power1 power2
+    (98) const_var -> . CONST_INT neurInt
+    (99) const_var -> . CONST_FLOAT neurFloat
+    (100) const_var -> . ID neurID
     (104) function_call -> . id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN
     (125) method_call0 -> . ID DOT function_call
     (124) attr_access0 -> . ID DOT ID
     (106) id_funcCall -> . ID
 
     LPAREN          shift and go to state 61
-    ID              shift and go to state 88
+    ID              shift and go to state 87
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
@@ -5309,7 +5314,7 @@ state 306
     const_var                      shift and go to state 62
     function_call                  shift and go to state 63
     method_call0                   shift and go to state 64
-    attr_access0                   shift and go to state 87
+    attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
 state 307
@@ -5342,7 +5347,7 @@ state 309
     (134) function_statement -> . method_call0 SEMICOLON
     (135) function_statement -> . while
     (174) empty -> .
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
@@ -5387,8 +5392,8 @@ state 311
     (26) function2 -> . simple_declaration function2
     (27) function2 -> . simple_assignment function2
     (28) function2 -> . empty
-    (69) simple_declaration -> . ID COLON type SEMICOLON
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (68) simple_declaration -> . ID COLON type SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
     ID              shift and go to state 314
@@ -5405,8 +5410,8 @@ state 312
     (26) function2 -> . simple_declaration function2
     (27) function2 -> . simple_assignment function2
     (28) function2 -> . empty
-    (69) simple_declaration -> . ID COLON type SEMICOLON
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (68) simple_declaration -> . ID COLON type SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
     ID              shift and go to state 314
@@ -5426,8 +5431,8 @@ state 313
 
 state 314
 
-    (69) simple_declaration -> ID . COLON type SEMICOLON
-    (70) simple_assignment -> ID . EQUALS expression0 SEMICOLON
+    (68) simple_declaration -> ID . COLON type SEMICOLON
+    (69) simple_assignment -> ID . EQUALS expression0 SEMICOLON
 
     COLON           shift and go to state 248
     EQUALS          shift and go to state 217
@@ -5479,7 +5484,7 @@ state 318
     (134) function_statement -> . method_call0 SEMICOLON
     (135) function_statement -> . while
     (174) empty -> .
-    (70) simple_assignment -> . ID EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
@@ -5612,7 +5617,7 @@ state 327
 
 state 328
 
-    (70) simple_assignment -> ID . EQUALS expression0 SEMICOLON
+    (69) simple_assignment -> ID . EQUALS expression0 SEMICOLON
     (125) method_call0 -> ID . DOT function_call
     (106) id_funcCall -> ID .
 
