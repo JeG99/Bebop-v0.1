@@ -1,9 +1,4 @@
 from semCube import typeMatch
-from calendar import c
-from cgi import print_environ
-import types
-#from curses import has_key
-#from numpy import empty
 import ply.yacc as yacc
 import sys
 import json
@@ -35,19 +30,34 @@ paramCounter = 0
 paramTableCounter = 0
 currFuncCall = ""
 dimAssign  = 0
+
+## Global addresses
 Gi = 0
 Gf = 2001
 Go = 4001
+
+## Local Addresses
 Li = 5000
 Lf = 7001
 Lo = 10001
+
+## Temporal Addresses{
+# Condicionales
+# Whiles
+# Expresiones
+#
 Ti = 11000
 Tf = 12001
 Tb = 13001
 To = 14001
 Ts = 15001
+
+## Constant Addresses
 Ci = 16000
 Cf = 17001
+
+## Pointer Address
+Tp = 18000
 
 
 def p_routine0(p):
@@ -470,14 +480,23 @@ def p_arrAccdim2(p):
     dim = p[-6][2]
     ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
     quad = ["VERIFY",operands_stack[-1] , 0, ls]
-    print("/*/*/*/*/*/*",id,func_dir[curr_scope]["vars_table"][id])
+   #print("/*/*/*/*/*/*",id,func_dir[curr_scope]["vars_table"][id])
     quadruples.append(quad)
     quadCounter += 1
     aux = operands_stack.pop()
+    aux2 = operands_stack.pop()
+    print(aux, aux2, "-+-+-+-+-+-+-+")
     operands_stack.append(('dir', temp_counter))
-    quadruples.append(["+", aux, func_dir[curr_scope]["vars_table"][id]["dirV"], (('dir', temp_counter))])
+    quadruples.append(["+", aux, aux2, (('dir', temp_counter))])
+    operands_stack.append(('dir', temp_counter))
     temp_counter += 1
     quadCounter += 1
+    aux3 = operands_stack.pop()
+    quadruples.append(["+", aux3, func_dir[curr_scope]["vars_table"][id]["dirV"], (('dir', temp_counter))])
+    operands_stack.append(('dir', temp_counter))
+    temp_counter += 1
+    quadCounter += 1
+    
     operators_stack.pop()
 
 def p_rsqrbracket_assign_2dim1(p):
@@ -486,9 +505,8 @@ def p_rsqrbracket_assign_2dim1(p):
     '''
     global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
     aux = operands_stack.pop()
-    print(aux, "$$$$$$$$$$$$$$$$$$$$$$$$$$")
     id = p[-2][0]
-    m = func_dir[curr_scope]["vars_table"][id]["m1"]
+    m = int(func_dir[curr_scope]["vars_table"][id]["m1"])
     quadruples.append(["VERIFY",aux , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
     quadCounter += 1
     quad = ["*", aux, m,('dir',temp_counter)]
@@ -759,8 +777,12 @@ def p_check_last_plus_minus_operator(p):
     # falta typematching
     if len(operators_stack) and len(operands_stack) and (operators_stack[-1] == '+' or operators_stack[-1] == '-'):
         right_oper = operands_stack.pop()
+        #right_oper = types_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
+        '''if op == "+":
+            typeRes = typeMatch("SUM", )'''
+
         operands_stack.append(('dir', temp_counter))
         quad = [op, left_oper,
                 right_oper, ('dir', temp_counter)]
@@ -1158,6 +1180,7 @@ def p_push_string_val(p):
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operands_stack.append(p[-1])
+    #types_stack.append("string")
 
 
 def p_writing1(p):
@@ -1235,7 +1258,7 @@ def p_wNeur3(p):
     quadruples.append(["GOTO", None, None, temp2])
     quadCounter += 1
     #print(quadruples[temp2], end = "\n\n\n")
-    quadruples[temp1][3] = quadCounter + 1
+    quadruples[temp1][3] = quadCounter
 
 
 def p_block0(p):
@@ -1280,6 +1303,7 @@ def p_main(p):
     Lf = 7001
     Lo = 10001
 
+
 def p_main1(p):
     '''
     main1 : declaration0 main1
@@ -1293,7 +1317,8 @@ def p_main_scope(p):
     '''
     main_scope : 
     '''
-    global curr_scope, func_dir, prev_scope
+    global curr_scope, func_dir, prev_scope, quadruples, quadCounter
+    quadruples[0][3] = quadCounter
     prev_scope = curr_scope
     curr_scope = "main"
     func_dir[curr_scope] = {"return_type": "void", "vars_table": {}}
