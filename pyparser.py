@@ -652,10 +652,26 @@ def p_neurMemory(p):
             direc = Go
             Go += size
     print(var_id, dimNodes)
+    
+    if dimCounter == 1:
+        ls1 = dimNodes[0]["ls"]
+        r = dimNodes[0]["r"]
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim1"] = ls1
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = 0
+        func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
+        func_dir[curr_scope]["vars_table"][var_id]["m1"] = r / (ls1+1)
+    elif dimCounter == 2:
+        ls1 = dimNodes[0]["ls"]
+        ls2 = dimNodes[1]["ls"]
+        r = dimNodes[1]["r"]
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim1"] = ls1
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = ls2
+        func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
+        func_dir[curr_scope]["vars_table"][var_id]["m1"] = r/ (ls1+1)
+        func_dir[curr_scope]["vars_table"][var_id]["m2"] = func_dir[curr_scope]["vars_table"][var_id]["m1"]/ (ls2+1)
+
     func_dir[curr_scope]["vars_table"][var_id]["dirV"] = direc
-    aux = dimNodes
-    func_dir[curr_scope]["vars_table"][var_id]["dimNodes1"] = aux
-    func_dir[curr_scope]["vars_table"][var_id]["dimNodes2"] = dimNodes
+    
 
 
 def p_declaration2(p):
@@ -691,8 +707,8 @@ def p_limitNeur2(p):
 def p_assignment0(p):
     '''
     assignment0 : ID EQUALS expression0 SEMICOLON
-                | assign_id_def lsqrbracket_assign exp0 RSQRBRACKET EQUALS expression0 SEMICOLON 
-                | assign_id_def lsqrbracket_assign exp0 RSQRBRACKET LSQRBRACKET exp0 RSQRBRACKET EQUALS expression0 SEMICOLON
+                | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON 
+                | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     print(len(p), "amogus")
@@ -702,18 +718,82 @@ def p_assignment0(p):
         quadruples.append(quad)
         quadCounter += 1
     elif len(p) == 8 and operands_stack:
-        print("asdasdsa")
+        valAssign = operands_stack.pop()
+        assignee = operands_stack.pop()
+        quad = [p[5], assignee, None, valAssign]
+        quadruples.append(quad)
+        quadCounter += 1
+
+def p_arrAccdim2(p):
+    '''
+    arrAccdim2 :
+    '''
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
+    print(p[-6], "El Sus")
+    id = p[-6][0]
+    idType = p[-6][1]
+    dim = p[-6][2]
+    ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
+    quad = ["VERIFY",operands_stack[-1] , 0, ls]
+    print("/*/*/*/*/*/*",id,func_dir[curr_scope]["vars_table"][id])
+    quadruples.append(quad)
+    quadCounter += 1
+    aux = operands_stack.pop()
+    operands_stack.append(('dir', temp_counter))
+    quadruples.append(["+", aux, func_dir[curr_scope]["vars_table"][id]["dirV"], (('dir', temp_counter))])
+    temp_counter += 1
+    quadCounter += 1
+    operators_stack.pop()
+
+def p_rsqrbracket_assign_2dim1(p):
+    '''
+    rsqrbracket_assign_2dim1 : RSQRBRACKET
+    '''
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
+    aux = operands_stack.pop()
+    print(aux, "$$$$$$$$$$$$$$$$$$$$$$$$$$")
+    id = p[-2][0]
+    m = func_dir[curr_scope]["vars_table"][id]["m1"]
+    quadruples.append(["VERIFY",aux , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
+    quadCounter += 1
+    quad = ["*", aux, m,('dir',temp_counter)]
+    quadruples.append(quad)
+    operands_stack.append(('dir',temp_counter))
+    temp_counter += 1
+    quadCounter +=1
+
+    
+
+def p_rsqrbracket_assign(p):
+    '''
+    rsqrbracket_assign : RSQRBRACKET
+    '''
+    print(p[-2], "sususususususususus")
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
+    id = p[-2][0]
+    idType = p[-2][1]
+    dim = p[-2][2]
+    quadruples.append(["VERIFY",operands_stack[-1] , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
+    quadCounter += 1
+    aux = operands_stack.pop()
+    operands_stack.append(('dir', temp_counter))
+    quadruples.append(["+", aux, func_dir[curr_scope]["vars_table"][id]["dirV"], (('dir', temp_counter))])
+    temp_counter += 1
+    quadCounter += 1
+    operators_stack.pop()
+
 
 def p_lsqrbracket_assign(p):
     '''
     lsqrbracket_assign : LSQRBRACKET
     '''
     global operands_stack, types_stack, operators_stack, dimAssign
-    p[0] = p[1]
+    
     id = operands_stack.pop()
     idType = types_stack.pop()
-    operators_stack.append(")")
+    operators_stack.append("(")
     dimAssign = 1
+    p[0] = (id, idType, dimAssign)
 
         
 
@@ -1113,12 +1193,15 @@ def p_function_call(p):
     '''
     function_call : id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN 
     '''
-    global quadruples, quadCounter, paramCounter, paramTableCounter, currFuncCall
-    quad = ["GOSUB", p[1], None, None]
-    quadruples.append(quad)
-    quadCounter += 1
-    paramTableCounter = 0
-    currFuncCall = ""
+    global quadruples, quadCounter, paramCounter, paramTableCounter, currFuncCall, func_dir
+    if p[1] in func_dir.keys():
+        quad = ["GOSUB", p[1], None, None]
+        quadruples.append(quad)
+        quadCounter += 1
+        paramTableCounter = 0
+        currFuncCall = ""
+    else:
+        print("ERROR - Function does not exist")
 
 def p_neurFuncCall(p):
     '''
