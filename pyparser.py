@@ -723,6 +723,12 @@ def p_assignment0(p):
         quad = [p[5], assignee, None, valAssign]
         quadruples.append(quad)
         quadCounter += 1
+    elif len(p) == 12 and operands_stack:
+        valAssign = operands_stack.pop()
+        assignee = operands_stack.pop()
+        quad = [p[9], assignee, None, valAssign]
+        quadruples.append(quad)
+        quadCounter += 1
 
 def p_arrAccdim2(p):
     '''
