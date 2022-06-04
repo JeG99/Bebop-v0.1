@@ -1,3 +1,4 @@
+from semCube import typeMatch
 from calendar import c
 from cgi import print_environ
 import types
@@ -14,6 +15,7 @@ class_dir = {}
 curr_scope = ''
 prev_scope = ""
 var_id = ""
+const_table = {}
 dim1Node = {}
 dimNodes = [
     {"ls":0, "li":0,"r": 1, "m": 0},
@@ -47,280 +49,6 @@ Ts = 15001
 Ci = 16000
 Cf = 17001
 
-# TYPE CODEs
-# int       : 0
-# float     : 1
-# bool      : 2
-# string    : 3
-
-# OPERATOR CODES
-# sum       : 0
-# sub       : 1
-# mul       : 2
-# div       : 3
-# exp       : 4
-# sqrt      : 5
-# =         : 6
-# <         : 7
-# >         : 8
-# ==        : 9
-# <>        : 10
-
-# ERR       : -1
-
-# RESULTING_TYPE = sem_cube[OPERATOR][OP1][OP2]
-# EX:
-# RESULTING_TYPE = sem_cube[DIV][INT][FLOAT]
-# RESULTING_TYPE = sem_cube[3][0][1] = 1 = FLOAT
-
-sem_cube = {
-    'sum': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'float',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'int',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    'sub': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'float',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'int',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    'mul': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'float',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'int',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    'div': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'float',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'int',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    'exp': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'float',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'int',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    'sqrt': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'float',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'int',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    '=': {
-        ('int', 'int'): 'int',
-        ('int', 'float'): 'ERR',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'ERR',
-        ('float', 'float'): 'float',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'bool',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'string'
-    },
-    '<': {
-        ('int', 'int'): 'bool',
-        ('int', 'float'): 'bool',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'bool',
-        ('float', 'float'): 'bool',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    '>': {
-        ('int', 'int'): 'bool',
-        ('int', 'float'): 'bool',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'bool',
-        ('float', 'float'): 'bool',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    '==': {
-        ('int', 'int'): 'bool',
-        ('int', 'float'): 'bool',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'bool',
-        ('float', 'float'): 'bool',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    },
-    '<>': {
-        ('int', 'int'): 'bool',
-        ('int', 'float'): 'bool',
-        ('int', 'bool'): 'ERR',
-        ('int', 'string'): 'ERR',
-
-        ('float', 'int'): 'bool',
-        ('float', 'float'): 'bool',
-        ('float', 'bool'): 'ERR',
-        ('float', 'string'): 'ERR',
-
-        ('bool', 'int'): 'ERR',
-        ('bool', 'float'): 'ERR',
-        ('bool', 'bool'): 'ERR',
-        ('bool', 'string'): 'ERR',
-
-        ('string', 'int'): 'ERR',
-        ('string', 'float'): 'ERR',
-        ('string', 'bool'): 'ERR',
-        ('string', 'string'): 'ERR'
-    }
-}
-
-sem_cube = (
-    ((0, 1, -1, -1), (0, 1, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((0, 1, -1, -1), (0, 1, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((0, 1, -1, -1), (0, 1, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((0, 1, -1, -1), (0, 1, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((0, 1, -1, -1), (0, 1, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((0, 1, -1, -1), (0, 1, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((0, -1, -1, -1), (-1, 1, -1, -1), (-1, -1, 2, -1), (-1, -1, -1, 3)),
-    ((2, 2, -1, -1), (2, 2, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((2, 2, -1, -1), (2, 2, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((2, 2, -1, -1), (2, 2, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1)),
-    ((2, 2, -1, -1), (2, 2, -1, -1), (-1, -1, -1, -1), (-1, -1, -1, -1))
-)
-
 
 def p_routine0(p):
     '''
@@ -335,8 +63,9 @@ def p_routine0(p):
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    [print(quad) for quad in quadruples]
+    [print(idx, quad) for idx, quad in enumerate(quadruples)]
     #print(pSaltos)
+    print(const_table)
 
 def p_goto_main_neur(p):
     '''
@@ -1185,14 +914,20 @@ def p_neurInt(p):
     '''
     neurInt :
     '''
-    global types_stack
+    global types_stack, const_table, Ci
+    if p[-1] not in const_table.keys():
+        const_table[p[-1]] = Ci
+        Ci += 1
     types_stack.append("int")
 
 def p_neurFloat(p):
     '''
     neurFloat :
     '''
-    global types_stack
+    global types_stack, const_table, Cf
+    if p[-1] not in const_table.keys():
+        const_table[p[-1]] = Cf
+        Cf += 1
     types_stack.append("float")
 
 def p_function_call(p):
@@ -1360,9 +1095,10 @@ def p_condNeur1(p):
     '''
     condNeur1 :
     '''
-    global pSaltos, quadruples, quadCounter
+    global operands_stack, pSaltos, quadruples, quadCounter
     pSaltos.append(quadCounter)
-    quadruples.append(["GOTOF", None, None, None])
+    temp = operands_stack.pop()
+    quadruples.append(["GOTOF", temp, None, None])
     quadCounter += 1
 
 
@@ -1480,9 +1216,10 @@ def p_wNeur2(p):
     '''
     wNeur2 :
     '''
-    global pSaltos, quadruples, quadCounter
+    global operands_stack, pSaltos, quadruples, quadCounter
     pSaltos.append(quadCounter)
-    quadruples.append(["GOTOF", None, None, None])
+    temp = operands_stack.pop()
+    quadruples.append(["GOTOF", temp, None, None])
     quadCounter += 1
     
 

@@ -43,5 +43,4 @@ main {
 			<<<("no se pudo compadre");
 		};
 	}
-	func();
 }
