@@ -68,6 +68,7 @@ class VirtualMachine():
 
     def run(self):
         print("ROUTINE START")
+        #print(self.instructions)
         while(self.instructions[self.curr_ip][0] != 'END'):
             if self.instructions[self.curr_ip][0] == '+':
                 # Left operand

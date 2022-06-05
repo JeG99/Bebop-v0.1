@@ -95,11 +95,11 @@ def tempCalculator(left_oper, right_oper, op):
     ### LEFT
     #Check if constant
     if left_oper in const_table.keys():
-            lOperDir = const_table[left_oper]
-            if lOperDir >= 16000 and lOperDir < 17001 :
-                lOperType = "int"
-            elif lOperDir >= 17001 and lOperDir < 18000:
-                lOperType = "float"
+        lOperDir = const_table[left_oper]
+        if lOperDir >= 16000 and lOperDir < 17001 :
+            lOperType = "int"
+        elif lOperDir >= 17001 and lOperDir < 18000:
+            lOperType = "float"
     else:
         #Check in current scope, go to global, or check temporals
         if left_oper in func_dir[curr_scope]["vars_table"].keys():
@@ -136,8 +136,8 @@ def tempCalculator(left_oper, right_oper, op):
     elif op == "<>":
         typeRes = typeMatch("NEQUIVALENT", rOperType, lOperType)
     if typeRes == "INT":
-            direc = Ti
-            Ti += 1
+        direc = Ti
+        Ti += 1
     elif typeRes == "FLOAT":
         direc = Tf
         Tf += 1
@@ -159,7 +159,7 @@ def p_routine0(p):
     p[0] = 1
     quadruples.append(["END", None, None, None])
     quadCounter += 1
-    #print(json.dumps(func_dir, indent=4))
+    print(json.dumps(func_dir, indent=4))
     #print(operands_stack)
     #print(types_stack)
     #print(operators_stack)
