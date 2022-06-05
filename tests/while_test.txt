@@ -5,7 +5,12 @@ v2: int;
 v3: int[3][3];
 v4: int [10];
 def funcion71628(int v50, float v51) -> void [[v6:int; v9:float;]] {
-	v6 = 5+4;
+	v6 = 5+4 + 2 - 4 * 6 / 5;
+	<<<("Funcion");
+	<<<(v6);
+}
+def funcion7(int v50, float v51) -> void [[v6:int; v9:float;]] {
+	v6 = 5+4 + 2 - 4 * 6 / 5;
 	<<<("Funcion");
 	<<<(v50);
 }

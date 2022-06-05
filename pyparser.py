@@ -34,6 +34,7 @@ paramCounter = 0
 paramTableCounter = 0
 currFuncCall = ""
 dimAssign  = 0
+temporalCounter = 0
 
 ## Global addresses
 Gi = 0
@@ -68,7 +69,7 @@ Tp = 19000
 # Return: direc(Temporal direction for saving result), rOperDir(calculated direction of right operand), lOperDir(calculated direction of left operand)
 
 def tempCalculator(left_oper, right_oper, op):
-    global Ti, Tf, To, Tb, curr_scope, currFuncCall
+    global Ti, Tf, To, Tb, curr_scope, currFuncCall, temporalCounter
     ### RIGHT
     #Check if constant
     if right_oper in const_table.keys():
@@ -147,6 +148,7 @@ def tempCalculator(left_oper, right_oper, op):
     else:
         direc = To
         To += 1
+    temporalCounter += 1
     return direc, lOperDir, rOperDir
 
 ### Routine0: Beginning of program
@@ -165,7 +167,7 @@ def p_routine0(p):
     #print(operators_stack)
     #print('\nquadruples:')
     #print(const_table)
-    #[print(idx, quad) for idx, quad in enumerate(quadruples)]
+    [print(idx, quad) for idx, quad in enumerate(quadruples)]
     vm = VirtualMachine(quadruples, func_dir, const_table)
     vm.mem_init()
     vm.run()
@@ -193,7 +195,7 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
-    global func_dir, Gi, Gf, Go, Li, Lf, Lo, Ti, To, Tf, Tb, Ts
+    global func_dir, Gi, Gf, Go, Li, Lf, Lo, Ti, To, Tf, Tb, Ts, temporalCounter
             
     Li = 5000
     Lf = 7001
@@ -203,6 +205,7 @@ def p_routine1(p):
     Tb = 13001
     To = 14001
     Ts = 15001
+    temporalCounter = 0
 
 #### Global Scope (Neural point 2)
 # Converts current scope to "global"
@@ -239,6 +242,7 @@ def p_revert_scope(p):
     '''
     global curr_scope, prev_scope
     curr_scope = prev_scope
+
 
 ### id def (Neural point 5)
 # Neural point that checks if an ID for a function is defined to raise an error or to create its entry on func_dir
@@ -308,14 +312,11 @@ def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
     '''
-    global quadruples, quadCounter, prev_table, Li, Lf, Lo
+    global quadruples, quadCounter, prev_table, Li, Lf, Lo, temporalCounter
     p[0] = (p[1], p[2], p[4], p[7])
     quadruples.append(["ENDPROC",None,None,None])
-
+    func_dir[p[2]]["temporal_counter"] = temporalCounter
     quadCounter += 1
-    #func_dir[p[2]]["vars_table"] = {}
-    #func_dir[p[2]]["params_number"] = 0
-    #func_dir[p[2]]["params_table"] = []
     Li = 5000
     Lf = 7001
     Lo = 10001
@@ -324,6 +325,7 @@ def p_function0(p):
     Tb = 13001
     To = 14001
     Ts = 15001
+    temporalCounter = 0
 
 
 ### endParamNeur (Neural point 7)
@@ -1524,7 +1526,7 @@ def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
     '''
-    global Li, Lf, Lo
+    global Li, Lf, Lo, temporalCounter
     Li = 5000
     Lf = 7001
     Lo = 10001
@@ -1533,6 +1535,7 @@ def p_main(p):
     Tb = 13001
     To = 14001
     Ts = 15001
+    temporalCounter = 0
 
 
 def p_main1(p):
