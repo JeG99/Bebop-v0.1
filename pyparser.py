@@ -1,3 +1,4 @@
+from msilib.schema import Error
 from turtle import right
 from semCube import typeMatch
 import ply.yacc as yacc
@@ -58,9 +59,16 @@ Cf = 17001
 Tp = 18000
 
 
+### Aux Function tempCalculator
+# params: left_oper, right_oper, op
+# Takes operands used to validate the type generated from a certain operation
+# Function used to validate constant and variable types with semantic cube
+# Return: direc(Temporal direction for saving result), rOperDir(calculated direction of right operand), lOperDir(calculated direction of left operand)
+
 def tempCalculator(left_oper, right_oper, op):
-    global Ti, Tf, To, curr_scope, currFuncCall
+    global Ti, Tf, To, Tb, curr_scope, currFuncCall
     ### RIGHT
+    #Check if constant
     if right_oper in const_table.keys():
         rOperDir = const_table[right_oper]
         if rOperDir >= 16000 and rOperDir < 17001 :
@@ -68,6 +76,7 @@ def tempCalculator(left_oper, right_oper, op):
         elif rOperDir >= 17001 and rOperDir < 18000:
             rOperType = "float"
     else:
+        #Check in current scope, go to global, or check temporals
         if right_oper in func_dir[curr_scope]["vars_table"].keys():
            rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
            rOperDir = func_dir[curr_scope]["vars_table"][right_oper]["dirV"]
@@ -82,6 +91,7 @@ def tempCalculator(left_oper, right_oper, op):
             rOperDir = right_oper
 
     ### LEFT
+    #Check if constant
     if left_oper in const_table.keys():
             lOperDir = const_table[left_oper]
             if lOperDir >= 16000 and lOperDir < 17001 :
@@ -89,8 +99,8 @@ def tempCalculator(left_oper, right_oper, op):
             elif lOperDir >= 17001 and lOperDir < 18000:
                 lOperType = "float"
     else:
+        #Check in current scope, go to global, or check temporals
         if left_oper in func_dir[curr_scope]["vars_table"].keys():
-           print("Hola 2")
            lOperType =  func_dir[curr_scope]["vars_table"][left_oper]["type"]
            lOperDir = func_dir[curr_scope]["vars_table"][left_oper]["dirV"]
         elif left_oper in func_dir["global"]["vars_table"].keys():
@@ -102,6 +112,7 @@ def tempCalculator(left_oper, right_oper, op):
             elif left_oper >= 12001 and left_oper < 13001:
                 lOperType = "float"
             lOperDir = left_oper
+    #Utilize Semantic Cube to check if types are correct
     if op == "+":
         typeRes = typeMatch("SUM",rOperType, lOperType)
     elif op == "-":
@@ -128,11 +139,16 @@ def tempCalculator(left_oper, right_oper, op):
     elif typeRes == "FLOAT":
         direc = Tf
         Tf += 1
+    elif typeRes == "BOOL":
+        direc = Tb
+        Tb += 1
     else:
         direc = To
         To += 1
     return direc, lOperDir, rOperDir
 
+### Routine0: Beginning of program
+# Utilizes token ROUTINE to snow the beginning of program
 def p_routine0(p):
     '''
     routine0 : goto_main_neur ROUTINE ID SEMICOLON global_scope routine1 main0
@@ -152,6 +168,9 @@ def p_routine0(p):
     vm.mem_init()
     vm.run()
 
+
+### Neural Point 1
+# Generates first quaruple GOTO main
 def p_goto_main_neur(p):
     '''
     goto_main_neur :
@@ -161,7 +180,8 @@ def p_goto_main_neur(p):
     quadCounter = quadCounter + 1
 
 
-
+### Routine1
+# Allows program to generate values, functions, and clases on the global scope.
 def p_routine1(p):
     '''
     routine1 : statement routine1
@@ -171,13 +191,15 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
-    global func_dir, Gi, Gf, Go, Li, Lf, Lo
+    global func_dir, Gi, Gf, Go, Li, Lf, Lo, Ti, To, Tf, Tb, Ts
             
     Li = 5000
     Lf = 7001
     Lo = 10001
 
-
+#### Global Scope (Neural point 2)
+# Converts current scope to "global"
+# Generates global scope func_dir entry
 def p_global_scope(p):
     '''
     global_scope :
@@ -186,13 +208,15 @@ def p_global_scope(p):
     curr_scope = "global"
     func_dir[curr_scope] = {"return_type": "void", "vars_table": {}}
 
-
+### Class0
+# Detects classes and begins class recognition
 def p_class0(p):
     '''
     class0 : CLASS class_id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_global
     '''
 
-
+### Revert global (Neural point 3 )
+# Reverts current scope to global
 def p_revert_global(p):
     '''
     revert_global :
@@ -200,7 +224,8 @@ def p_revert_global(p):
     global curr_scope
     curr_scope = "global"
 
-
+## Revert scope (Neural point 4)
+# Reverts current scope to previous scope
 def p_revert_scope(p):
     '''
     revert_scope : 
@@ -208,7 +233,9 @@ def p_revert_scope(p):
     global curr_scope, prev_scope
     curr_scope = prev_scope
 
-
+### id def (Neural point 5)
+# Neural point that checks if an ID for a function is defined to raise an error or to create its entry on func_dir
+# and entry on global scope as variable for return
 def p_id_def(p):
     '''
     id_def : ID
@@ -217,13 +244,15 @@ def p_id_def(p):
     if p[1] in func_dir.keys():
         raise NameError("Function already exists")
     else:
-        func_dir["global"]["vars_table"][p[1]] = {"type": None, "dirV" : None}
+        func_dir["global"]["vars_table"][p[1]] = {"type": None, "dirV" : None, "value": None}
         func_dir[p[1]] = {"return_type": None, "vars_table": {}, "params_table":[]}
         prev_scope = curr_scope
         curr_scope = p[1]
         p[0] = p[1]
 
-
+### Class id def (Neural Point 6)
+# Neural point that checks if class already exists to raise error 
+# Generates constructor(dict), method_table(dict), vars_table(dict)
 def p_class_id_def(p):
     '''
     class_id_def : ID
@@ -235,7 +264,8 @@ def p_class_id_def(p):
                              "method_table": {}, "vars_table": {}}
     p[0] = p[1]
 
-
+### class1
+# Checks for possible extensions, or heritage, in the class
 def p_class1(p):
     '''
     class1 : COLON ID
@@ -248,21 +278,25 @@ def p_class1(p):
                                                                ]["vars_table"][i]
         class_dir[curr_scope]["method_table"] = class_dir[p[2]]["method_table"]
 
-
+### class2
+# Checks for the attributes of the class, if any
 def p_class2(p):
     '''
     class2 : attributes
            | empty
     '''
 
-
+### class 3
+# Checks for the methods of the class, if any
 def p_class3(p):
     '''
     class3 : methods 
            | empty  
     '''
 
-
+### Function 0
+# Checks for the structure of a function to generate it, adds ENDPROC quadruple at end of its excecution
+# and resets local and temporal addresses to default address
 def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
@@ -278,13 +312,23 @@ def p_function0(p):
     Li = 5000
     Lf = 7001
     Lo = 10001
+    Ti = 11000
+    Tf = 12001
+    Tb = 13001
+    To = 14001
+    Ts = 15001
 
+
+### endParamNeur (Neural point 7)
+#  Neural point to assign number of paramneters to function entry
 def p_endParamNeur(p):
     '''
     endParamNeur :
     '''
     global func_dir, curr_scope
     func_dir[curr_scope]["params_number"] = len(func_dir[curr_scope]["params_table"])
+## startFuncNeur (Neural point 8)
+# Neural point to assign the quadruple number of where the function starts in order to jump when function is called
 
 def p_startFuncNeur(p):
     '''
@@ -292,7 +336,8 @@ def p_startFuncNeur(p):
     '''
     global func_dir, curr_scope, quadCounter
     func_dir[curr_scope]["quad_number"] = quadCounter
-
+### p_function1
+# Defines the function's type and grants its direction in memory
 def p_function1(p):
     '''
     function1 : type
@@ -301,25 +346,31 @@ def p_function1(p):
     
     global curr_scope, func_dir, Gi, Gf, Go
     func_dir[p[-6]]["return_type"] = p[1]
-    func_dir['global']["vars_table"][p[-6]]["type"] = p[1]
-    direc = 0
-    if(p[1] != "void"):
-        if p[1] == "int":
-            direc = Gi
-            Gi += 1
-        elif p[1] == "float":
-            direc = Gf
-            Gf += 1
-        else:
-            direc = Go
-            Go += 1
-    func_dir['global']["vars_table"][p[-6]]["dirV"] = direc
-    func_dir['global']["vars_table"][p[-6]]["isArray"] = False
+    if p[1] != "void":
+        func_dir['global']["vars_table"][p[-6]]["type"] = p[1]
+        direc = 0
+        if(p[1] != "void"):
+            if p[1] == "int":
+                direc = Gi
+                Gi += 1
+                value = 0
+            elif p[1] == "float":
+                direc = Gf
+                Gf += 1
+                value = 0.0
+            else:
+                direc = Go
+                Go += 1
+                value = None
+        func_dir['global']["vars_table"][p[-6]]["dirV"] = direc
+        func_dir['global']["vars_table"][p[-6]]["isArray"] = False
+        func_dir['global']["vars_table"][p[-6]]["value"] = value
     
     p[0] = p[1]
     
 
-
+### function 2
+# Defines declarations and assignments
 def p_function2(p):
     '''
     function2 : simple_declaration function2    
@@ -327,7 +378,8 @@ def p_function2(p):
               | empty
     '''
 
-
+### declaration 0
+# Rule used to declare a variable.
 def p_declaration0(p):
     '''
     declaration0 : decl_id_def COLON declaration1 SEMICOLON
@@ -335,7 +387,8 @@ def p_declaration0(p):
     
     
 
-
+### decl_id_def
+# Rule used to add the ID to the current scope's vars table
 def p_decl_id_def(p):
     '''
     decl_id_def : ID
@@ -345,7 +398,8 @@ def p_decl_id_def(p):
     var_id = p[1]
     func_dir[curr_scope]["vars_table"][p[1]] = {"type": None, "dirV" : None, "isArray" : False}
 
-
+### declaration1
+# Allows different types of declarations, from simple types to complex types(objects) and arrays
 def p_declaration1(p):
     '''
     declaration1 : type simpleMemoryNeur
@@ -356,6 +410,8 @@ def p_declaration1(p):
     global Li, Lf, Lo, func_dir, curr_scope, dimNodes, dimCounter
     func_dir[curr_scope]["vars_table"][p[-2]]["type"] = p[1]
 
+### LimitNeur (Neural Point 9)
+# Checks 1st dim array limits and generates m, r, ls, and li. Checks if size type is valid
 def p_limitNeur(p):
     '''
     limitNeur : 
@@ -365,7 +421,7 @@ def p_limitNeur(p):
     auxType = types_stack.pop()
 
     if(auxType != "int"):
-        raise IndexError("Index type is not valid")
+        raise Error("Index type is not valid")
     else:
         
         Ls = aux
@@ -377,6 +433,9 @@ def p_limitNeur(p):
         
         #dim1Node["r"] = dim1Node["r"] * (Ls - Li + 1)
 
+
+### simpleMemoryNeur
+# Assigns memory address to simple declarations
 def p_simpleMemoryNeur(p):
     '''
     simpleMemoryNeur :
@@ -411,6 +470,9 @@ def p_simpleMemoryNeur(p):
     func_dir[curr_scope]["vars_table"][p[-3]]["dirV"] = direc
     func_dir[curr_scope]["vars_table"][p[-3]]["value"] = val
 
+
+
+###isArrayNeur (Neural )
 def p_isArrayNeur(p):
     '''
     isArrayNeur :
@@ -456,6 +518,7 @@ def p_neurMemory(p):
     if dimCounter == 1:
         ls1 = dimNodes[0]["ls"]
         r = dimNodes[0]["r"]
+        print(curr_scope)
         func_dir[curr_scope]["vars_table"][var_id]["lsDim1"] = ls1
         func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = 0
         func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
@@ -1336,7 +1399,6 @@ def p_return(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(p) == 4 and len(operands_stack):
         value = operands_stack.pop()
-        print(p[1], "Queseso", quadCounter)
         quad = [p[1], None, None, value]
         quadruples.append(quad)
         quadCounter += 1

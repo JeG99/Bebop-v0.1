@@ -1,7 +1,6 @@
 routine holamundo; 
 
 def funcion71628(int b, int asd) -> int [[]] {
-	
 	return b + asd;
 }
 
