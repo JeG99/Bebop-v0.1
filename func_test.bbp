@@ -5,10 +5,12 @@ def funcion71628(int b, int asd) -> int [[]] {
 }
 
 main {
-	funcion71628(3, 45);
+	
 	v1: int;
 	v2: int;
 	v67: int;
+	v1 = 3;
+	funcion71628(3, 45);
 	x:int;
 	v67 =(4*2+1) + 3\|7;
 	v3: int;

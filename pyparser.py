@@ -1,4 +1,5 @@
 from msilib.schema import Error
+import string
 from turtle import right
 from semCube import typeMatch
 import ply.yacc as yacc
@@ -53,10 +54,11 @@ Ts = 15001
 
 ## Constant Addresses
 Ci = 16000
-Cf = 17001 
+Cf = 17001
+Cs = 18001 
 
 ## Pointer Address
-Tp = 18000
+Tp = 19000
 
 
 ### Aux Function tempCalculator
@@ -162,8 +164,8 @@ def p_routine0(p):
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    #print(const_table)
-    [print(idx, quad) for idx, quad in enumerate(quadruples)]
+    print(const_table)
+    #[print(idx, quad) for idx, quad in enumerate(quadruples)]
     vm = VirtualMachine(quadruples, func_dir, const_table)
     vm.mem_init()
     vm.run()
@@ -196,6 +198,11 @@ def p_routine1(p):
     Li = 5000
     Lf = 7001
     Lo = 10001
+    Ti = 11000
+    Tf = 12001
+    Tb = 13001
+    To = 14001
+    Ts = 15001
 
 #### Global Scope (Neural point 2)
 # Converts current scope to "global"
@@ -245,7 +252,7 @@ def p_id_def(p):
         raise NameError("Function already exists")
     else:
         func_dir["global"]["vars_table"][p[1]] = {"type": None, "dirV" : None, "value": None}
-        func_dir[p[1]] = {"return_type": None, "vars_table": {}, "params_table":[]}
+        func_dir[p[1]] = {"return_type": None, "vars_table": {}, "params_table":[], "params_addresses" : []}
         prev_scope = curr_scope
         curr_scope = p[1]
         p[0] = p[1]
@@ -365,7 +372,8 @@ def p_function1(p):
         func_dir['global']["vars_table"][p[-6]]["dirV"] = direc
         func_dir['global']["vars_table"][p[-6]]["isArray"] = False
         func_dir['global']["vars_table"][p[-6]]["value"] = value
-    
+    else:
+        del func_dir['global']["vars_table"][p[-6]]
     p[0] = p[1]
     
 
@@ -467,8 +475,10 @@ def p_simpleMemoryNeur(p):
             direc = Lo
             Lo += 1
             val = None
+
     func_dir[curr_scope]["vars_table"][p[-3]]["dirV"] = direc
     func_dir[curr_scope]["vars_table"][p[-3]]["value"] = val
+    func_dir[curr_scope]["vars_table"][p[-3]]["type"] = p[-1]
 
 
 
@@ -584,18 +594,16 @@ def p_assignment0(p):
                 validation = typeMatch("EQUAL",valType,func_dir[curr_scope]["vars_table"][p[1]]["type"])
                 direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
             else:
-                
                 validation = typeMatch("EQUAL",valType,func_dir["global"]["vars_table"][p[1]]["type"])
                 direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
-            
+            if(value in const_table.keys()):
+                value = const_table[value]
             quad = [p[2], value, None, direc]
             quadruples.append(quad)
             quadCounter += 1
     elif len(p) == 8 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
-        print(valAssign,curr_scope)
-        print(json.dumps(func_dir, indent=4))
         if valAssign in const_table.keys():
             vAssign = const_table[valAssign]
         elif valAssign in func_dir["global"]["vars_table"].keys():
@@ -813,9 +821,11 @@ def p_paramsNeur(p):
     if curr_scope in class_dir.keys():
         class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False, "value" : value}
         class_dir[curr_scope]["params_table"].append(p[-2])
+        class_dir[curr_scope]["params_addresses"].append(direc)
     else:
         func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False, "value" : value}
         func_dir[curr_scope]["params_table"].append(p[-2])
+        func_dir[curr_scope]["params_addresses"].append(direc)
 
     
 
@@ -853,9 +863,11 @@ def p_type(p):
 
 def p_simple_declaration(p):
     '''
-    simple_declaration : ID COLON type SEMICOLON
+    simple_declaration : decl_id_def COLON type simpleMemoryNeur SEMICOLON
     '''
     p[0] = (p[1], p[3])
+    
+
 
 
 def p_simple_assignment(p):
@@ -863,9 +875,20 @@ def p_simple_assignment(p):
     simple_assignment : ID EQUALS expression0 SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
-    if len(operands_stack):
+    if p[1] not in func_dir["global"]["vars_table"] and p[1] not in func_dir[curr_scope]["vars_table"]:
+        raise NameError("Variable does not exist")
+    else:
         value = operands_stack.pop()
-        quad = [p[2], value, None, p[1]]
+        valType = types_stack.pop()
+        if p[1] not in func_dir["global"]["vars_table"]:
+            validation = typeMatch("EQUAL",valType,func_dir[curr_scope]["vars_table"][p[1]]["type"])
+            direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
+        else:
+            validation = typeMatch("EQUAL",valType,func_dir["global"]["vars_table"][p[1]]["type"])
+            direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
+        if(value in const_table.keys()):
+            value = const_table[value]
+        quad = [p[2], value, None, direc]
         quadruples.append(quad)
         quadCounter += 1
     #global curr_scope
@@ -1352,8 +1375,11 @@ def p_push_string_val(p):
     '''
     push_string_val :
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter
-    operands_stack.append(p[-1])
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, Cs
+    if p[-1] not in const_table.keys():
+        const_table[p[-1]] = Cs
+        Cs+=1
+    operands_stack.append(const_table[p[-1]])
     types_stack.append("string")
 
 
@@ -1371,11 +1397,17 @@ def p_push_writing_val(p):
     if operands_stack:
         value = operands_stack.pop()
         op = operators_stack.pop()
+        print(value, "quesesamadre", type(value))
         if value in func_dir["global"]["vars_table"].keys():
             direc = func_dir["global"]["vars_table"][value]["dirV"]
         elif value in func_dir[curr_scope]["vars_table"].keys() :
             direc = func_dir[curr_scope]["vars_table"][value]["dirV"]
-        else:
+        elif value not in const_table.keys():
+            if type(value) == int:
+                direc = value
+            else:
+                raise ValueError("Not a valid print")
+        else :
             direc = value
         quad = [op, None, None, direc]
         quadruples.append(quad)
@@ -1412,7 +1444,7 @@ def p_return(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(p) == 4 and len(operands_stack):
         value = operands_stack.pop()
-        quad = [p[1], None, None, value]
+        quad = ["RETURN", None, None, value]
         quadruples.append(quad)
         quadCounter += 1
 
@@ -1497,6 +1529,11 @@ def p_main(p):
     Li = 5000
     Lf = 7001
     Lo = 10001
+    Ti = 11000
+    Tf = 12001
+    Tb = 13001
+    To = 14001
+    Ts = 15001
 
 
 def p_main1(p):

@@ -11,12 +11,15 @@ class VirtualMachine():
     def __init__(self, quads, func_dir, const_table):
         self.func_dir_copy = func_dir.copy()
         self.const_table_copy = const_table.copy()
-        self.mem = [None for i in range(19000)]
+        self.mem = [None for i in range(20000)]
         self.mem_backup = self.mem
         self.instructions = quads.copy()
         self.prev_ip = 0
         self.curr_ip = 0
+        self.ip_saltos = []
         self.execution_stack = [] # Aqui van los activation records
+        self.curr_func = ""
+        self.params_counter = 0
         
         # Mapear memoria (las "declaraciones")
         self.mem_init()
@@ -31,7 +34,7 @@ class VirtualMachine():
                 var_name = scope_vars.pop()
                 var_dir = self.func_dir_copy[scope]['vars_table'][var_name]['dirV']
                 if not self.func_dir_copy[scope]['vars_table'][var_name]['isArray']:
-                    print("Name : ", var_name)
+                    #print("Name : ", var_name)
                     var_val = self.func_dir_copy[scope]['vars_table'][var_name]['value']
                     self.mem[var_dir] = var_val # Setting space for a simple variable
                 else: 
@@ -73,11 +76,10 @@ class VirtualMachine():
                 left_op_dir = self.instructions[self.curr_ip][1]
                 # Right operand
                 right_op_dir = self.instructions[self.curr_ip][2]
-                if self.instructions[self.curr_ip][3] >= 18000:
+                if self.instructions[self.curr_ip][3] >= 19000:
                     self.mem[self.instructions[self.curr_ip][3]] = self.mem[left_op_dir] + right_op_dir
                 else:
                 # Temporal direction
-                    print(self.mem[left_op_dir], "+" ,self.mem[right_op_dir])
                     self.mem[self.instructions[self.curr_ip][3]] = self.mem[left_op_dir] + self.mem[right_op_dir]
 
             elif self.instructions[self.curr_ip][0] == '-':
@@ -157,7 +159,7 @@ class VirtualMachine():
                 value = self.mem[self.instructions[self.curr_ip][1]]
                 # Memory direction
                 dir = self.instructions[self.curr_ip][3]
-                if dir >= 18000: # Si la direccion a guardar es un puntero
+                if dir >= 19000: # Si la direccion a guardar es un puntero
                     self.mem[self.mem[dir]] = value
                 else:
                     self.mem[dir] = value
@@ -188,25 +190,28 @@ class VirtualMachine():
                     continue
                 
             elif self.instructions[self.curr_ip][0] == 'GOSUB':
-                print(self.instructions[self.curr_ip])
-                self.prev_ip = self.curr_ip
+                self.ip_saltos.append(self.curr_ip)
+                #self.prev_ip = self.curr_ip
                 self.curr_ip = self.instructions[self.curr_ip][3]
                 continue
             
             elif self.instructions[self.curr_ip][0] == 'ERA':
+                self.curr_func = self.instructions[self.curr_ip][1]
                 pass
             
             elif self.instructions[self.curr_ip][0] == 'PARAM':
+
                 pass
             
             elif self.instructions[self.curr_ip][0] == 'RETURN':
+                #self.mem[self.func_dir["global"]["vars_table"][self.curr_func]["dirV"]] = self.mem[self.instructions[self.curr_ip][1]]
                 pass
             
             elif self.instructions[self.curr_ip][0] == 'ENDPROC':
-                self.curr_ip = self.prev_ip
+                salto = self.ip_saltos.pop()
+                self.curr_ip = salto
             
             elif self.instructions[self.curr_ip][0] == 'VERIFY':
-                print(self.instructions[self.curr_ip])
                 lower_limit = self.instructions[self.curr_ip][2]
                 upper_limit = self.instructions[self.curr_ip][3]
                 index = self.instructions[self.curr_ip][1]
@@ -217,4 +222,4 @@ class VirtualMachine():
                     raise IndexError('Array index out of range.')
             
             self.curr_ip += 1   
-        self.mem_dump()
+        #self.mem_dump()
