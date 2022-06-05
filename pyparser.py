@@ -62,20 +62,21 @@ Tp = 18000
 
 
 def tempCalculator(left_oper, right_oper, op):
-    global Ti, Tf, To, curr_scope
-
+    global Ti, Tf, To, curr_scope, currFuncCall
     ### RIGHT
     if right_oper in const_table.keys():
-            rOperDir = const_table[right_oper]
-            if rOperDir >= 16000 and rOperDir < 17001 :
-                rOperType = "int"
-            elif rOperDir >= 17001 and rOperDir < 18000:
-                rOperType = "float"
-    elif curr_scope == "global":
-        rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
+        rOperDir = const_table[right_oper]
+        if rOperDir >= 16000 and rOperDir < 17001 :
+            rOperType = "int"
+        elif rOperDir >= 17001 and rOperDir < 18000:
+            rOperType = "float"
     else:
         if right_oper in func_dir[curr_scope]["vars_table"].keys():
            rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
+           rOperDir = func_dir[curr_scope]["vars_table"][right_oper]["dirV"]
+        elif right_oper in func_dir["global"]["vars_table"].keys():
+           rOperType = func_dir["global"]["vars_table"][right_oper]["type"]
+           rOperDir = func_dir["global"]["vars_table"][right_oper]["dirV"]
         else:
             if right_oper >= 11000 and right_oper < 12001 :
                 rOperType = "int"
@@ -90,11 +91,14 @@ def tempCalculator(left_oper, right_oper, op):
                 lOperType = "int"
             elif lOperDir >= 17001 and lOperDir < 18000:
                 lOperType = "float"
-    elif curr_scope == "global":
-        lOperType =  func_dir[curr_scope]["vars_table"][left_oper]["type"]
     else:
         if left_oper in func_dir[curr_scope]["vars_table"].keys():
+           print("Hola 2")
            lOperType =  func_dir[curr_scope]["vars_table"][left_oper]["type"]
+           lOperDir = func_dir[curr_scope]["vars_table"][left_oper]["dirV"]
+        elif left_oper in func_dir["global"]["vars_table"].keys():
+           lOperType =  func_dir["global"]["vars_table"][left_oper]["type"]
+           lOperDir = func_dir["global"]["vars_table"][left_oper]["dirV"]
         else:
             if left_oper >= 11000 and left_oper < 12001 :
                 lOperType = "int"
@@ -109,6 +113,18 @@ def tempCalculator(left_oper, right_oper, op):
         typeRes = typeMatch("MUL", rOperType, lOperType)
     elif op == "/":
         typeRes = typeMatch("DIV", rOperType, lOperType)
+    elif op == "<":
+        typeRes = typeMatch("LT", rOperType, lOperType)
+    elif op == ">":
+        typeRes = typeMatch("GT", rOperType, lOperType)
+    elif op == "**":
+        typeRes = typeMatch("EXP", rOperType, lOperType)
+    elif op == "\\|":
+        typeRes = typeMatch("SQRT", rOperType, lOperType)
+    elif op == "==":
+        typeRes = typeMatch("EQUIVALENT", rOperType, lOperType)
+    elif op == "<>":
+        typeRes = typeMatch("NEQUIVALENT", rOperType, lOperType)
     if typeRes == "INT":
             direc = Ti
             Ti += 1
@@ -118,9 +134,6 @@ def tempCalculator(left_oper, right_oper, op):
     else:
         direc = To
         To += 1
-    print(lOperDir, left_oper)
-    print(rOperDir, right_oper)
-    print(typeRes)
     return direc, lOperDir, rOperDir
 
 def p_routine0(p):
@@ -139,7 +152,6 @@ def p_routine0(p):
     [print(idx, quad) for idx, quad in enumerate(quadruples)]
     #print(pSaltos)
     print(const_table)
-    print(operands_stack)
 
 def p_goto_main_neur(p):
     '''
@@ -204,7 +216,7 @@ def p_id_def(p):
     '''
     global curr_scope, func_dir, prev_scope, prev_table
     if p[1] in func_dir.keys():
-        print("Error: La funcion ya existe.")
+        raise NameError("Function already exists")
     else:
         func_dir["global"]["vars_table"][p[1]] = {"type": None, "dirV" : None}
         func_dir[p[1]] = {"return_type": None, "vars_table": {}, "params_table":[]}
@@ -259,6 +271,7 @@ def p_function0(p):
     global quadruples, quadCounter, prev_table, Li, Lf, Lo
     p[0] = (p[1], p[2], p[4], p[7])
     quadruples.append(["ENDPROC",None,None,None])
+
     quadCounter += 1
     #func_dir[p[2]]["vars_table"] = {}
     #func_dir[p[2]]["params_number"] = 0
@@ -287,21 +300,22 @@ def p_function1(p):
               | VOID
     '''
     
-    global curr_scope, func_dir, Li, Lf, Lo
+    global curr_scope, func_dir, Gi, Gf, Go
     func_dir[p[-6]]["return_type"] = p[1]
     func_dir['global']["vars_table"][p[-6]]["type"] = p[1]
     direc = 0
     if(p[1] != "void"):
         if p[1] == "int":
-            direc = Li
-            Li += 1
+            direc = Gi
+            Gi += 1
         elif p[1] == "float":
-            direc = Lf
-            Lf += 1
+            direc = Gf
+            Gf += 1
         else:
-            direc = Lo
-            Lo += 1
+            direc = Go
+            Go += 1
     func_dir['global']["vars_table"][p[-6]]["dirV"] = direc
+    func_dir['global']["vars_table"][p[-6]]["isArray"] = False
     
     p[0] = p[1]
     
@@ -352,7 +366,7 @@ def p_limitNeur(p):
     auxType = types_stack.pop()
 
     if(auxType != "int"):
-        print("Error - index type not valid")
+        raise IndexError("Index type is not valid")
     else:
         
         Ls = aux
@@ -403,7 +417,6 @@ def p_isArrayNeur(p):
     isArrayNeur :
     '''
     global func_dir, curr_scope, operands_stack, dimCounter
-    #print(func_dir[curr_scope])
     func_dir[curr_scope]["vars_table"][p[-3]]["isArray"] = True
     dimCounter = 0
     dimNodes[0] = {"ls":0, "li":0, "r":1, "m":0}
@@ -440,7 +453,6 @@ def p_neurMemory(p):
         else:
             direc = Go
             Go += size
-    print(var_id, dimNodes)
     
     if dimCounter == 1:
         ls1 = dimNodes[0]["ls"]
@@ -484,7 +496,7 @@ def p_limitNeur2(p):
     aux = operands_stack.pop()
     auxType = types_stack.pop()
     if(auxType != "int"):
-        print("Error - index type not valid")
+        raise IndexError("Index Type not valid")
     else:
         Ls = aux
         Li = 0
@@ -500,7 +512,6 @@ def p_assignment0(p):
                 | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
-    print(len(p), "amogus")
     if len(p) == 5 and operands_stack:
         if p[1] not in func_dir["global"]["vars_table"] and p[1] not in func_dir[curr_scope]["vars_table"]:
             raise NameError("Variable does not exist")
@@ -511,9 +522,9 @@ def p_assignment0(p):
                 validation = typeMatch("EQUAL",valType,func_dir[curr_scope]["vars_table"][p[1]]["type"])
                 direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
             else:
+                
                 validation = typeMatch("EQUAL",valType,func_dir["global"]["vars_table"][p[1]]["type"])
                 direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
-            print(validation, direc, func_dir["global"]["vars_table"][p[1]]["type"])
             
             quad = [p[2], value, None, direc]
             quadruples.append(quad)
@@ -535,27 +546,34 @@ def p_arrAccdim2(p):
     '''
     arrAccdim2 :
     '''
-    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
-    print(p[-6], "El Sus")
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack, Tp
     id = p[-6][0]
     idType = p[-6][1]
     dim = p[-6][2]
-    ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        ls = func_dir["global"]["vars_table"][id]["lsDim2"]
+    else:
+        ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
     quad = ["VERIFY",operands_stack[-1] , 0, ls]
-   #print("/*/*/*/*/*/*",id,func_dir[curr_scope]["vars_table"][id])
     quadruples.append(quad)
     quadCounter += 1
-    aux = operands_stack.pop()
-    aux2 = operands_stack.pop()
-    print(aux, aux2, "-+-+-+-+-+-+-+")
-    operands_stack.append(('dir', temp_counter))
-    quadruples.append(["+", aux, aux2, (('dir', temp_counter))])
-    operands_stack.append(('dir', temp_counter))
+    left_oper = operands_stack.pop()
+    right_oper = operands_stack.pop()
+    direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, "+")
+    operands_stack.append(direc)
+    quadruples.append(["+", lOperDir, rOperDir, direc])
+    operands_stack.append(direc)
     temp_counter += 1
     quadCounter += 1
     aux3 = operands_stack.pop()
-    quadruples.append(["+", aux3, func_dir[curr_scope]["vars_table"][id]["dirV"], (('dir', temp_counter))])
-    operands_stack.append(('dir', temp_counter))
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        direc, lOperDir, rOperDir = tempCalculator(aux3, id, "+")
+    else:
+        direc, lOperDir, rOperDir = tempCalculator(aux3, id, "+")
+    
+    quadruples.append(["+", lOperDir, rOperDir, Tp])
+    Tp += 1
+    operands_stack.append(direc)
     temp_counter += 1
     quadCounter += 1
     
@@ -565,15 +583,26 @@ def p_rsqrbracket_assign_2dim1(p):
     '''
     rsqrbracket_assign_2dim1 : RSQRBRACKET
     '''
-    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack, const_table, Ci
     aux = operands_stack.pop()
     id = p[-2][0]
-    m = int(func_dir[curr_scope]["vars_table"][id]["m1"])
-    quadruples.append(["VERIFY",aux , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        m = int(func_dir["global"]["vars_table"][id]["m1"])
+        if m not in const_table.keys():
+            const_table[m] = Ci
+            Ci += 1
+        quadruples.append(["VERIFY",aux , 0,func_dir["global"]["vars_table"][id]["lsDim1"]])
+    else:
+        m = int(func_dir[curr_scope]["vars_table"][id]["m1"])
+        if m not in const_table.keys():
+            const_table[m] = Ci
+            Ci += 1
+        quadruples.append(["VERIFY",aux , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
     quadCounter += 1
-    quad = ["*", aux, m,('dir',temp_counter)]
+    direc, rOperDir, lOperDir = tempCalculator(aux, m, "*")
+    quad = ["*", rOperDir, lOperDir,direc]
     quadruples.append(quad)
-    operands_stack.append(('dir',temp_counter))
+    operands_stack.append(direc)
     temp_counter += 1
     quadCounter +=1
 
@@ -583,16 +612,19 @@ def p_rsqrbracket_assign(p):
     '''
     rsqrbracket_assign : RSQRBRACKET
     '''
-    print(p[-2], "sususususususususus")
     global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
     id = p[-2][0]
     idType = p[-2][1]
     dim = p[-2][2]
-    quadruples.append(["VERIFY",operands_stack[-1] , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        quadruples.append(["VERIFY",operands_stack[-1] , 0,func_dir["global"]["vars_table"][id]["lsDim1"]])
+    else:
+        quadruples.append(["VERIFY",operands_stack[-1] , 0,func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
     quadCounter += 1
     aux = operands_stack.pop()
-    operands_stack.append(('dir', temp_counter))
-    quadruples.append(["+", aux, func_dir[curr_scope]["vars_table"][id]["dirV"], (('dir', temp_counter))])
+    direc, lOperDir, rOperDir = tempCalculator(aux, id, "+")
+    operands_stack.append(direc)
+    quadruples.append(["+", lOperDir, rOperDir, direc])
     temp_counter += 1
     quadCounter += 1
     operators_stack.pop()
@@ -618,8 +650,12 @@ def p_assign_id_def(p):
     '''
     global operands_stack, types_stack
     p[0] = p[1]
-    operands_stack.append(p[1])
-    types_stack.append(func_dir[curr_scope]["vars_table"][p[1]]["type"])
+    if p[1] not in func_dir[curr_scope]["vars_table"].keys():
+        operands_stack.append(p[1])
+        types_stack.append(func_dir["global"]["vars_table"][p[1]]["type"])
+    else:
+        operands_stack.append(p[1])
+        types_stack.append(func_dir[curr_scope]["vars_table"][p[1]]["type"])
 
     
 def p_arrAccNeur1(p):
@@ -629,7 +665,6 @@ def p_arrAccNeur1(p):
     global types_stack, operands_stack
     id_type = types_stack.pop()
     id = operands_stack.pop()
-    print(id, id_type, "&&&&&")
 
 
 
@@ -658,7 +693,6 @@ def p_attributes(p):
     '''
     if(p[1] != None):
         if(p[1] == "private" or p[1] == "public"):
-            #print(curr_scope, p[2][0])
             class_dir[curr_scope]["vars_table"][p[2][0]] = p[2][1]
 
 
@@ -667,7 +701,6 @@ def p_methods(p):
     methods : data_access function0 methods
             | empty
     '''
-    #for i in p: print(i)
     if(len(p) > 2):
         if(p[2][2] != None):
             class_dir[curr_scope]["method_table"][p[2][1]] = {}
@@ -692,7 +725,6 @@ def p_paramsNeur(p):
     paramsNeur : 
     '''
     global func_dir, quadruples, quadCounter, Li, Lf, Lo, curr_scope
-    print(class_dir)
     if p[-2] == "int":
         direc = Li
         Li += 1
@@ -703,12 +735,10 @@ def p_paramsNeur(p):
         direc = Lo
         Lo += 1
     if curr_scope in class_dir.keys():
-        class_dir[curr_scope]["vars_table"]
-        class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc}
+        class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False}
         class_dir[curr_scope]["params_table"].append(p[-2])
     else:
-        func_dir[curr_scope]["vars_table"]
-        func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc}
+        func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False}
         func_dir[curr_scope]["params_table"].append(p[-2])
 
     
@@ -742,9 +772,6 @@ def p_type(p):
          | FLOAT
          | STRING
     '''
-    #global curr_scope, var_id, func_dir
-    #print(curr_scope, var_id, p[1])
-    #func_dir[curr_scope][var_id] = {"type": p[1]}
     p[0] = p[1]
 
 
@@ -752,12 +779,7 @@ def p_simple_declaration(p):
     '''
     simple_declaration : ID COLON type SEMICOLON
     '''
-    #global curr_scope, var_id, func_dir
-    # print(p[3])
     p[0] = (p[1], p[3])
-    #func_dir[curr_scope][p[1]] = {"type": p[3]}
-    # print(curr_scope)
-    #var_id = p[1]
 
 
 def p_simple_assignment(p):
@@ -881,7 +903,7 @@ def p_check_last_times_division_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
-        direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, op) 
+        direc,lOperDir,rOperDir = tempCalculator(left_oper,right_oper, op)
         operands_stack.append(direc)
         quad = [op, lOperDir,
                 rOperDir, direc]
@@ -974,10 +996,10 @@ def p_check_pow_rad_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
-        print(right_oper, left_oper)
-        operands_stack.append(('dir', temp_counter))
-        quad = [op, left_oper,
-                right_oper, ('dir', temp_counter)]
+        direc,lOperDir,rOperDir = tempCalculator(left_oper,right_oper, op)
+        operands_stack.append(direc)
+        quad = [op, lOperDir,
+                rOperDir, direc]
         quadruples.append(quad)
         quadCounter += 1
         temp_counter += 1
@@ -998,12 +1020,16 @@ def p_neurID(p):
     '''
     global func_dir, curr_scope
     if(p[-1] not in func_dir[curr_scope]["vars_table"].keys()):
-        pass
-        #raise NameError("Variable " + p[-1] + " not defined")
-    print(p[-1])
-    print(func_dir[curr_scope]["vars_table"][p[-1]], "aver")
-    id_type = func_dir[curr_scope]["vars_table"][p[-1]]["type"]
-    types_stack.append(id_type)
+        if (p[-1] not in func_dir["global"]["vars_table"].keys()):
+            pass
+            #raise NameError("Variable " + p[-1] + " not defined")
+        else:
+            id_type = func_dir["global"]["vars_table"][p[-1]]["type"]
+            types_stack.append(id_type)
+    else:
+        id_type = func_dir[curr_scope]["vars_table"][p[-1]]["type"]
+        types_stack.append(id_type)
+    
 
 def p_neurInt(p):
     '''
@@ -1031,13 +1057,13 @@ def p_function_call(p):
     '''
     global quadruples, quadCounter, paramCounter, paramTableCounter, currFuncCall, func_dir
     if p[1] in func_dir.keys():
-        quad = ["GOSUB", p[1], None, None]
+        quad = ["GOSUB", p[1], None, func_dir[currFuncCall]["quad_number"]]
         quadruples.append(quad)
         quadCounter += 1
         paramTableCounter = 0
         currFuncCall = ""
     else:
-        print("ERROR - Function does not exist")
+       raise NameError("Function does not exist")
 
 def p_neurFuncCall(p):
     '''
@@ -1074,13 +1100,20 @@ def p_neurFuncCallParams1(p):
     '''
     neurFuncCallParams1 : 
     '''
-    global quadruples, quadCounter, operands_stack, paramCounter, types_stack, curr_scope, paramTableCounter
+    global quadruples, quadCounter, operands_stack, paramCounter, types_stack, curr_scope, paramTableCounter, const_table, Ci
     aux = operands_stack.pop()
     auxType = types_stack.pop()
     if func_dir[currFuncCall]["params_table"][paramTableCounter] != auxType:
-        print("Error - Param type does not match")
+        raise TypeError("Parameter type does not match")
     else:
-        quadruples.append(["PARAM",aux, "param"+str(paramCounter), None])
+        if(aux in func_dir[curr_scope]["vars_table"].keys()):
+            quadruples.append(["PARAM",func_dir[curr_scope]["vars_table"][aux]["dirV"], "param"+str(paramCounter), None])
+        else:
+            if aux not in const_table:
+                const_table[aux] = Ci
+                Ci +=1
+            quadruples.append(["PARAM",const_table[aux], "param"+str(paramCounter), None])
+        
         quadCounter += 1
         paramCounter += 1
         paramTableCounter += 1
@@ -1130,12 +1163,14 @@ def p_check_rel_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
-        operands_stack.append(('dir', temp_counter))
-        quad = [op, left_oper,
-                right_oper, ('dir', temp_counter)]
+        direc,lOperDir,rOperDir = tempCalculator(left_oper,right_oper, op)
+        operands_stack.append(direc)
+        quad = [op, lOperDir,
+                rOperDir, direc]
         quadruples.append(quad)
         quadCounter += 1
         temp_counter += 1
+
 
 
 def p_expression3(p):
@@ -1164,7 +1199,6 @@ def p_data_access(p):
     '''
     p[0] = p[1]
     global curr_scope
-    # print(curr_scope)
 
 
 def p_function_statement(p):
@@ -1182,7 +1216,7 @@ def p_function_statement(p):
 
 def p_condition0(p):
     '''
-    condition0 : IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    condition0 : IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     '''
 
 
@@ -1231,10 +1265,15 @@ def p_writing0(p):
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if operands_stack:
-        #print('aperro')
         value = operands_stack.pop()
         op = operators_stack.pop()
-        quad = [op, None, None, value]
+        if value in func_dir["global"]["vars_table"].keys():
+            direc = func_dir[curr_scope]["vars_table"][value]["dirV"]
+        elif value in func_dir[curr_scope]["vars_table"].keys() :
+            direc = func_dir[curr_scope]["vars_table"][value]["dirV"]
+        else:
+            direc = value
+        quad = [op, None, None, direc]
         quadruples.append(quad)
         quadCounter += 1
 
@@ -1275,7 +1314,13 @@ def p_reading(p):
     reading : READ ID SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
-    quad = [p[1], None, None, p[2]]
+    if p[2] in func_dir["global"]["vars_table"].keys():
+        direc = func_dir[curr_scope]["vars_table"][p[2]]["dirV"]
+    elif p[2] in func_dir[curr_scope]["vars_table"].keys() :
+        direc = func_dir[curr_scope]["vars_table"][p[2]]["dirV"]
+    else:
+        raise NameError("Variable does not exist")
+    quad = [p[1], None, None, direc]
     quadruples.append(quad)
     quadCounter += 1
 
@@ -1288,6 +1333,7 @@ def p_return(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if len(p) == 4 and len(operands_stack):
         value = operands_stack.pop()
+        print(p[1], "Queseso", quadCounter)
         quad = [p[1], None, None, value]
         quadruples.append(quad)
         quadCounter += 1
@@ -1327,10 +1373,8 @@ def p_wNeur3(p):
     global pSaltos, quadruples, quadCounter
     temp1 = pSaltos.pop()
     temp2 = pSaltos.pop()
-    #print(temp1, temp2)
     quadruples.append(["GOTO", None, None, temp2])
     quadCounter += 1
-    #print(quadruples[temp2], end = "\n\n\n")
     quadruples[temp1][3] = quadCounter
 
 

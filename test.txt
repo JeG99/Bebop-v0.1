@@ -1,42 +1,27 @@
-['GOTO', 'main', None, None]
-['return', None, None, 'true']
-['ENDPROC', None, None, None]
-['ERA', 'funcion71628', None, None]
-['PARAM', 3, 'param0', None]
-['PARAM', 45, 'param1', None]
-['GOSUB', 'funcion71628', None, None]
-['\\|', 3, 7, ('dir', 0)]
-['=', ('dir', 0), None, 'v67']
-['=', 'vv', None, 'v2']
-['+', 'v1', 'v2', ('dir', 1)]
-['=', ('dir', 1), None, 'v3']
-['ERA', 'funcion71628', None, None]
-['PARAM', 'v67', 'param0', None]
-['PARAM', 'v67', 'param1', None]
-['GOSUB', 'funcion71628', None, None]
-['>>>', None, None, 'v4']
-['<<<', None, None, 'v3']
-['>', 'v3', 'v2', ('dir', 2)]
-['GOTOF', None, None, 22]
-['<<<', None, None, '"esmayor"']
-['GOTO', None, None, 23]
-['<<<', None, None, '"noesmayor"']
-['<', 'v3', 'v5', ('dir', 3)]
-['GOTOF', None, None, 41]
-['>>>', None, None, 'keonda']
-['GOTOF', None, None, 30]
-['<<<', None, None, '"hola"']
-['GOTO', None, None, 26]
-['GOTOF', None, None, 38]
-['<<<', None, None, '"inside condition"']
-['GOTOF', None, None, 37]
-['<<<', None, None, '"if anidado compadre"']
-['>', 'x', 3, ('dir', 4)]
-['GOTOF', None, None, 38]
-['<<<', None, None, '"hola"']
-['GOTO', None, None, 33]
-['GOTO', None, None, 39]
-['<<<', None, None, '"no se pudo compadre"']
-['GOTO', None, None, 23]
-['GOSUB', None, None, None]
-['END', None, None, None]
+## Global addresses
+Gi = 0
+Gf = 2001
+Go = 4001
+
+## Local Addresses
+Li = 5000
+Lf = 7001
+Lo = 10001
+
+## Temporal Addresses{
+# Condicionales
+# Whiles
+# Expresiones
+#
+Ti = 11000
+Tf = 12001
+Tb = 13001
+To = 14001
+Ts = 15001
+
+## Constant Addresses
+Ci = 16000
+Cf = 17001
+
+## Pointer Address
+Tp = 18000

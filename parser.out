@@ -146,7 +146,7 @@ Rule 132   function_statement -> return
 Rule 133   function_statement -> function_call SEMICOLON
 Rule 134   function_statement -> method_call0 SEMICOLON
 Rule 135   function_statement -> while
-Rule 136   condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+Rule 136   condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
 Rule 137   condNeur1 -> <empty>
 Rule 138   condNeur3 -> <empty>
 Rule 139   condition1 -> ELSE condNeur2 block0
@@ -231,7 +231,7 @@ RETURN               : 150 151
 ROUTINE              : 1
 RPAREN               : 21 51 83 104 136 142 152 168
 RSQRBRACKET          : 21 21 33 38 44 46 47 88 91
-SEMICOLON            : 1 10 29 42 43 44 68 69 133 134 136 142 149 150 151 165 166 168
+SEMICOLON            : 1 10 29 42 43 44 68 69 133 134 142 149 150 151 165 166 168
 SQRT                 : 94
 STRING               : 67
 VOID                 : 25
@@ -429,7 +429,7 @@ state 6
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (174) empty -> .
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -521,7 +521,7 @@ state 9
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (174) empty -> .
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -588,7 +588,7 @@ state 10
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (174) empty -> .
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -655,7 +655,7 @@ state 11
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (174) empty -> .
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -722,7 +722,7 @@ state 12
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (174) empty -> .
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -790,7 +790,7 @@ state 13
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (174) empty -> .
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -1004,7 +1004,7 @@ state 26
 
 state 27
 
-    (136) condition0 -> IF . LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> IF . LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
 
     LPAREN          shift and go to state 51
 
@@ -1312,7 +1312,7 @@ state 50
 
 state 51
 
-    (136) condition0 -> IF LPAREN . expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> IF LPAREN . expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (113) expression0 -> . exp0 expression1
     (114) expression0 -> . attr_access0 expression1
     (71) exp0 -> . term0 check_last_plus_minus_operator exp1
@@ -1875,7 +1875,7 @@ state 87
 
 state 88
 
-    (136) condition0 -> IF LPAREN expression0 . condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> IF LPAREN expression0 . condNeur1 RPAREN block0 condition1 condNeur3
     (137) condNeur1 -> .
 
     RPAREN          reduce using rule 137 (condNeur1 -> .)
@@ -2443,7 +2443,7 @@ state 115
     (43) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -2605,7 +2605,7 @@ state 128
 
 state 129
 
-    (136) condition0 -> IF LPAREN expression0 condNeur1 . RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> IF LPAREN expression0 condNeur1 . RPAREN block0 condition1 condNeur3
 
     RPAREN          shift and go to state 180
 
@@ -3163,7 +3163,7 @@ state 162
     (43) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -3221,7 +3221,7 @@ state 163
     (43) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -3496,7 +3496,7 @@ state 179
 
 state 180
 
-    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN . block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN . block0 condition1 condNeur3
     (156) block0 -> . LBRACKET block1 RBRACKET
 
     LBRACKET        shift and go to state 224
@@ -4172,13 +4172,22 @@ state 222
 
 state 223
 
-    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 . condition1 SEMICOLON condNeur3
+    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 . condition1 condNeur3
     (139) condition1 -> . ELSE condNeur2 block0
     (140) condition1 -> . empty
     (174) empty -> .
 
     ELSE            shift and go to state 258
-    SEMICOLON       reduce using rule 174 (empty -> .)
+    CLASS           reduce using rule 174 (empty -> .)
+    DEF             reduce using rule 174 (empty -> .)
+    ID              reduce using rule 174 (empty -> .)
+    IF              reduce using rule 174 (empty -> .)
+    WRITE           reduce using rule 174 (empty -> .)
+    READ            reduce using rule 174 (empty -> .)
+    RETURN          reduce using rule 174 (empty -> .)
+    WHILE           reduce using rule 174 (empty -> .)
+    MAIN            reduce using rule 174 (empty -> .)
+    RBRACKET        reduce using rule 174 (empty -> .)
 
     condition1                     shift and go to state 257
     empty                          shift and go to state 259
@@ -4202,7 +4211,7 @@ state 224
     (43) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -4608,10 +4617,21 @@ state 256
 
 state 257
 
-    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 . SEMICOLON condNeur3
+    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 . condNeur3
+    (138) condNeur3 -> .
 
-    SEMICOLON       shift and go to state 281
+    CLASS           reduce using rule 138 (condNeur3 -> .)
+    DEF             reduce using rule 138 (condNeur3 -> .)
+    ID              reduce using rule 138 (condNeur3 -> .)
+    IF              reduce using rule 138 (condNeur3 -> .)
+    WRITE           reduce using rule 138 (condNeur3 -> .)
+    READ            reduce using rule 138 (condNeur3 -> .)
+    RETURN          reduce using rule 138 (condNeur3 -> .)
+    WHILE           reduce using rule 138 (condNeur3 -> .)
+    MAIN            reduce using rule 138 (condNeur3 -> .)
+    RBRACKET        reduce using rule 138 (condNeur3 -> .)
 
+    condNeur3                      shift and go to state 281
 
 state 258
 
@@ -4626,7 +4646,16 @@ state 259
 
     (140) condition1 -> empty .
 
-    SEMICOLON       reduce using rule 140 (condition1 -> empty .)
+    CLASS           reduce using rule 140 (condition1 -> empty .)
+    DEF             reduce using rule 140 (condition1 -> empty .)
+    ID              reduce using rule 140 (condition1 -> empty .)
+    IF              reduce using rule 140 (condition1 -> empty .)
+    WRITE           reduce using rule 140 (condition1 -> empty .)
+    READ            reduce using rule 140 (condition1 -> empty .)
+    RETURN          reduce using rule 140 (condition1 -> empty .)
+    WHILE           reduce using rule 140 (condition1 -> empty .)
+    MAIN            reduce using rule 140 (condition1 -> empty .)
+    RBRACKET        reduce using rule 140 (condition1 -> empty .)
 
 
 state 260
@@ -4655,7 +4684,7 @@ state 261
     (43) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON
     (44) assignment0 -> . assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     (168) object_assignment -> . ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -4968,21 +4997,19 @@ state 280
 
 state 281
 
-    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON . condNeur3
-    (138) condNeur3 -> .
+    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .
 
-    CLASS           reduce using rule 138 (condNeur3 -> .)
-    DEF             reduce using rule 138 (condNeur3 -> .)
-    ID              reduce using rule 138 (condNeur3 -> .)
-    IF              reduce using rule 138 (condNeur3 -> .)
-    WRITE           reduce using rule 138 (condNeur3 -> .)
-    READ            reduce using rule 138 (condNeur3 -> .)
-    RETURN          reduce using rule 138 (condNeur3 -> .)
-    WHILE           reduce using rule 138 (condNeur3 -> .)
-    MAIN            reduce using rule 138 (condNeur3 -> .)
-    RBRACKET        reduce using rule 138 (condNeur3 -> .)
+    CLASS           reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    DEF             reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    ID              reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    IF              reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    WRITE           reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    READ            reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    RETURN          reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    WHILE           reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    MAIN            reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
+    RBRACKET        reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3 .)
 
-    condNeur3                      shift and go to state 299
 
 state 282
 
@@ -4991,14 +5018,13 @@ state 282
 
     LBRACKET        shift and go to state 224
 
-    block0                         shift and go to state 300
+    block0                         shift and go to state 299
 
 state 283
 
     (156) block0 -> LBRACKET block1 RBRACKET .
 
     ELSE            reduce using rule 156 (block0 -> LBRACKET block1 RBRACKET .)
-    SEMICOLON       reduce using rule 156 (block0 -> LBRACKET block1 RBRACKET .)
     CLASS           reduce using rule 156 (block0 -> LBRACKET block1 RBRACKET .)
     DEF             reduce using rule 156 (block0 -> LBRACKET block1 RBRACKET .)
     ID              reduce using rule 156 (block0 -> LBRACKET block1 RBRACKET .)
@@ -5022,7 +5048,7 @@ state 285
 
     (91) power1 -> LSQRBRACKET exp0 . RSQRBRACKET
 
-    RSQRBRACKET     shift and go to state 301
+    RSQRBRACKET     shift and go to state 300
 
 
 state 286
@@ -5092,7 +5118,7 @@ state 289
     WHILE           reduce using rule 11 (revert_global -> .)
     MAIN            reduce using rule 11 (revert_global -> .)
 
-    revert_global                  shift and go to state 302
+    revert_global                  shift and go to state 301
 
 state 290
 
@@ -5112,7 +5138,7 @@ state 292
 
     (51) constructor -> CONSTRUCT ID LPAREN params0 . RPAREN function_block0
 
-    RPAREN          shift and go to state 303
+    RPAREN          shift and go to state 302
 
 
 state 293
@@ -5130,7 +5156,7 @@ state 294
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET . LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
 
-    LSQRBRACKET     shift and go to state 304
+    LSQRBRACKET     shift and go to state 303
 
 
 state 295
@@ -5140,13 +5166,13 @@ state 295
 
     SEMICOLON       reduce using rule 37 (neurMemory -> .)
 
-    neurMemory                     shift and go to state 305
+    neurMemory                     shift and go to state 304
 
 state 296
 
     (38) declaration2 -> dim2Neur . LSQRBRACKET exp0 limitNeur2 RSQRBRACKET
 
-    LSQRBRACKET     shift and go to state 306
+    LSQRBRACKET     shift and go to state 305
 
 
 state 297
@@ -5183,7 +5209,7 @@ state 298
     CONST_FLOAT     shift and go to state 66
 
     exp0                           shift and go to state 56
-    expression0                    shift and go to state 307
+    expression0                    shift and go to state 306
     attr_access0                   shift and go to state 57
     term0                          shift and go to state 58
     power0                         shift and go to state 60
@@ -5194,28 +5220,21 @@ state 298
 
 state 299
 
-    (136) condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .
+    (139) condition1 -> ELSE condNeur2 block0 .
 
-    CLASS           reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    DEF             reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    ID              reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    IF              reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    WRITE           reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    READ            reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    RETURN          reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    WHILE           reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    MAIN            reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
-    RBRACKET        reduce using rule 136 (condition0 -> IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3 .)
+    CLASS           reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    DEF             reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    ID              reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    IF              reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    WRITE           reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    READ            reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    RETURN          reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    WHILE           reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    MAIN            reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
+    RBRACKET        reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
 
 
 state 300
-
-    (139) condition1 -> ELSE condNeur2 block0 .
-
-    SEMICOLON       reduce using rule 139 (condition1 -> ELSE condNeur2 block0 .)
-
-
-state 301
 
     (91) power1 -> LSQRBRACKET exp0 RSQRBRACKET .
 
@@ -5235,7 +5254,7 @@ state 301
     COMMA           reduce using rule 91 (power1 -> LSQRBRACKET exp0 RSQRBRACKET .)
 
 
-state 302
+state 301
 
     (10) class0 -> CLASS class_id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_global .
 
@@ -5250,16 +5269,16 @@ state 302
     MAIN            reduce using rule 10 (class0 -> CLASS class_id_def class1 LBRACKET class2 constructor class3 RBRACKET SEMICOLON revert_global .)
 
 
-state 303
+state 302
 
     (51) constructor -> CONSTRUCT ID LPAREN params0 RPAREN . function_block0
     (62) function_block0 -> . LBRACKET function_block1 RBRACKET
 
-    LBRACKET        shift and go to state 309
+    LBRACKET        shift and go to state 308
 
-    function_block0                shift and go to state 308
+    function_block0                shift and go to state 307
 
-state 304
+state 303
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET . function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
     (26) function2 -> . simple_declaration function2
@@ -5269,22 +5288,22 @@ state 304
     (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
-    ID              shift and go to state 314
+    ID              shift and go to state 313
     RSQRBRACKET     reduce using rule 174 (empty -> .)
 
-    function2                      shift and go to state 310
-    simple_declaration             shift and go to state 311
-    simple_assignment              shift and go to state 312
-    empty                          shift and go to state 313
+    function2                      shift and go to state 309
+    simple_declaration             shift and go to state 310
+    simple_assignment              shift and go to state 311
+    empty                          shift and go to state 312
 
-state 305
+state 304
 
     (33) declaration1 -> type isArrayNeur LSQRBRACKET exp0 limitNeur RSQRBRACKET declaration2 neurMemory .
 
     SEMICOLON       reduce using rule 33 (declaration1 -> type isArrayNeur LSQRBRACKET exp0 limitNeur RSQRBRACKET declaration2 neurMemory .)
 
 
-state 306
+state 305
 
     (38) declaration2 -> dim2Neur LSQRBRACKET . exp0 limitNeur2 RSQRBRACKET
     (71) exp0 -> . term0 check_last_plus_minus_operator exp1
@@ -5308,7 +5327,7 @@ state 306
     CONST_INT       shift and go to state 65
     CONST_FLOAT     shift and go to state 66
 
-    exp0                           shift and go to state 315
+    exp0                           shift and go to state 314
     term0                          shift and go to state 58
     power0                         shift and go to state 60
     const_var                      shift and go to state 62
@@ -5317,14 +5336,14 @@ state 306
     attr_access0                   shift and go to state 86
     id_funcCall                    shift and go to state 31
 
-state 307
+state 306
 
     (44) assignment0 -> assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 . SEMICOLON
 
-    SEMICOLON       shift and go to state 316
+    SEMICOLON       shift and go to state 315
 
 
-state 308
+state 307
 
     (51) constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .
 
@@ -5333,7 +5352,7 @@ state 308
     RBRACKET        reduce using rule 51 (constructor -> CONSTRUCT ID LPAREN params0 RPAREN function_block0 .)
 
 
-state 309
+state 308
 
     (62) function_block0 -> LBRACKET . function_block1 RBRACKET
     (63) function_block1 -> . function_statement function_block1
@@ -5348,7 +5367,7 @@ state 309
     (135) function_statement -> . while
     (174) empty -> .
     (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -5359,34 +5378,34 @@ state 309
     (106) id_funcCall -> . ID
 
     RBRACKET        reduce using rule 174 (empty -> .)
-    ID              shift and go to state 328
+    ID              shift and go to state 327
     IF              shift and go to state 27
     WRITE           shift and go to state 28
     READ            shift and go to state 29
     RETURN          shift and go to state 30
     WHILE           shift and go to state 32
 
-    function_block1                shift and go to state 317
-    function_statement             shift and go to state 318
-    empty                          shift and go to state 319
-    simple_assignment              shift and go to state 320
-    condition0                     shift and go to state 321
-    writing0                       shift and go to state 322
-    reading                        shift and go to state 323
-    return                         shift and go to state 324
-    function_call                  shift and go to state 325
-    method_call0                   shift and go to state 326
-    while                          shift and go to state 327
+    function_block1                shift and go to state 316
+    function_statement             shift and go to state 317
+    empty                          shift and go to state 318
+    simple_assignment              shift and go to state 319
+    condition0                     shift and go to state 320
+    writing0                       shift and go to state 321
+    reading                        shift and go to state 322
+    return                         shift and go to state 323
+    function_call                  shift and go to state 324
+    method_call0                   shift and go to state 325
+    while                          shift and go to state 326
     id_funcCall                    shift and go to state 31
 
-state 310
+state 309
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 . RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
 
-    RSQRBRACKET     shift and go to state 329
+    RSQRBRACKET     shift and go to state 328
 
 
-state 311
+state 310
 
     (26) function2 -> simple_declaration . function2
     (26) function2 -> . simple_declaration function2
@@ -5396,15 +5415,15 @@ state 311
     (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
-    ID              shift and go to state 314
+    ID              shift and go to state 313
     RSQRBRACKET     reduce using rule 174 (empty -> .)
 
-    simple_declaration             shift and go to state 311
-    function2                      shift and go to state 330
-    simple_assignment              shift and go to state 312
-    empty                          shift and go to state 313
+    simple_declaration             shift and go to state 310
+    function2                      shift and go to state 329
+    simple_assignment              shift and go to state 311
+    empty                          shift and go to state 312
 
-state 312
+state 311
 
     (27) function2 -> simple_assignment . function2
     (26) function2 -> . simple_declaration function2
@@ -5414,22 +5433,22 @@ state 312
     (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
     (174) empty -> .
 
-    ID              shift and go to state 314
+    ID              shift and go to state 313
     RSQRBRACKET     reduce using rule 174 (empty -> .)
 
-    simple_assignment              shift and go to state 312
-    function2                      shift and go to state 331
-    simple_declaration             shift and go to state 311
-    empty                          shift and go to state 313
+    simple_assignment              shift and go to state 311
+    function2                      shift and go to state 330
+    simple_declaration             shift and go to state 310
+    empty                          shift and go to state 312
 
-state 313
+state 312
 
     (28) function2 -> empty .
 
     RSQRBRACKET     reduce using rule 28 (function2 -> empty .)
 
 
-state 314
+state 313
 
     (68) simple_declaration -> ID . COLON type SEMICOLON
     (69) simple_assignment -> ID . EQUALS expression0 SEMICOLON
@@ -5438,16 +5457,16 @@ state 314
     EQUALS          shift and go to state 217
 
 
-state 315
+state 314
 
     (38) declaration2 -> dim2Neur LSQRBRACKET exp0 . limitNeur2 RSQRBRACKET
     (41) limitNeur2 -> .
 
     RSQRBRACKET     reduce using rule 41 (limitNeur2 -> .)
 
-    limitNeur2                     shift and go to state 332
+    limitNeur2                     shift and go to state 331
 
-state 316
+state 315
 
     (44) assignment0 -> assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON .
 
@@ -5463,14 +5482,14 @@ state 316
     RBRACKET        reduce using rule 44 (assignment0 -> assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON .)
 
 
-state 317
+state 316
 
     (62) function_block0 -> LBRACKET function_block1 . RBRACKET
 
-    RBRACKET        shift and go to state 333
+    RBRACKET        shift and go to state 332
 
 
-state 318
+state 317
 
     (63) function_block1 -> function_statement . function_block1
     (63) function_block1 -> . function_statement function_block1
@@ -5485,7 +5504,7 @@ state 318
     (135) function_statement -> . while
     (174) empty -> .
     (69) simple_assignment -> . ID EQUALS expression0 SEMICOLON
-    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 SEMICOLON condNeur3
+    (136) condition0 -> . IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     (142) writing0 -> . WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     (149) reading -> . READ ID SEMICOLON
     (150) return -> . RETURN expression0 SEMICOLON
@@ -5496,34 +5515,34 @@ state 318
     (106) id_funcCall -> . ID
 
     RBRACKET        reduce using rule 174 (empty -> .)
-    ID              shift and go to state 328
+    ID              shift and go to state 327
     IF              shift and go to state 27
     WRITE           shift and go to state 28
     READ            shift and go to state 29
     RETURN          shift and go to state 30
     WHILE           shift and go to state 32
 
-    function_statement             shift and go to state 318
-    function_block1                shift and go to state 334
-    empty                          shift and go to state 319
-    simple_assignment              shift and go to state 320
-    condition0                     shift and go to state 321
-    writing0                       shift and go to state 322
-    reading                        shift and go to state 323
-    return                         shift and go to state 324
-    function_call                  shift and go to state 325
-    method_call0                   shift and go to state 326
-    while                          shift and go to state 327
+    function_statement             shift and go to state 317
+    function_block1                shift and go to state 333
+    empty                          shift and go to state 318
+    simple_assignment              shift and go to state 319
+    condition0                     shift and go to state 320
+    writing0                       shift and go to state 321
+    reading                        shift and go to state 322
+    return                         shift and go to state 323
+    function_call                  shift and go to state 324
+    method_call0                   shift and go to state 325
+    while                          shift and go to state 326
     id_funcCall                    shift and go to state 31
 
-state 319
+state 318
 
     (64) function_block1 -> empty .
 
     RBRACKET        reduce using rule 64 (function_block1 -> empty .)
 
 
-state 320
+state 319
 
     (128) function_statement -> simple_assignment .
 
@@ -5536,7 +5555,7 @@ state 320
     RBRACKET        reduce using rule 128 (function_statement -> simple_assignment .)
 
 
-state 321
+state 320
 
     (129) function_statement -> condition0 .
 
@@ -5549,7 +5568,7 @@ state 321
     RBRACKET        reduce using rule 129 (function_statement -> condition0 .)
 
 
-state 322
+state 321
 
     (130) function_statement -> writing0 .
 
@@ -5562,7 +5581,7 @@ state 322
     RBRACKET        reduce using rule 130 (function_statement -> writing0 .)
 
 
-state 323
+state 322
 
     (131) function_statement -> reading .
 
@@ -5575,7 +5594,7 @@ state 323
     RBRACKET        reduce using rule 131 (function_statement -> reading .)
 
 
-state 324
+state 323
 
     (132) function_statement -> return .
 
@@ -5588,21 +5607,21 @@ state 324
     RBRACKET        reduce using rule 132 (function_statement -> return .)
 
 
-state 325
+state 324
 
     (133) function_statement -> function_call . SEMICOLON
+
+    SEMICOLON       shift and go to state 334
+
+
+state 325
+
+    (134) function_statement -> method_call0 . SEMICOLON
 
     SEMICOLON       shift and go to state 335
 
 
 state 326
-
-    (134) function_statement -> method_call0 . SEMICOLON
-
-    SEMICOLON       shift and go to state 336
-
-
-state 327
 
     (135) function_statement -> while .
 
@@ -5615,7 +5634,7 @@ state 327
     RBRACKET        reduce using rule 135 (function_statement -> while .)
 
 
-state 328
+state 327
 
     (69) simple_assignment -> ID . EQUALS expression0 SEMICOLON
     (125) method_call0 -> ID . DOT function_call
@@ -5626,35 +5645,35 @@ state 328
     LPAREN          reduce using rule 106 (id_funcCall -> ID .)
 
 
-state 329
+state 328
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET . RSQRBRACKET startFuncNeur function_block0 revert_scope
 
-    RSQRBRACKET     shift and go to state 337
+    RSQRBRACKET     shift and go to state 336
 
 
-state 330
+state 329
 
     (26) function2 -> simple_declaration function2 .
 
     RSQRBRACKET     reduce using rule 26 (function2 -> simple_declaration function2 .)
 
 
-state 331
+state 330
 
     (27) function2 -> simple_assignment function2 .
 
     RSQRBRACKET     reduce using rule 27 (function2 -> simple_assignment function2 .)
 
 
-state 332
+state 331
 
     (38) declaration2 -> dim2Neur LSQRBRACKET exp0 limitNeur2 . RSQRBRACKET
 
-    RSQRBRACKET     shift and go to state 338
+    RSQRBRACKET     shift and go to state 337
 
 
-state 333
+state 332
 
     (62) function_block0 -> LBRACKET function_block1 RBRACKET .
 
@@ -5672,14 +5691,14 @@ state 333
     MAIN            reduce using rule 62 (function_block0 -> LBRACKET function_block1 RBRACKET .)
 
 
-state 334
+state 333
 
     (63) function_block1 -> function_statement function_block1 .
 
     RBRACKET        reduce using rule 63 (function_block1 -> function_statement function_block1 .)
 
 
-state 335
+state 334
 
     (133) function_statement -> function_call SEMICOLON .
 
@@ -5692,7 +5711,7 @@ state 335
     RBRACKET        reduce using rule 133 (function_statement -> function_call SEMICOLON .)
 
 
-state 336
+state 335
 
     (134) function_statement -> method_call0 SEMICOLON .
 
@@ -5705,32 +5724,32 @@ state 336
     RBRACKET        reduce using rule 134 (function_statement -> method_call0 SEMICOLON .)
 
 
-state 337
+state 336
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET . startFuncNeur function_block0 revert_scope
     (23) startFuncNeur -> .
 
     LBRACKET        reduce using rule 23 (startFuncNeur -> .)
 
-    startFuncNeur                  shift and go to state 339
+    startFuncNeur                  shift and go to state 338
 
-state 338
+state 337
 
     (38) declaration2 -> dim2Neur LSQRBRACKET exp0 limitNeur2 RSQRBRACKET .
 
     SEMICOLON       reduce using rule 38 (declaration2 -> dim2Neur LSQRBRACKET exp0 limitNeur2 RSQRBRACKET .)
 
 
-state 339
+state 338
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur . function_block0 revert_scope
     (62) function_block0 -> . LBRACKET function_block1 RBRACKET
 
-    LBRACKET        shift and go to state 309
+    LBRACKET        shift and go to state 308
 
-    function_block0                shift and go to state 340
+    function_block0                shift and go to state 339
 
-state 340
+state 339
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 . revert_scope
     (12) revert_scope -> .
@@ -5748,9 +5767,9 @@ state 340
     PUBLIC          reduce using rule 12 (revert_scope -> .)
     RBRACKET        reduce using rule 12 (revert_scope -> .)
 
-    revert_scope                   shift and go to state 341
+    revert_scope                   shift and go to state 340
 
-state 341
+state 340
 
     (21) function0 -> DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope .
 

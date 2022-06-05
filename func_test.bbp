@@ -10,13 +10,15 @@ main {
 	v1: int;
 	v2: int;
 	v67: int;
+	x:int;
 	v67 =(4*2+1) + 3\|7;
-	v3: float;
+	v3: int;
 	v5: int[5][6];
 	v4: int[3];
 	v4[1+1] = 5+2;
 	v5[2][4] = 3;
 	v3 = v1 + v2; 
+	aux: int;
 	funcion71628(v67,v67);
 	>>> v4;
 	<<<(v3); 
@@ -24,9 +26,9 @@ main {
 		<<<("esmayor"); 
 	} else { 
 		<<<("noesmayor"); 
-	};
+	}
 	while(v3 < v5) {
-		>>> keonda;
+		>>> aux;
 		while(v7) {
 			<<<("hola");
 		}
@@ -37,9 +39,9 @@ main {
 				while(x > 3) {
 					<<<("hola");
 				}
-			};
+			}
 		} else {
 			<<<("no se pudo compadre");
-		};
+		}
 	}
 }
