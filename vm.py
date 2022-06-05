@@ -31,14 +31,20 @@ class VirtualMachine():
                 var_name = scope_vars.pop()
                 var_dir = self.func_dir_copy[scope]['vars_table'][var_name]['dirV']
                 if not self.func_dir_copy[scope]['vars_table'][var_name]['isArray']:
+                    print("Name : ", var_name)
                     var_val = self.func_dir_copy[scope]['vars_table'][var_name]['value']
                     self.mem[var_dir] = var_val # Setting space for a simple variable
                 else: 
                     space_counter = self.func_dir_copy[scope]['vars_table'][var_name]['size']
                     # Setting a place for an array
-                    while(space_counter > 0):
+                    aux = 0
+                    while(aux != space_counter):
+                        self.mem[var_dir + aux] = 0
+                        aux += 1
+                    '''while(space_counter > -1):
+                        print("+-+-+-+-", var_dir + space_counter)
                         self.mem[var_dir + space_counter] = 0
-                        space_counter -= 1
+                        space_counter -= 1'''
 
 
 
@@ -59,7 +65,9 @@ class VirtualMachine():
         return self.mem[idx]
 
     def run(self):
+        
         while(self.instructions[self.curr_ip][0] != 'END'):
+            print(self.instructions[self.curr_ip])
             if self.instructions[self.curr_ip][0] == '+':
                 # Left operand
                 left_op_dir = self.instructions[self.curr_ip][1]
@@ -69,6 +77,7 @@ class VirtualMachine():
                     self.mem[self.instructions[self.curr_ip][3]] = self.mem[left_op_dir] + right_op_dir
                 else:
                 # Temporal direction
+                    print(self.mem[left_op_dir], "+" ,self.mem[right_op_dir])
                     self.mem[self.instructions[self.curr_ip][3]] = self.mem[left_op_dir] + self.mem[right_op_dir]
 
             elif self.instructions[self.curr_ip][0] == '-':
@@ -179,7 +188,10 @@ class VirtualMachine():
                     continue
                 
             elif self.instructions[self.curr_ip][0] == 'GOSUB':
-                pass
+                print(self.instructions[self.curr_ip])
+                self.prev_ip = self.curr_ip
+                self.curr_ip = self.instructions[self.curr_ip][3]
+                continue
             
             elif self.instructions[self.curr_ip][0] == 'ERA':
                 pass
@@ -191,13 +203,18 @@ class VirtualMachine():
                 pass
             
             elif self.instructions[self.curr_ip][0] == 'ENDPROC':
-                pass
+                self.curr_ip = self.prev_ip
             
             elif self.instructions[self.curr_ip][0] == 'VERIFY':
+                print(self.instructions[self.curr_ip])
                 lower_limit = self.instructions[self.curr_ip][2]
                 upper_limit = self.instructions[self.curr_ip][3]
                 index = self.instructions[self.curr_ip][1]
+                if index >= 11000 and index < 12001:
+                    index = self.mem[self.instructions[self.curr_ip][1]]
+                    
                 if index > upper_limit or index < lower_limit:
                     raise IndexError('Array index out of range.')
             
             self.curr_ip += 1   
+        self.mem_dump()

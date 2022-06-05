@@ -163,7 +163,7 @@ def p_routine0(p):
     #print(operators_stack)
     #print('\nquadruples:')
     #print(const_table)
-    #[print(idx, quad) for idx, quad in enumerate(quadruples)]
+    [print(idx, quad) for idx, quad in enumerate(quadruples)]
     vm = VirtualMachine(quadruples, func_dir, const_table)
     vm.mem_init()
     vm.run()
@@ -594,7 +594,17 @@ def p_assignment0(p):
     elif len(p) == 8 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
-        quad = [p[5], const_table[valAssign], None, assignee]
+        print(valAssign,curr_scope)
+        print(json.dumps(func_dir, indent=4))
+        if valAssign in const_table.keys():
+            vAssign = const_table[valAssign]
+        elif valAssign in func_dir["global"]["vars_table"].keys():
+            vAssign = func_dir["global"]["vars_table"][valAssign]["dirV"]
+        elif valAssign in func_dir[curr_scope]["vars_table"].keys():
+            vAssign = func_dir[curr_scope]["vars_table"][valAssign]["dirV"]
+        else:
+            vAssign = valAssign
+        quad = [p[5], vAssign, None, assignee]
         quadruples.append(quad)
         quadCounter += 1
     elif len(p) == 12 and operands_stack:
@@ -791,17 +801,20 @@ def p_paramsNeur(p):
     if p[-2] == "int":
         direc = Li
         Li += 1
+        value = 0
     elif p[-2] == "float":
         direc = Lf
         Lf += 1
+        value = 0.0
     else:
         direc = Lo
         Lo += 1
+        value = None
     if curr_scope in class_dir.keys():
-        class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False}
+        class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False, "value" : value}
         class_dir[curr_scope]["params_table"].append(p[-2])
     else:
-        func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False}
+        func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False, "value" : value}
         func_dir[curr_scope]["params_table"].append(p[-2])
 
     
