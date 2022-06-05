@@ -4,6 +4,7 @@ import ply.yacc as yacc
 import sys
 import json
 
+from vm import VirtualMachine
 from pylexer import tokens, lexer
 
 func_dir = {}
@@ -42,11 +43,7 @@ Li = 5000
 Lf = 7001
 Lo = 10001
 
-## Temporal Addresses{
-# Condicionales
-# Whiles
-# Expresiones
-#
+## Temporal Addresses
 Ti = 11000
 Tf = 12001
 Tb = 13001
@@ -55,7 +52,7 @@ Ts = 15001
 
 ## Constant Addresses
 Ci = 16000
-Cf = 17001
+Cf = 17001 
 
 ## Pointer Address
 Tp = 18000
@@ -143,15 +140,17 @@ def p_routine0(p):
     global quadCounter, quadruples
     p[0] = 1
     quadruples.append(["END", None, None, None])
-    quadCounter+=1
-    print(json.dumps(func_dir, indent=4))
+    quadCounter += 1
+    #print(json.dumps(func_dir, indent=4))
     #print(operands_stack)
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    [print(idx, quad) for idx, quad in enumerate(quadruples)]
-    #print(pSaltos)
-    print(const_table)
+    #print(const_table)
+    #[print(idx, quad) for idx, quad in enumerate(quadruples)]
+    vm = VirtualMachine(quadruples, func_dir, const_table)
+    vm.mem_init()
+    vm.run()
 
 def p_goto_main_neur(p):
     '''
@@ -472,7 +471,7 @@ def p_neurMemory(p):
         func_dir[curr_scope]["vars_table"][var_id]["m2"] = func_dir[curr_scope]["vars_table"][var_id]["m1"]/ (ls2+1)
 
     func_dir[curr_scope]["vars_table"][var_id]["dirV"] = direc
-    
+    func_dir[curr_scope]["vars_table"][var_id]["size"] = size
 
 
 def p_declaration2(p):
@@ -511,7 +510,7 @@ def p_assignment0(p):
                 | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON 
                 | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, const_table
     if len(p) == 5 and operands_stack:
         if p[1] not in func_dir["global"]["vars_table"] and p[1] not in func_dir[curr_scope]["vars_table"]:
             raise NameError("Variable does not exist")
@@ -532,13 +531,13 @@ def p_assignment0(p):
     elif len(p) == 8 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
-        quad = [p[5], assignee, None, valAssign]
+        quad = [p[5], const_table[valAssign], None, assignee]
         quadruples.append(quad)
         quadCounter += 1
     elif len(p) == 12 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
-        quad = [p[9], assignee, None, valAssign]
+        quad = [p[9], const_table[valAssign], None, assignee]
         quadruples.append(quad)
         quadCounter += 1
 
@@ -571,9 +570,9 @@ def p_arrAccdim2(p):
     else:
         direc, lOperDir, rOperDir = tempCalculator(aux3, id, "+")
     
+    operands_stack.append(Tp)
     quadruples.append(["+", lOperDir, rOperDir, Tp])
     Tp += 1
-    operands_stack.append(direc)
     temp_counter += 1
     quadCounter += 1
     
@@ -612,7 +611,7 @@ def p_rsqrbracket_assign(p):
     '''
     rsqrbracket_assign : RSQRBRACKET
     '''
-    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack, Tp
     id = p[-2][0]
     idType = p[-2][1]
     dim = p[-2][2]
@@ -623,8 +622,9 @@ def p_rsqrbracket_assign(p):
     quadCounter += 1
     aux = operands_stack.pop()
     direc, lOperDir, rOperDir = tempCalculator(aux, id, "+")
-    operands_stack.append(direc)
-    quadruples.append(["+", lOperDir, rOperDir, direc])
+    operands_stack.append(Tp)
+    quadruples.append(["+", lOperDir, rOperDir, Tp])
+    Tp += 1
     temp_counter += 1
     quadCounter += 1
     operators_stack.pop()
@@ -1263,27 +1263,13 @@ def p_writing0(p):
     '''
     writing0 : WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
-    if operands_stack:
-        value = operands_stack.pop()
-        op = operators_stack.pop()
-        if value in func_dir["global"]["vars_table"].keys():
-            direc = func_dir[curr_scope]["vars_table"][value]["dirV"]
-        elif value in func_dir[curr_scope]["vars_table"].keys() :
-            direc = func_dir[curr_scope]["vars_table"][value]["dirV"]
-        else:
-            direc = value
-        quad = [op, None, None, direc]
-        quadruples.append(quad)
-        quadCounter += 1
-
 
 def p_push_writing_op(p):
     '''
     push_writing_op :
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
-    operators_stack.append(p[-1])
+    operators_stack.append('<<<')
 
 
 def p_push_string_val(p):
@@ -1297,14 +1283,31 @@ def p_push_string_val(p):
 
 def p_writing1(p):
     '''
-    writing1 : expression0 writing2
-             | CONST_STRING push_string_val writing2
+    writing1 : expression0 push_writing_val writing2 
+             | CONST_STRING push_string_val push_writing_val writing2
     '''
 
+def p_push_writing_val(p):
+    '''
+    push_writing_val : 
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
+    if operands_stack:
+        value = operands_stack.pop()
+        op = operators_stack.pop()
+        if value in func_dir["global"]["vars_table"].keys():
+            direc = func_dir["global"]["vars_table"][value]["dirV"]
+        elif value in func_dir[curr_scope]["vars_table"].keys() :
+            direc = func_dir[curr_scope]["vars_table"][value]["dirV"]
+        else:
+            direc = value
+        quad = [op, None, None, direc]
+        quadruples.append(quad)
+        quadCounter += 1
 
 def p_writing2(p):
     '''
-    writing2 : COMMA writing1
+    writing2 : COMMA push_writing_op writing1
              | empty
     '''
 
@@ -1315,7 +1318,7 @@ def p_reading(p):
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
     if p[2] in func_dir["global"]["vars_table"].keys():
-        direc = func_dir[curr_scope]["vars_table"][p[2]]["dirV"]
+        direc = func_dir["global"]["vars_table"][p[2]]["dirV"]
     elif p[2] in func_dir[curr_scope]["vars_table"].keys() :
         direc = func_dir[curr_scope]["vars_table"][p[2]]["dirV"]
     else:
@@ -1466,7 +1469,7 @@ if __name__ == '__main__':
             #    print(lexem)
 
             if parser.parse(source) == 1:
-                print("Código válido.")
+                print("ROUTINE END")
 
         except EOFError:
             print(EOFError)
