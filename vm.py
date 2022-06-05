@@ -34,7 +34,6 @@ class VirtualMachine():
                 var_name = scope_vars.pop()
                 var_dir = self.func_dir_copy[scope]['vars_table'][var_name]['dirV']
                 if not self.func_dir_copy[scope]['vars_table'][var_name]['isArray']:
-                    #print("Name : ", var_name)
                     var_val = self.func_dir_copy[scope]['vars_table'][var_name]['value']
                     self.mem[var_dir] = var_val # Setting space for a simple variable
                 else: 
@@ -68,9 +67,8 @@ class VirtualMachine():
         return self.mem[idx]
 
     def run(self):
-        
+        print("ROUTINE START")
         while(self.instructions[self.curr_ip][0] != 'END'):
-            print(self.instructions[self.curr_ip])
             if self.instructions[self.curr_ip][0] == '+':
                 # Left operand
                 left_op_dir = self.instructions[self.curr_ip][1]
@@ -174,9 +172,6 @@ class VirtualMachine():
                 dir = self.instructions[self.curr_ip][3]
                 value = input()
                 self.mem[dir] = value
-                #if type(dir) != str:
-                #    dir = self.mem[dir]
-                #print(dir)
         
             elif self.instructions[self.curr_ip][0] == 'GOTO':
                 #print(self.instructions[self.curr_ip][3])
@@ -200,7 +195,6 @@ class VirtualMachine():
                 pass
             
             elif self.instructions[self.curr_ip][0] == 'PARAM':
-
                 pass
             
             elif self.instructions[self.curr_ip][0] == 'RETURN':

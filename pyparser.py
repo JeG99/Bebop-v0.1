@@ -164,7 +164,7 @@ def p_routine0(p):
     #print(types_stack)
     #print(operators_stack)
     #print('\nquadruples:')
-    print(const_table)
+    #print(const_table)
     #[print(idx, quad) for idx, quad in enumerate(quadruples)]
     vm = VirtualMachine(quadruples, func_dir, const_table)
     vm.mem_init()
@@ -528,7 +528,6 @@ def p_neurMemory(p):
     if dimCounter == 1:
         ls1 = dimNodes[0]["ls"]
         r = dimNodes[0]["r"]
-        print(curr_scope)
         func_dir[curr_scope]["vars_table"][var_id]["lsDim1"] = ls1
         func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = 0
         func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
@@ -1177,6 +1176,7 @@ def p_id_funcCall(p):
     '''
     global quadruples, quadCounter, func_dir, paramCounter, currFuncCall
     if p[1] in func_dir.keys():
+
         quad = ["ERA", p[1], None, None]
         quadruples.append(quad)
         quadCounter += 1
@@ -1206,12 +1206,12 @@ def p_neurFuncCallParams1(p):
         raise TypeError("Parameter type does not match")
     else:
         if(aux in func_dir[curr_scope]["vars_table"].keys()):
-            quadruples.append(["PARAM",func_dir[curr_scope]["vars_table"][aux]["dirV"], "param"+str(paramCounter), None])
+            quadruples.append(["PARAM",func_dir[curr_scope]["vars_table"][aux]["dirV"], "param$"+str(paramCounter), None])
         else:
             if aux not in const_table:
                 const_table[aux] = Ci
                 Ci +=1
-            quadruples.append(["PARAM",const_table[aux], "param"+str(paramCounter), None])
+            quadruples.append(["PARAM",const_table[aux], "param$"+str(paramCounter), None])
         
         quadCounter += 1
         paramCounter += 1
@@ -1397,7 +1397,6 @@ def p_push_writing_val(p):
     if operands_stack:
         value = operands_stack.pop()
         op = operators_stack.pop()
-        print(value, "quesesamadre", type(value))
         if value in func_dir["global"]["vars_table"].keys():
             direc = func_dir["global"]["vars_table"][value]["dirV"]
         elif value in func_dir[curr_scope]["vars_table"].keys() :
