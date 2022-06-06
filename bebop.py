@@ -1,4 +1,5 @@
 from aifc import Error
+from os import lseek
 from semCube import typeMatch
 import ply.yacc as yacc
 import sys
@@ -729,19 +730,43 @@ def p_rsqrbracket_assign_2dim1(p):
     aux = operands_stack.pop()
     id = p[-2][0]
     if id not in func_dir[curr_scope]["vars_table"].keys():
+        lSup = func_dir["global"]["vars_table"][id]["lsDim1"]
+        if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+        elif aux in func_dir["global"]["vars_table"].keys():
+            aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        elif aux not in const_table.keys():
+            const_table[aux] = Ci
+            Ci += 1
+            aux = const_table[aux]
+        else:
+            if aux in const_table.keys():
+                aux = const_table[aux]
         m = int(func_dir["global"]["vars_table"][id]["m1"])
         if m not in const_table.keys():
             const_table[m] = Ci
             Ci += 1
         quadruples.append(
-            ["VERIFY", aux, 0, func_dir["global"]["vars_table"][id]["lsDim1"]])
+            ["VERIFY", aux, 0, lSup])
     else:
+        lSup = func_dir[curr_scope]["vars_table"][id]["lsDim1"]
+        if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+        elif aux in func_dir["global"]["vars_table"].keys():
+            aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        elif aux not in const_table.keys():
+            const_table[aux] = Ci
+            Ci += 1
+            aux = const_table[aux]
+        else:
+            if aux in const_table.keys():
+                aux = const_table[aux]
         m = int(func_dir[curr_scope]["vars_table"][id]["m1"])
         if m not in const_table.keys():
             const_table[m] = Ci
             Ci += 1
         quadruples.append(
-            ["VERIFY", aux, 0, func_dir[curr_scope]["vars_table"][id]["lsDim1"]])
+            ["VERIFY", aux, 0, lSup])
     quadCounter += 1
     direc, rOperDir, lOperDir = tempCalculator(aux, m, "*")
     quad = ["*", rOperDir, lOperDir, direc]
@@ -773,7 +798,7 @@ def p_rsqrbracket_assign(p):
             if aux in const_table.keys():
                 aux = const_table[aux]
         lSup = func_dir["global"]["vars_table"][id]["lsDim1"]
-        quadruples.append(["VERIFY", aux, 0,
+        quadruples.append(["VERIFY", aux, 0, lSup
                           ])
     else:
         if aux in func_dir[curr_scope]["vars_table"].keys():
