@@ -14,6 +14,8 @@ def funcion71628(int v50, float v51) -> void [[v6:int; v9:float;]] {
 }
 def funcion7(int v50, float v51) -> void [[v6:int; v9:float;]] {
 	v6 = 5+4 + 2 - 4 * 6 / 5 + v1;
+	>>> v9;
+	<<<(v9 + 87.0);
 }
 main {
 	v15: int;

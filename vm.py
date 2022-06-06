@@ -107,7 +107,7 @@ class VirtualMachine():
         else:
             self.mem_backup[dir] = value
 
-    def stack_io(self, ip):
+    def stack_out(self, ip):
         value_dir = self.instructions[ip][3]
 
         if not ((value_dir >= 16000 and value_dir < 19000) or (value_dir >= 0 and value_dir < 4000)):
@@ -118,6 +118,20 @@ class VirtualMachine():
             value = self.mem_backup[value_dir]
         # Temporal direction
         print(value)
+
+    def stack_in(self, ip):
+        talloc = self.instructions[ip][2]
+        dir = self.instructions[ip][3]
+        value = eval(talloc + '( input() )')
+        try:
+            if not ((dir >= 16000 and dir < 19000) or (dir >= 0 and dir < 4000)):
+                # Read allocation
+                dir = self.activation_record_dir_translator(dir)
+                self.execution_stack[-1][dir[0]][dir[1]] = value
+            else:
+                self.mem_backup[dir] = value
+        except:
+            raise ValueError('This input must be of type ' + talloc)
 
     def mem_dump(self):  # Just to show the current view of memory
         for idx, val in enumerate(self.mem):
@@ -273,7 +287,7 @@ class VirtualMachine():
 
             elif self.instructions[self.curr_ip][0] == '<<<':
                 if len(self.execution_stack) > 0:
-                    self.stack_io(self.curr_ip)
+                    self.stack_out(self.curr_ip)
                 else:
                     dir = self.instructions[self.curr_ip][3]
                     if type(dir) != str:
@@ -281,13 +295,16 @@ class VirtualMachine():
                     print(dir)
 
             elif self.instructions[self.curr_ip][0] == '>>>':
-                talloc = self.instructions[self.curr_ip][2]
-                dir = self.instructions[self.curr_ip][3]
-                try:
-                    value = eval(talloc + '( input() )')
-                    self.mem[dir] = value
-                except:
-                    raise ValueError('This input must be of type ' + talloc)
+                if len(self.execution_stack) > 0:
+                    self.stack_in(self.curr_ip)
+                else:
+                    talloc = self.instructions[self.curr_ip][2]
+                    dir = self.instructions[self.curr_ip][3]
+                    try:
+                        value = eval(talloc + '( input() )')
+                        self.mem[dir] = value
+                    except:
+                        raise ValueError('This input must be of type ' + talloc)
 
             elif self.instructions[self.curr_ip][0] == 'GOTO':
                 self.curr_ip = self.instructions[self.curr_ip][3]
