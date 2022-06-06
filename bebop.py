@@ -545,7 +545,8 @@ def p_simpleMemoryNeur(p):
     func_dir[curr_scope]["vars_table"][p[-3]]["type"] = p[-1]
 
 
-###isArrayNeur (Neural )
+###isArrayNeur (Neural Point 10)
+# Checks if variable is array and starts dimension nodes
 def p_isArrayNeur(p):
     '''
     isArrayNeur :
@@ -556,7 +557,8 @@ def p_isArrayNeur(p):
     dimNodes[0] = {"ls": 0, "li": 0, "r": 1, "m": 0}
     dimNodes[1] = {"ls": 0, "li": 0, "r": 1, "m": 0}
 
-
+### neurMemory (Neural Point 11)
+# Assigns memory address and size 
 def p_neurMemory(p):
     '''
     neurMemory :
@@ -609,20 +611,22 @@ def p_neurMemory(p):
     func_dir[curr_scope]["vars_table"][var_id]["dirV"] = direc
     func_dir[curr_scope]["vars_table"][var_id]["size"] = size
 
-
+### declaration2
+# Used fot declarating 2dim arrays
 def p_declaration2(p):
     '''
     declaration2 : dim2Neur LSQRBRACKET exp0 limitNeur2 RSQRBRACKET
                  | empty
     '''
 
-
+### dim2Neur(Neural Point 12)
 def p_dim2Neur(p):
     '''
     dim2Neur :
     '''
 
-
+### limitNeur (Neural Point 13)
+# Checks for array limits, generates dim node vars
 def p_limitNeur2(p):
     '''
     limitNeur2 : 
@@ -697,7 +701,8 @@ def p_assignment0(p):
         quadruples.append(quad)
         quadCounter += 1
 
-
+### arrAccDim2 (NeurPoint 13)
+# Generates array size for 2dim
 def p_arrAccdim2(p):
     '''
     arrAccdim2 :
@@ -748,7 +753,8 @@ def p_arrAccdim2(p):
 
     operators_stack.pop()
 
-
+###  rsqrbracket_assign_2dim1 (Neural Point 14)
+# Generate M for the 1 dimension in 2D array
 def p_rsqrbracket_assign_2dim1(p):
     '''
     rsqrbracket_assign_2dim1 : RSQRBRACKET
@@ -802,7 +808,8 @@ def p_rsqrbracket_assign_2dim1(p):
     temp_counter += 1
     quadCounter += 1
 
-
+###  rsqrbracket_assign (Neural Point 15)
+# Generate size for 1 dimension array
 def p_rsqrbracket_assign(p):
     '''
     rsqrbracket_assign : RSQRBRACKET
@@ -852,7 +859,8 @@ def p_rsqrbracket_assign(p):
     quadCounter += 1
     operators_stack.pop()
 
-
+### lsqrbracket_assign(Neural point 16)
+# Opens parenthesis to change priority
 def p_lsqrbracket_assign(p):
     '''
     lsqrbracket_assign : LSQRBRACKET
@@ -865,7 +873,8 @@ def p_lsqrbracket_assign(p):
     dimAssign = 1
     p[0] = (id, idType, dimAssign)
 
-
+### p_assign_id_def
+# reads Id to be asigned
 def p_assign_id_def(p):
     '''
     assign_id_def : ID
@@ -879,7 +888,8 @@ def p_assign_id_def(p):
         operands_stack.append(p[1])
         types_stack.append(func_dir[curr_scope]["vars_table"][p[1]]["type"])
 
-
+### arrAccNeur1 (Neural Point 17)
+# Takes ID from stack
 def p_arrAccNeur1(p):
     '''
     arrAccNeur1 : 
@@ -888,7 +898,8 @@ def p_arrAccNeur1(p):
     id_type = types_stack.pop()
     id = operands_stack.pop()
 
-
+### constructor
+# Generates constructor for classes
 def p_constructor(p):
     '''
     constructor : CONSTRUCT ID LPAREN params0 RPAREN function_block0
@@ -906,7 +917,8 @@ def p_constructor(p):
 #    extension0 : ID
 #    '''
 
-
+### attributes
+# Generates attributes, saves in class_dir
 def p_attributes(p):
     '''
     attributes : data_access simple_declaration attributes
@@ -917,7 +929,8 @@ def p_attributes(p):
         if(p[1] == "private" or p[1] == "public"):
             class_dir[curr_scope]["vars_table"][p[2][0]] = p[2][1]
 
-
+### Methods
+# Generates methods, saves in class_dir
 def p_methods(p):
     '''
     methods : data_access function0 methods
@@ -932,7 +945,8 @@ def p_methods(p):
                                                       ][paramsAux[1]] = {"type": paramsAux[0]}
                 paramsAux = paramsAux[2]
 
-
+### params0
+# Parameter reader, recursively works with params1 to save
 def p_params0(p):
     '''
     params0 : type ID paramsNeur params1
@@ -942,6 +956,8 @@ def p_params0(p):
         p[0] = (p[1], p[2], p[3])
 
 
+### paramsNeur (Neural point 18)
+# Neural for storing params in func_dir
 def p_paramsNeur(p):
     '''
     paramsNeur : 
@@ -972,7 +988,8 @@ def p_paramsNeur(p):
         func_dir[curr_scope]["params_table"].append(p[-2])
         func_dir[curr_scope]["params_addresses"].append(direc)
 
-
+### params1
+# Helper calls recursive params0 to add multiple parameters
 def p_params1(p):
     '''
     params1 : COMMA params0
@@ -981,20 +998,22 @@ def p_params1(p):
     if(p[1] != None):
         p[0] = p[2]
 
-
+### function_block0
+# Block of code for functions. Allows multiple blocks inside function
 def p_function_block0(p):
     '''
     function_block0 : LBRACKET function_block1 RBRACKET
     '''
-
-
+### function_block1
+# Allows recursive calls of function-specific statements
 def p_function_block1(p):
     '''
     function_block1 : function_statement function_block1
                     | empty
     '''
 
-
+### type
+# Defines possible variable types
 def p_type(p):
     '''
     type : INT
@@ -1003,14 +1022,16 @@ def p_type(p):
     '''
     p[0] = p[1]
 
-
+### simple_declaration
+# Rule that allows declaration of simple types, such as INT and FLOAT
 def p_simple_declaration(p):
     '''
     simple_declaration : decl_id_def COLON type simpleMemoryNeur SEMICOLON
     '''
     p[0] = (p[1], p[3])
 
-
+### simple_assignment
+# Rule that allows assignment of simple types, such as INT and FLOAT
 def p_simple_assignment(p):
     '''
     simple_assignment : ID EQUALS expression0 SEMICOLON
@@ -1037,7 +1058,8 @@ def p_simple_assignment(p):
     #global curr_scope
     #func_dir[curr_scope][p[1]]["value"] = p[3]
 
-
+### complex_type
+# Allows type of object
 def p_complex_type(p):
     '''
     complex_type : ID
@@ -1072,12 +1094,20 @@ def p_complex_type(p):
 #    '''
 
 
+#################################
+#
+# The following rules are all for
+# arithmetic and conditional 
+# expressions
+#
+#################################
+
 def p_exp0(p):
     '''
     exp0 : term0 check_last_plus_minus_operator exp1
     '''
 
-
+### Detects '+' or '-'
 def p_exp1(p):
     '''
     exp1 : PLUS push_plus_minus_op exp0
@@ -1085,7 +1115,8 @@ def p_exp1(p):
          | empty
     '''
 
-
+### Neural Point 19
+# appends operator to operators_stack
 def p_push_plus_minus_op(p):
     '''
     push_plus_minus_op :
@@ -1093,7 +1124,8 @@ def p_push_plus_minus_op(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operators_stack.append(p[-1])
 
-
+### Neural Point 20
+# appends add and sub to quadruples
 def p_check_last_plus_minus_operator(p):
     '''
     check_last_plus_minus_operator :
@@ -1119,7 +1151,7 @@ def p_term0(p):
     term0 : power0 check_last_times_division_operator term1
     '''
 
-
+### Detects '/' or '*'
 def p_term1(p):
     '''
     term1 : MULTIPLY push_times_division_op term0
@@ -1127,7 +1159,8 @@ def p_term1(p):
           | empty
     '''
 
-
+### Neural Point 21
+# Adds operator to operators_stack
 def p_push_times_division_op(p):
     '''
     push_times_division_op :
@@ -1135,7 +1168,8 @@ def p_push_times_division_op(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operators_stack.append(p[-1])
 
-
+### Neural Point 22
+# Adds operation to quarduples
 def p_check_last_times_division_operator(p):
     '''
     check_last_times_division_operator :
@@ -1180,7 +1214,8 @@ def p_check_last_unary_sign_operator(p):
         temp_counter += 1
 '''
 
-
+### power0
+# final point, hols all types of possible values to evaluate
 def p_power0(p):
     '''
     power0 : LPAREN open_paren exp0 RPAREN close_paren check_pow_rad_operator power2
@@ -1193,35 +1228,8 @@ def p_power0(p):
     '''
 
 
-def p_neurArrayPush(p):
-    '''
-    neurArrayPush :
-    '''
-    global operands_stack, func_dir, curr_scope, Tp, quadruples, quadCounter
-
-    aux = operands_stack.pop()
-    if p[-4] in func_dir[curr_scope]["vars_table"].keys():
-        direc = func_dir[curr_scope]["vars_table"][p[-4]]["dirV"]
-    elif p[-4] in func_dir["global"]["vars_table"].keys():
-        direc = func_dir["global"]["vars_table"][p[-4]]["dirV"]
-    elif p[-4] in const_table.keys:
-        direc = const_table[p[-4]]
-    else:
-        raise Error("Access is not in scope")
-    if aux in func_dir[curr_scope]["vars_table"].keys():
-        dirAux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
-    elif aux in func_dir["global"]["vars_table"].keys():
-        dirAux = func_dir["global"]["vars_table"][aux]["dirV"]
-    elif aux in const_table.keys():
-        dirAux = const_table[aux]
-    else:
-        dirAux = aux
-    quadruples.append(["+", dirAux, direc, Tp])
-    quadCounter += 1
-    operands_stack.append(Tp)
-    Tp += 1
-
-
+### Neural point 23
+# Adds parenthesis
 def p_open_paren(p):
     '''
     open_paren : 
@@ -1229,7 +1237,8 @@ def p_open_paren(p):
     global operators_stack
     operators_stack.append('(')
 
-
+### Neural point 24
+# Closes parenthesis
 def p_close_paren(p):
     '''
     close_paren : 
@@ -1239,7 +1248,8 @@ def p_close_paren(p):
 
 
 
-
+### power2
+# Rule that detects power or square root
 def p_power2(p):
     '''
     power2 : POWER push_pow_rad_op power0
@@ -1247,7 +1257,8 @@ def p_power2(p):
            | empty
     '''
 
-
+### Neural Point 25
+# Adds '**' or '\|' to the operators stack
 def p_push_pow_rad_op(p):
     '''
     push_pow_rad_op :
@@ -1255,7 +1266,8 @@ def p_push_pow_rad_op(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operators_stack.append(p[-1])
 
-
+### Neural Point 26
+# pops '**' or '\|' to the operators stack
 def p_check_pow_rad_operator(p):
     '''
     check_pow_rad_operator :
@@ -1274,7 +1286,8 @@ def p_check_pow_rad_operator(p):
         quadCounter += 1
         temp_counter += 1
 
-
+### const_var
+# Allows detection of constant ints and floats and IDs, adds any of these to the stack
 def p_const_var(p):
     '''
     const_var : CONST_INT neurInt
@@ -1284,7 +1297,8 @@ def p_const_var(p):
     p[0] = p[1]
     operands_stack.append(p[1])
 
-
+### neurID (Neural Point 27)
+# Adds the ID type to the stack
 def p_neurID(p):
     '''
     neurID :
@@ -1292,8 +1306,8 @@ def p_neurID(p):
     global func_dir, curr_scope
     if(p[-1] not in func_dir[curr_scope]["vars_table"].keys()):
         if (p[-1] not in func_dir["global"]["vars_table"].keys()):
-            pass
-            #raise NameError("Variable " + p[-1] + " not defined")
+            
+            raise NameError("Variable " + p[-1] + " not defined")
         else:
             id_type = func_dir["global"]["vars_table"][p[-1]]["type"]
             types_stack.append(id_type)
@@ -1301,7 +1315,8 @@ def p_neurID(p):
         id_type = func_dir[curr_scope]["vars_table"][p[-1]]["type"]
         types_stack.append(id_type)
 
-
+### neurInt (Neural Point 28)
+# Adds an 'int' to the types stack
 def p_neurInt(p):
     '''
     neurInt :
@@ -1312,7 +1327,8 @@ def p_neurInt(p):
         Ci += 1
     types_stack.append("int")
 
-
+### neurInt (Neural Point 29)
+# Adds a 'float' to the types stack
 def p_neurFloat(p):
     '''
     neurFloat :
@@ -1323,7 +1339,8 @@ def p_neurFloat(p):
         Cf += 1
     types_stack.append("float")
 
-
+### function_call
+# Rule that allows function calls. Generates GOSUB.
 def p_function_call(p):
     '''
     function_call : id_funcCall LPAREN neurFuncCall function_call_params0 RPAREN 
@@ -1338,7 +1355,8 @@ def p_function_call(p):
     else:
         raise NameError("Function does not exist")
 
-
+### Neural Point 30
+# Starts ParamCounter
 def p_neurFuncCall(p):
     '''
     neurFuncCall : 
@@ -1346,7 +1364,8 @@ def p_neurFuncCall(p):
     global paramCounter
     paramCounter = 0
 
-
+### p_id_funcCall
+# Checks the function call to check for ID and check if exists
 def p_id_funcCall(p):
     '''
     id_funcCall : ID
@@ -1365,7 +1384,8 @@ def p_id_funcCall(p):
     else:
         raise NameError('Function not defined')
 
-
+### function_call_params0
+# Rule that checks parameters in function call
 def p_function_call_params0(p):
     '''
     function_call_params0 : expression0 neurFuncCallParams1 function_call_params1
@@ -1373,7 +1393,7 @@ def p_function_call_params0(p):
                           | empty function_call_params1
     '''
 
-
+### Neural Point 31
 def p_neurFuncCallParams1(p):
     '''
     neurFuncCallParams1 : 
@@ -1404,7 +1424,8 @@ def p_neurFuncCallParams1(p):
         paramCounter += 1
         paramTableCounter += 1
 
-
+### function call params1
+# Allows for multiple params to ve checked in the same function call
 def p_function_call_params1(p):
     '''
     function_call_params1 : COMMA function_call_params0
@@ -1413,14 +1434,17 @@ def p_function_call_params1(p):
     if(p[1] != None):
         p[0] = p[2]
 
-
+#####################
+# Going back top exp0
+#####################
 def p_expression0(p):
     '''
     expression0 : exp0 expression1
                 | attr_access0 expression1
     '''  # falta soporte para atributos en los cuadruplos
 
-
+### expression1
+# checks for logicla statements
 def p_expression1(p):
     '''
     expression1 : LTHAN push_rel_op expression3 
@@ -1430,7 +1454,8 @@ def p_expression1(p):
                 | empty
     '''
 
-
+# Neural Point 32
+# pushes logic operator to operators_stack
 def p_push_rel_op(p):
     '''
     push_rel_op :
@@ -1438,7 +1463,8 @@ def p_push_rel_op(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operators_stack.append(p[-1])
 
-
+# Neural Point 33
+# Pushes quarduple generated from logic operation to quadruples
 def p_check_rel_operator(p):
     '''
     check_rel_operator :
@@ -1460,6 +1486,8 @@ def p_check_rel_operator(p):
         temp_counter += 1
 
 
+### expression3
+# Looks to check for relational operators
 def p_expression3(p):
     '''
     expression3 : exp0 check_rel_operator
@@ -1467,18 +1495,22 @@ def p_expression3(p):
     '''
 
 
+### attr access0
+# Allows accessing of attributes from classes in objects (Not implemented)
 def p_attr_access0(p):  # eliminamos anidamiento temporalmente
     '''
     attr_access0 : ID DOT ID
     '''
 
-
+### method_call0
+# Allows accessing of methods from classes in objects (Not implemented)
 def p_method_call0(p):  # eliminamos anidamiento temporalmente
     '''
     method_call0 : ID DOT function_call
     '''
 
-
+### Data access
+# Checks for data access type in classes (Not implemented)
 def p_data_access(p):
     '''
     data_access : PRIVATE
@@ -1487,7 +1519,8 @@ def p_data_access(p):
     p[0] = p[1]
     global curr_scope
 
-
+### function_statement
+# Rule that shows the statements that can be performed inside a function
 def p_function_statement(p):
     '''
     function_statement : simple_assignment
@@ -1500,13 +1533,15 @@ def p_function_statement(p):
                        | while
     '''
 
-
+### condition0
+# Generates if statement
 def p_condition0(p):
     '''
     condition0 : IF LPAREN expression0 condNeur1 RPAREN block0 condition1 condNeur3
     '''
 
-
+### condNeur1 (Neural point 34)
+# Generates GOTOF and adds GOTOF counter
 def p_condNeur1(p):
     '''
     condNeur1 :
@@ -1517,7 +1552,8 @@ def p_condNeur1(p):
     quadruples.append(["GOTOF", temp, None, None])
     quadCounter += 1
 
-
+### condNeur3 (Neural Point 35)
+# Fills previous jump and adds current counter
 def p_condNeur3(p):
     '''
     condNeur3 :
@@ -1526,14 +1562,16 @@ def p_condNeur3(p):
     temp = pSaltos.pop()
     quadruples[temp][3] = quadCounter
 
-
+### condition1
+# Changes if statement to if else
 def p_condition1(p):
     '''
     condition1 : ELSE condNeur2 block0
                | empty
     '''
 
-
+### condNeur2 (Neural Point 36)
+# Generates GOTO for else and fills previous jump
 def p_condNeur2(p):
     '''
     condNeur2 :
@@ -1545,13 +1583,15 @@ def p_condNeur2(p):
     quadruples.append(["GOTO", None, None, None])
     quadCounter += 1
 
-
+### writing0
+# Allows print
 def p_writing0(p):
     '''
     writing0 : WRITE push_writing_op LPAREN writing1 RPAREN SEMICOLON
     '''
 
-
+# push_writing_op (Neural point 37)
+# adds <<< to stack
 def p_push_writing_op(p):
     '''
     push_writing_op :
@@ -1559,7 +1599,8 @@ def p_push_writing_op(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter
     operators_stack.append('<<<')
 
-
+### push string val (Neural Point 38)
+# Adds constant string to const_table
 def p_push_string_val(p):
     '''
     push_string_val :
@@ -1571,14 +1612,16 @@ def p_push_string_val(p):
     operands_stack.append(const_table[p[-1]])
     types_stack.append("string")
 
-
+### writing1
+# Checks what is being printed
 def p_writing1(p):
     '''
     writing1 : expression0 push_writing_val writing2 
              | CONST_STRING push_string_val push_writing_val writing2
     '''
 
-
+### push writing val (Neural Point 39)
+# adds data being printed to quarduple
 def p_push_writing_val(p):
     '''
     push_writing_val : 
@@ -1602,14 +1645,16 @@ def p_push_writing_val(p):
         quadruples.append(quad)
         quadCounter += 1
 
-
+### writing2
+# Allows for multiple writings in the same "function call"(<<<(var1, var2, const1))
 def p_writing2(p):
     '''
     writing2 : COMMA push_writing_op writing1
              | empty
     '''
 
-
+### reading
+# Allows to save input from user into simple variables
 def p_reading(p):
     '''
     reading : READ ID SEMICOLON
@@ -1627,7 +1672,8 @@ def p_reading(p):
     quadruples.append(quad)
     quadCounter += 1
 
-
+### Return
+# Returns values from a function, generates ENDPROC if not 
 def p_return(p):
     '''
     return : RETURN expression0 SEMICOLON
@@ -1647,13 +1693,19 @@ def p_return(p):
         quad = ["RETURN", curr_scope, None, direc]
         quadruples.append(quad)
         quadCounter += 1
+    else:
+        quadruples.append(["ENDPROC", None, None, None])
 
-
+### while
+# generates while statement
 def p_while(p):
     '''
     while : WHILE wNeur1 LPAREN expression0 RPAREN wNeur2 block0 wNeur3
     '''
 
+#######################################################################################################################
+### wNeur1 (Neural Point 40)
+# Adds counter to jump_stack
 
 def p_wNeur1(p):
     '''
@@ -1662,7 +1714,8 @@ def p_wNeur1(p):
     global pSaltos, quadruples, quadCounter
     pSaltos.append(quadCounter)
 
-
+### wNeur2 (Neural Point 41)
+# Fenerates GOTOF and adds jump to jump_stack
 def p_wNeur2(p):
     '''
     wNeur2 :
@@ -1673,7 +1726,8 @@ def p_wNeur2(p):
     quadruples.append(["GOTOF", temp, None, None])
     quadCounter += 1
 
-
+### wNeur3 (Neural Point 42)
+# Fills previous jumps and adds GOTO to condition
 def p_wNeur3(p):
     '''
     wNeur3 :
@@ -1685,7 +1739,8 @@ def p_wNeur3(p):
     quadCounter += 1
     quadruples[temp1][3] = quadCounter
 
-
+### block0
+# Begins creation of blocks
 def p_block0(p):
     '''
     block0 : LBRACKET block1 RBRACKET
@@ -1698,7 +1753,8 @@ def p_block1(p):
            | empty
     '''
 
-
+### statement
+# Generation of statements such as arithmetic, conditional, and loops
 def p_statement(p):
     '''
     statement : assignment0
@@ -1712,13 +1768,15 @@ def p_statement(p):
               | while
     '''
 
-
+### object assignment
+# Used for assigning objects to variables (Not implemented)
 def p_object_assignment(p):
     '''
     object_assignment : ID EQUALS NEW ID LPAREN function_call_params0 RPAREN SEMICOLON  
     '''
 
-
+### main
+# Main and most important "function" in program
 def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
@@ -1735,7 +1793,8 @@ def p_main(p):
     #                 Li,Lf,Ti,Tf,Tb
     func_mem = [0, 0, 0, 0, 0]
 
-
+### main1
+# Separates declarations from statements and allows recursion
 def p_main1(p):
     '''
     main1 : declaration0 main1
@@ -1743,7 +1802,8 @@ def p_main1(p):
           | empty
     '''
 
-
+### main scope (Neural Point 43)
+# Changes curr_scope to main and creates main's func_dir entry, finally fills GOTO main generated at the beginning of routine
 def p_main_scope(p):
     '''
     main_scope : 
@@ -1754,13 +1814,14 @@ def p_main_scope(p):
     curr_scope = "main"
     func_dir[curr_scope] = {"return_type": "void", "vars_table": {}}
 
-
+### EMPTY
 def p_empty(p):
     '''
     empty :  
     '''
 
-
+### error
+# Checks for error in syntax
 def p_error(p):
     print(p.value)
     print("Código inválido.")

@@ -1,0 +1,22 @@
+routine fibonacci;
+
+main {
+
+    n: int;
+    i: int;
+    prev: int;
+    prev_prev: int;
+    curr: int;
+
+    prev_prev = 0;
+    prev = 1;
+    >>>n;
+    while(i < n) {
+        i = i + 1;
+        curr = prev_prev + prev;
+        <<<(curr);
+        prev = curr;
+        prev_prev = prev;
+    }
+
+}

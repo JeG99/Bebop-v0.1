@@ -1,8 +1,9 @@
 routine find;
+arr: int[10];
 
 main{
 
-    arr: int[10];
+    
     count: int;
     
     count = 0;
