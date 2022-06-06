@@ -4,19 +4,25 @@ v1: int;
 v2: int;
 v3: int[3][3];
 v4: int [10];
-def funcion71628(int v50, float v51) -> void [[v6:int; v9:float;]] {
+def funcion71628(int v50, float v51) -> int [[v6:int; v9:float;]] {
 	v6 = 5+4 + 2 - 4 * 6 / 5 + v1;
 	v1 = 34;
 	v9 = 7.1;
 	v51 = 22 / 45.0;
 	<<<("funcion71628");
-	<<<(v50);
+	return 1000000000000000000;
 }
 def funcion7(int v50, float v51) -> void [[v6:int; v9:float;]] {
 	v6 = 5+4 + 2 - 4 * 6 / 5 + v1;
 	>>> v9;
 	<<<(v9 + 87.0);
 }
+
+def recurse() -> int [[]] {
+	<<<("hola");
+	return recurse();
+}
+
 main {
 	v15: int;
 	v1 = (2.1 + 5.2) * (9 - 0);
@@ -32,6 +38,12 @@ main {
 	hola: float;
 	funcion7(23, 5.1);
 	>>> hola;
-	<<<(hola + 76); 
+	<<<(hola + 76);
+	
+	func: int;
+	func = funcion71628(12, 3.9);
+	
+	rec: int;
+	rec = recurse();
 
 }

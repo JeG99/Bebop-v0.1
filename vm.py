@@ -133,6 +133,17 @@ class VirtualMachine():
         except:
             raise ValueError('This input must be of type ' + talloc)
 
+    def stack_return(self, ip):
+        dir = self.instructions[ip][3]
+        if not ((dir >= 16000 and dir < 19000) or (dir >= 0 and dir < 4000)):
+            # Read allocation
+            dir = self.activation_record_dir_translator(dir)
+            value = self.execution_stack[-1][dir[0]][dir[1]]
+        else:
+            value = self.mem_backup[dir]
+        return value
+        
+
     def mem_dump(self):  # Just to show the current view of memory
         for idx, val in enumerate(self.mem):
             if val != None:
@@ -277,8 +288,8 @@ class VirtualMachine():
                 if len(self.execution_stack) > 0:
                     self.stack_assignation(self.curr_ip)
                 else:
-                    #print(self.instructions[self.curr_ip])
-                    
+                    # print(self.instructions[self.curr_ip])
+
                     # Value to be stored
                     value = self.mem[self.instructions[self.curr_ip][1]]
                     # Memory direction
@@ -287,10 +298,10 @@ class VirtualMachine():
                         #print(self.mem[self.mem[dir]], value)
                         self.mem[self.mem[dir]] = value
                     elif self.instructions[self.curr_ip][1] >= 19000:
-                        self.mem[dir] = self.mem[value] 
+                        self.mem[dir] = self.mem[value]
                     else:
                         self.mem[dir] = value
-                    #self.mem_dump()
+                    # self.mem_dump()
 
             elif self.instructions[self.curr_ip][0] == '<<<':
                 if len(self.execution_stack) > 0:
@@ -315,7 +326,8 @@ class VirtualMachine():
                         value = eval(talloc + '( input() )')
                         self.mem[dir] = value
                     except:
-                        raise ValueError('This input must be of type ' + talloc)
+                        raise ValueError(
+                            'This input must be of type ' + talloc)
 
             elif self.instructions[self.curr_ip][0] == 'GOTO':
                 self.curr_ip = self.instructions[self.curr_ip][3]
@@ -335,6 +347,14 @@ class VirtualMachine():
             elif self.instructions[self.curr_ip][0] == 'ERA':
                 self.curr_func = self.instructions[self.curr_ip][1]
                 reserved_chunk = self.instructions[self.curr_ip][3]
+                if len(reserved_chunk) == 0:
+                    self.instructions[self.curr_ip][3] = self.func_dir_copy[self.curr_func]['temporal_counter']
+                    i = self.curr_ip
+                    while(self.instructions[i][0] != 'ENDPROC'):
+                        i += 1
+                    self.curr_ip = i + 1
+                    continue
+
                 activation_record = [
                     [None for i in range(reserved_chunk[0])],
                     [None for i in range(reserved_chunk[1])],
@@ -348,9 +368,11 @@ class VirtualMachine():
             elif self.instructions[self.curr_ip][0] == 'PARAM':
                 pass
 
-            elif self.instructions[self.curr_ip][0] == 'RETURN':
-                #self.mem[self.func_dir["global"]["vars_table"][self.curr_func]["dirV"]] = self.mem[self.instructions[self.curr_ip][1]]
-                pass
+            elif self.instructions[self.curr_ip][0] == 'RETURN':                
+                func = self.instructions[self.curr_ip][1]
+                value = self.stack_return(self.curr_ip)
+                dir = self.func_dir_copy["global"]["vars_table"][func]["dirV"] 
+                self.mem_backup[dir] = value
 
             elif self.instructions[self.curr_ip][0] == 'ENDPROC':
                 activation_record = self.execution_stack.pop()
@@ -368,4 +390,4 @@ class VirtualMachine():
                     raise IndexError('Array index out of range.')
 
             self.curr_ip += 1
-        #self.mem_dump()
+        # self.mem_dump()

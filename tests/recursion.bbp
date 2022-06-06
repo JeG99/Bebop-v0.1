@@ -1,0 +1,12 @@
+routine recursion;
+
+def func(int i) -> int [[j:int; k:int;]] {
+    j = 4; k = 12;
+    <<<(i);
+    return func(i - 1);
+}
+
+main {
+    recurse:int;
+    recurse = func(100);
+}

@@ -176,11 +176,12 @@ def p_routine0(p):
     # print(operands_stack)
     # print(types_stack)
     # print(operators_stack)
-    print(const_table)
-    [print(idx, quad) for idx, quad in enumerate(quadruples)]
+    # print(const_table)
+    # [print(idx, quad) for idx, quad in enumerate(quadruples)]
     vm = VirtualMachine(quadruples, func_dir, const_table)
     vm.mem_init()
     vm.run()
+    #vm.mem_dump()
 
 
 # Neural Point 1
@@ -343,8 +344,21 @@ def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
     '''
-    global quadruples, quadCounter, prev_table, Li, Lf, Lo, Ti, Tf, Tb, To, Ts, func_mem
+    global func_dir, quadruples, quadCounter, prev_table, Gi, Gf, Li, Lf, Lo, Ti, Tf, Tb, To, Ts, func_mem
+    if not p[8] == 'void':
+        if p[8] == 'int':
+            dir = Gi
+            Gi += 1
+        elif p[8] == 'float':
+            dir = Gf
+            Gf += 1
+        func_dir['global']['vars_table'][p[2]] = {}
+        func_dir['global']['vars_table'][p[2]]['type'] = p[8]
+        func_dir['global']['vars_table'][p[2]]['dirV'] = dir
+        func_dir['global']['vars_table'][p[2]]['isArray'] = False
+        func_dir['global']['vars_table'][p[2]]['value'] = 0
     p[0] = (p[1], p[2], p[4], p[7])
+    print(p[0])
     quadruples.append(["ENDPROC", None, None, None])
     func_dir[p[2]]["temporal_counter"] = func_mem
     quadCounter += 1
@@ -644,19 +658,19 @@ def p_assignment0(p):
                 direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
             else:
                 direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
-            
-            if value  in func_dir["global"]["vars_table"]:
+
+            if value in func_dir["global"]["vars_table"]:
                 dirVal = func_dir["global"]["vars_table"][value]["dirV"]
             elif(value in const_table.keys()):
                 dirVal = const_table[value]
                 #dirVal = value
-            elif value  in func_dir[curr_scope]["vars_table"]:
+            elif value in func_dir[curr_scope]["vars_table"]:
                 dirVal = func_dir[curr_scope]["vars_table"][value]["dirV"]
             else:
                 dirVal = value
-            
+
             quad = [p[2], dirVal, None, direc]
-            
+
             print("Cuadruplo = ", quad)
             quadruples.append(quad)
             quadCounter += 1
@@ -671,11 +685,11 @@ def p_assignment0(p):
             vAssign = func_dir[curr_scope]["vars_table"][valAssign]["dirV"]
         else:
             vAssign = valAssign
-        
+
         quad = [p[5], vAssign, None, assignee]
         quadruples.append(quad)
         quadCounter += 1
-        
+
     elif len(p) == 12 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
@@ -799,7 +813,7 @@ def p_rsqrbracket_assign(p):
                 aux = const_table[aux]
         lSup = func_dir["global"]["vars_table"][id]["lsDim1"]
         quadruples.append(["VERIFY", aux, 0, lSup
-                          ])
+                           ])
     else:
         if aux in func_dir[curr_scope]["vars_table"].keys():
             aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
@@ -816,7 +830,7 @@ def p_rsqrbracket_assign(p):
         quadruples.append(["VERIFY", aux, 0,
                           lSup])
     quadCounter += 1
-    
+
     direc, lOperDir, rOperDir = tempCalculator(aux, id, "+")
     operands_stack.append(Tp)
     quadruples.append(["+", lOperDir, rOperDir, Tp])
@@ -1164,12 +1178,13 @@ def p_power0(p):
            | ID LSQRBRACKET exp0 RSQRBRACKET neurArrayPush check_pow_rad_operator  power1 power2 
     '''
 
+
 def p_neurArrayPush(p):
     '''
     neurArrayPush :
     '''
     global operands_stack, func_dir, curr_scope, Tp, quadruples, quadCounter
-    
+
     aux = operands_stack.pop()
     print(p[-4], "aaaaaaaaaaaa", aux)
     if p[-4] in func_dir[curr_scope]["vars_table"].keys():
@@ -1193,7 +1208,6 @@ def p_neurArrayPush(p):
     quadCounter += 1
     operands_stack.append(Tp)
     Tp += 1
-    
 
 
 def p_open_paren(p):
@@ -1333,15 +1347,16 @@ def p_id_funcCall(p):
     global quadruples, quadCounter, func_dir, paramCounter, currFuncCall, curr_scope
     if p[1] in func_dir.keys():
         currFuncCall = p[1]
-        temp_size = func_dir[currFuncCall]["temporal_counter"]
-        local_size = len(list(func_dir[currFuncCall]["vars_table"].keys()))
+        if "temporal_counter" in func_dir[currFuncCall].keys():
+            temp_size = func_dir[currFuncCall]["temporal_counter"]
+        else:
+            temp_size = []
         quad = ["ERA", p[1], None, temp_size]
         quadruples.append(quad)
         quadCounter += 1
         p[0] = p[1]
     else:
-        pass
-        #raise NameError('Function not defined')
+        raise NameError('Function not defined')
 
 
 def p_function_call_params0(p):
@@ -1356,10 +1371,16 @@ def p_neurFuncCallParams1(p):
     '''
     neurFuncCallParams1 : 
     '''
+    # REVISAR CUANDO HAYA MENOS PARAMETROS DE LOS REQUERIDOS
     global quadruples, quadCounter, operands_stack, paramCounter, types_stack, curr_scope, paramTableCounter, const_table, Ci
     aux = operands_stack.pop()
     auxType = types_stack.pop()
-    if func_dir[currFuncCall]["params_table"][paramTableCounter] != auxType:
+    try:
+        param_table_counter = func_dir[currFuncCall]["params_table"][paramTableCounter]
+    except:
+        raise TypeError("Parameter quantity does not match")
+
+    if param_table_counter != auxType:
         raise TypeError("Parameter type does not match")
     else:
         if(aux in func_dir[curr_scope]["vars_table"].keys()):
@@ -1604,10 +1625,18 @@ def p_return(p):
     return : RETURN expression0 SEMICOLON
            | RETURN SEMICOLON
     '''
-    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, curr_scope
     if len(p) == 4 and len(operands_stack):
         value = operands_stack.pop()
-        quad = ["RETURN", None, None, value]
+        if value in func_dir["global"]["vars_table"].keys():
+            direc = func_dir["global"]["vars_table"][value]['dirV']
+        elif value in func_dir[curr_scope]["vars_table"].keys():
+            direc = func_dir[curr_scope]["vars_table"][value]['dirV']
+        elif value in const_table.keys():
+            direc = const_table[value]
+        elif type(value) == int:
+            direc = value
+        quad = ["RETURN", curr_scope, None, direc]
         quadruples.append(quad)
         quadCounter += 1
 
