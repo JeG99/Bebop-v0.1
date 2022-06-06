@@ -3,6 +3,7 @@ routine find;
 main{
 
     arr: int[10];
+    mat : int[2][2];
     count: int;
     count2: int;
     count3: int;

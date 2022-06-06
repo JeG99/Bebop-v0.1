@@ -151,7 +151,7 @@ class VirtualMachine():
     def run(self):
         print("ROUTINE START")
         while(self.instructions[self.curr_ip][0] != 'END'):
-            #print(self.instructions[self.curr_ip])
+            print(self.instructions[self.curr_ip])
             if self.instructions[self.curr_ip][0] == '+':
                 if len(self.execution_stack) > 0:
                     self.stack_operation(operator.add, self.curr_ip)
