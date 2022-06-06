@@ -94,11 +94,12 @@ def tempCalculator(left_oper, right_oper, op):
                 rOperType = "float"
                 rOperDir = right_oper
             else:
+                print("Amogus")
                 rOperDir = right_oper
+                rOperType = "int"
 
     # LEFT
     # Check if constant
-    print
     if left_oper in const_table.keys():
         lOperDir = const_table[left_oper]
         if lOperDir >= 16000 and lOperDir < 17000:
@@ -121,8 +122,11 @@ def tempCalculator(left_oper, right_oper, op):
                 lOperType = "float"
                 lOperDir = left_oper
             else:
+                print("Amogus")
                 lOperDir = left_oper
+                lOperType = "int"
     # Utilize Semantic Cube to check if types are correct
+    
     if op == "+":
         typeRes = typeMatch("SUM", rOperType, lOperType)
     elif op == "-":
@@ -644,16 +648,12 @@ def p_assignment0(p):
                 | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
     '''
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, const_table
-    print("Length", "=", len(p))
-    print(operands_stack)
     if len(p) == 5 and operands_stack:
-        print(p[1], "--------------------------")
         if p[1] not in func_dir["global"]["vars_table"] and p[1] not in func_dir[curr_scope]["vars_table"]:
             raise NameError("Variable does not exist")
         else:
             value = operands_stack.pop()
             valType = types_stack.pop()
-            print("alv", value, p[1])
             if p[1] in func_dir["global"]["vars_table"]:
                 direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
             else:
@@ -706,11 +706,24 @@ def p_arrAccdim2(p):
     id = p[-6][0]
     idType = p[-6][1]
     dim = p[-6][2]
+    aux = operands_stack[-1]
+    if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+    elif aux in func_dir["global"]["vars_table"].keys():
+        aux = func_dir["global"]["vars_table"][aux]["dirV"]
+    elif aux not in const_table.keys():
+        const_table[aux] = Ci
+        Ci += 1
+        aux = const_table[aux]
+    else:
+        if aux in const_table.keys():
+            aux = const_table[aux]
+    lSup = func_dir[curr_scope]["vars_table"][id]["lsDim1"]
     if id not in func_dir[curr_scope]["vars_table"].keys():
         ls = func_dir["global"]["vars_table"][id]["lsDim2"]
     else:
         ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
-    quad = ["VERIFY", operands_stack[-1], 0, ls]
+    quad = ["VERIFY", aux, 0, ls]
     quadruples.append(quad)
     quadCounter += 1
     left_oper = operands_stack.pop()
@@ -1175,7 +1188,8 @@ def p_power0(p):
            | function_call check_pow_rad_operator power2
            | method_call0 check_pow_rad_operator power2
            | attr_access0 check_pow_rad_operator power2
-           | ID LSQRBRACKET exp0 RSQRBRACKET neurArrayPush check_pow_rad_operator  power1 power2 
+           | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign check_pow_rad_operator power2 
+           | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 check_pow_rad_operator power2 
     '''
 
 
@@ -1186,7 +1200,6 @@ def p_neurArrayPush(p):
     global operands_stack, func_dir, curr_scope, Tp, quadruples, quadCounter
 
     aux = operands_stack.pop()
-    print(p[-4], "aaaaaaaaaaaa", aux)
     if p[-4] in func_dir[curr_scope]["vars_table"].keys():
         direc = func_dir[curr_scope]["vars_table"][p[-4]]["dirV"]
     elif p[-4] in func_dir["global"]["vars_table"].keys():
@@ -1202,8 +1215,7 @@ def p_neurArrayPush(p):
     elif aux in const_table.keys():
         dirAux = const_table[aux]
     else:
-        raise Error("Access is not in scope")
-    print("++++----++++----", ["+", direc, dirAux, Tp], quadCounter)
+        dirAux = aux
     quadruples.append(["+", dirAux, direc, Tp])
     quadCounter += 1
     operands_stack.append(Tp)
@@ -1226,11 +1238,6 @@ def p_close_paren(p):
     operators_stack.pop()
 
 
-def p_power1(p):
-    '''
-    power1 : LSQRBRACKET exp0 RSQRBRACKET
-           | empty
-    '''
 
 
 def p_power2(p):
@@ -1442,7 +1449,9 @@ def p_check_rel_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
+        print("Igualacion = ", left_oper, op, right_oper)
         direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, op)
+        print(direc, lOperDir, rOperDir)
         operands_stack.append(direc)
         quad = [op, lOperDir,
                 rOperDir, direc]
@@ -1578,7 +1587,6 @@ def p_push_writing_val(p):
     if operands_stack:
         value = operands_stack.pop()
         op = operators_stack.pop()
-        print("Push writing val", value, op)
         if value in func_dir["global"]["vars_table"].keys():
             direc = func_dir["global"]["vars_table"][value]["dirV"]
         elif value in func_dir[curr_scope]["vars_table"].keys():

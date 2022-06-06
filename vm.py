@@ -162,8 +162,16 @@ class VirtualMachine():
     def run(self):
         print("ROUTINE START")
         while(self.instructions[self.curr_ip][0] != 'END'):
+            print("B4",self.instructions[self.curr_ip])
+            if type(self.instructions[self.curr_ip][1]) == int:
+                if self.instructions[self.curr_ip][1] >= 19000:
+                    self.instructions[self.curr_ip][1] = self.mem[self.instructions[self.curr_ip][1]]
+            if type(self.instructions[self.curr_ip][2]) == int:
+                if self.instructions[self.curr_ip][2] >= 19000:
+                    self.instructions[self.curr_ip][2] = self.mem[self.instructions[self.curr_ip][2]]
             print(self.instructions[self.curr_ip])
             if self.instructions[self.curr_ip][0] == '+':
+                #print("---",self.instructions[self.curr_ip])
                 if len(self.execution_stack) > 0:
                     self.stack_operation(operator.add, self.curr_ip)
                 else:
@@ -171,13 +179,19 @@ class VirtualMachine():
                     left_op_dir = self.instructions[self.curr_ip][1]
                     # Right operand
                     right_op_dir = self.instructions[self.curr_ip][2]
+                    #print(self.mem[left_op_dir], "+", self.mem[right_op_dir])
                     if self.instructions[self.curr_ip][3] >= 19000:
+                        
                         self.mem[self.instructions[self.curr_ip][3]
                                  ] = self.mem[left_op_dir] + right_op_dir
+                        print(self.mem[self.instructions[self.curr_ip][3]
+                                 ],self.mem[left_op_dir] + right_op_dir, "+++++++++++++")
+                        #self.mem_dump()
                     else:
                         # Temporal direction
                         self.mem[self.instructions[self.curr_ip][3]
                                  ] = self.mem[left_op_dir] + self.mem[right_op_dir]
+                        #print(self.mem[left_op_dir] + self.mem[right_op_dir], "-----------------")
 
             elif self.instructions[self.curr_ip][0] == '-':
                 if len(self.execution_stack) > 0:
@@ -261,6 +275,8 @@ class VirtualMachine():
                              ] = self.mem[left_op_dir] > self.mem[right_op_dir]
 
             elif self.instructions[self.curr_ip][0] == '<>':
+                #print(self.instructions[self.curr_ip][1], self.instructions[self.curr_ip][2], self.instructions[self.curr_ip][3])
+                #print(self.mem[self.instructions[self.curr_ip][1]], self.mem[self.instructions[self.curr_ip][2]], self.mem[self.instructions[self.curr_ip][3]])
                 if len(self.execution_stack) > 0:
                     self.stack_operation(operator.ne, self.curr_ip)
                 else:
@@ -281,6 +297,7 @@ class VirtualMachine():
                     # Right operand
                     right_op_dir = self.instructions[self.curr_ip][2]
                     # Temporal direction
+                    #print(self.mem[left_op_dir], "==", self.mem[right_op_dir], "=", self.mem[left_op_dir] == self.mem[right_op_dir] ,"///////")
                     self.mem[self.instructions[self.curr_ip][3]
                              ] = self.mem[left_op_dir] == self.mem[right_op_dir]
 
@@ -294,16 +311,21 @@ class VirtualMachine():
                     value = self.mem[self.instructions[self.curr_ip][1]]
                     # Memory direction
                     dir = self.instructions[self.curr_ip][3]
-                    if dir >= 19000:  # Si la direccion a guardar es un puntero
-                        #print(self.mem[self.mem[dir]], value)
-                        self.mem[self.mem[dir]] = value
+                    if dir >= 19000 and self.instructions[self.curr_ip][1] >= 19000:
+                        self.mem[self.mem[dir]] = self.mem[value]
+                        
                     elif self.instructions[self.curr_ip][1] >= 19000:
+                        #print("Entra 2")
                         self.mem[dir] = self.mem[value]
+                    elif  dir >= 19000:
+                        #print("Entra 3")
+                        self.mem[self.mem[dir]] = value
                     else:
                         self.mem[dir] = value
                     # self.mem_dump()
 
             elif self.instructions[self.curr_ip][0] == '<<<':
+                #print(self.instructions[self.curr_ip], self.mem[self.instructions[self.curr_ip][3]])
                 if len(self.execution_stack) > 0:
                     self.stack_out(self.curr_ip)
                 else:
@@ -384,8 +406,10 @@ class VirtualMachine():
                 lower_limit = self.instructions[self.curr_ip][2]
                 upper_limit = self.instructions[self.curr_ip][3]
                 index = self.instructions[self.curr_ip][1]
-                if index >= 11000 and index < 12001 or index >= 5000 and index < 7000 or index >= 16000 and index < 17000:
+                
+                if (index >= 11000 and index < 12001) or (index >= 5000 and index < 7000) or (index >= 16000 and index < 17000):
                     index = self.mem[self.instructions[self.curr_ip][1]]
+                #print(">>>>>>>>>>>>>>>>>>>>>>",index, upper_limit, lower_limit)
                 if index > upper_limit or index < lower_limit:
                     raise IndexError('Array index out of range.')
 

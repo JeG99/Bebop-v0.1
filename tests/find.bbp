@@ -3,11 +3,7 @@ routine find;
 main{
 
     arr: int[10];
-    mat : int[2][2];
     count: int;
-    count2: int;
-    count3: int;
-    count1:int;
     
     count = 0;
     arr[0] = 4;
@@ -24,12 +20,10 @@ main{
     in : int;
     >>>in;
     aux : int;
-    while(aux <> in){
-        count2 = 3;
-        count3 = 2;
-        count1 = count2 +count3;
-        <<<(count1);
+    while(count < 10){
+        
         aux = arr[count];
+        <<<(count,"/////", aux);
         count = count + 1;
     }
     <<<("El indice es:", count-1);
