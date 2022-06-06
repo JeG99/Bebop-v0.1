@@ -1,4 +1,3 @@
-from msilib.schema import Error
 from semCube import typeMatch
 import ply.yacc as yacc
 import sys
@@ -475,7 +474,7 @@ def p_limitNeur(p):
     auxType = types_stack.pop()
 
     if(auxType != "int"):
-        raise Error("Index type is not valid")
+        raise TypeError("Index type must be an integer")
     else:
 
         Ls = aux
