@@ -1,27 +1,24 @@
-## Global addresses
+# Global addresses
 Gi = 0
-Gf = 2001
-Go = 4001
+Gf = 2000
+Go = 4000
 
-## Local Addresses
+# Local Addresses
 Li = 5000
-Lf = 7001
-Lo = 10001
+Lf = 7000
+Lo = 10000
 
-## Temporal Addresses{
-# Condicionales
-# Whiles
-# Expresiones
-#
+# Temporal Addresses
 Ti = 11000
-Tf = 12001
-Tb = 13001
-To = 14001
-Ts = 15001
+Tf = 12000
+Tb = 13000
+To = 14000
+Ts = 15000
 
-## Constant Addresses
+# Constant Addresses
 Ci = 16000
-Cf = 17001
+Cf = 17000
+Cs = 18000
 
-## Pointer Address
-Tp = 18000
+# Pointer Address
+Tp = 19000

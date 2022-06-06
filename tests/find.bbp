@@ -1,0 +1,25 @@
+routine find;
+
+main{
+
+    arr: int[10];
+    count: int;
+    count = 0;
+    arr[0] = 4;
+    arr[1] = 5;
+    arr[2] = 6;
+    arr[3] = 8;
+    arr[4] = 3;
+    arr[5] = 7;
+    arr[6] = 1;
+    arr[7] = 2;
+    arr[8] = 0;
+    arr[9] = 10;
+    arr[10] = 9;
+    in : int;
+    <<<(arr[2]);
+    while(count < 11){
+        <<<(arr[count]);
+        count = count + 1;
+    }
+}

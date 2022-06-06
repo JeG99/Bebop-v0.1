@@ -351,9 +351,8 @@ class VirtualMachine():
                 lower_limit = self.instructions[self.curr_ip][2]
                 upper_limit = self.instructions[self.curr_ip][3]
                 index = self.instructions[self.curr_ip][1]
-                if index >= 11000 and index < 12001:
+                if index >= 11000 and index < 12001 or index >= 5000 and index < 7000 or index >= 16000 and index < 17000:
                     index = self.mem[self.instructions[self.curr_ip][1]]
-
                 if index > upper_limit or index < lower_limit:
                     raise IndexError('Array index out of range.')
 
