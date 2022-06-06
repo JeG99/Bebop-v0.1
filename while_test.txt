@@ -1,0 +1,28 @@
+routine holamundo; 
+
+v1: int;
+v2: int;
+v3: int[3][3];
+v4: int [10];
+def funcion71628(int v50, float v51) -> void [[v6:int; v9:float;]] {
+	v6 = 5+4 + 2 - 4 * 6 / 5;
+	<<<("Funcion");
+	<<<(v6);
+	<<<(1 == 1);
+}
+def funcion7(int v50, float v51) -> void [[v6:int; v9:float;]] {
+	v6 = 5+4 + 2 - 4 * 6 / 5;
+	<<<("Funcion");
+	<<<(v6);
+}
+main {
+	v15: int;
+	v1 = (2.1 + 5.2) * (9 - 0);
+	if(v2 < v1){
+		<<<("Hola");
+	}
+	v2 = 3\|7;
+	v3[1][1] = 3;
+	v4[7] = 3+3;
+	funcion71628(45, 2.0);
+}

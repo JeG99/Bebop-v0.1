@@ -1,0 +1,13 @@
+routine find;
+
+main {
+
+    array : int[10];
+    counter: int;
+    counter = 0;
+    while(counter < 11){
+        array[counter] = counter;
+        
+    }
+    <<<(counter);
+}

@@ -1,0 +1,24 @@
+## Global addresses
+Gi = 0
+Gf = 2001
+Go = 4001
+
+## Local Addresses
+Li = 5000
+Lf = 7001
+Lo = 10001
+
+## Temporal Addresses
+Ti = 11000
+Tf = 12001
+Tb = 13001
+To = 14001
+Ts = 15001
+
+## Constant Addresses
+Ci = 16000
+Cf = 17001
+Cs = 18001 
+
+## Pointer Address
+Tp = 19000

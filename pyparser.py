@@ -9,6 +9,163 @@ class_dir = {}
 curr_scope = ''
 prev_scope = ""
 var_id = ""
+<<<<<<< Updated upstream
+=======
+const_table = {}
+dim1Node = {}
+dimNodes = [
+    {"ls":0, "li":0,"r": 1, "m": 0},
+    {"ls":0, "li":0,"r": 1, "m": 0}
+]
+dimCounter = 0
+
+quadruples = []
+quadCounter = 0
+operands_stack = []
+operators_stack = []
+types_stack = []
+temp_counter = 0
+prev_table = {}
+pSaltos = []
+paramCounter = 0
+paramTableCounter = 0
+currFuncCall = ""
+dimAssign  = 0
+temporalCounter = 0
+
+## Global addresses
+Gi = 0
+Gf = 2001
+Go = 4001
+
+## Local Addresses
+Li = 5000
+Lf = 7001
+Lo = 10001
+
+## Temporal Addresses
+Ti = 11000
+Tf = 12001
+Tb = 13001
+To = 14001
+Ts = 15001
+
+## Constant Addresses
+Ci = 16000
+Cf = 17001
+Cs = 18001 
+
+## Pointer Address
+Tp = 19000
+
+
+### Aux Function tempCalculator
+# params: left_oper, right_oper, op
+# Takes operands used to validate the type generated from a certain operation
+# Function used to validate constant and variable types with semantic cube
+# Return: direc(Temporal direction for saving result), rOperDir(calculated direction of right operand), lOperDir(calculated direction of left operand)
+
+def tempCalculator(left_oper, right_oper, op):
+    global Ti, Tf, To, Tb, curr_scope, currFuncCall, temporalCounter
+    ### RIGHT
+    #Check if constant
+    if right_oper in const_table.keys():
+        rOperDir = const_table[right_oper]
+        if rOperDir >= 16000 and rOperDir < 17001 :
+            rOperType = "int"
+        elif rOperDir >= 17001 and rOperDir < 18000:
+            rOperType = "float"
+    else:
+        #Check in current scope, go to global, or check temporals
+        if right_oper in func_dir[curr_scope]["vars_table"].keys():
+           rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
+           rOperDir = func_dir[curr_scope]["vars_table"][right_oper]["dirV"]
+        elif right_oper in func_dir["global"]["vars_table"].keys():
+           rOperType = func_dir["global"]["vars_table"][right_oper]["type"]
+           rOperDir = func_dir["global"]["vars_table"][right_oper]["dirV"]
+        else:
+            if right_oper >= 11000 and right_oper < 12001 :
+                rOperType = "int"
+            elif right_oper >= 12001 and right_oper < 13001:
+                rOperType = "float"
+            rOperDir = right_oper
+
+    ### LEFT
+    #Check if constant
+    if left_oper in const_table.keys():
+            lOperDir = const_table[left_oper]
+            if lOperDir >= 16000 and lOperDir < 17001 :
+                lOperType = "int"
+            elif lOperDir >= 17001 and lOperDir < 18000:
+                lOperType = "float"
+    elif left_oper in const_table.values():
+        lOperDir = left_oper
+        if lOperDir >= 16000 and lOperDir < 17001 :
+            lOperType = "int"
+        elif lOperDir >= 17001 and lOperDir < 18000:
+            lOperType = "float"
+    else:
+        #Check in current scope, go to global, or check temporals
+        if left_oper in func_dir[curr_scope]["vars_table"].keys():
+           lOperType =  func_dir[curr_scope]["vars_table"][left_oper]["type"]
+           lOperDir = func_dir[curr_scope]["vars_table"][left_oper]["dirV"]
+        elif left_oper in func_dir["global"]["vars_table"].keys():
+           lOperType =  func_dir["global"]["vars_table"][left_oper]["type"]
+           lOperDir = func_dir["global"]["vars_table"][left_oper]["dirV"]
+        else:
+            if left_oper >= 11000 and left_oper < 12001 :
+                lOperType = "int"
+            elif left_oper >= 12001 and left_oper < 13001:
+                lOperType = "float"
+            lOperDir = left_oper
+    #Utilize Semantic Cube to check if types are correct
+    if op == "+":
+        typeRes = typeMatch("SUM",rOperType, lOperType)
+    elif op == "-":
+        typeRes = typeMatch("SUB", rOperType, lOperType)
+    elif op == "*":
+        typeRes = typeMatch("MUL", rOperType, lOperType)
+    elif op == "/":
+        typeRes = typeMatch("DIV", rOperType, lOperType)
+    elif op == "<":
+        typeRes = typeMatch("LT", rOperType, lOperType)
+    elif op == ">":
+        typeRes = typeMatch("GT", rOperType, lOperType)
+    elif op == "**":
+        typeRes = typeMatch("EXP", rOperType, lOperType)
+    elif op == "\\|":
+        typeRes = typeMatch("SQRT", rOperType, lOperType)
+    elif op == "==":
+        typeRes = typeMatch("EQUIVALENT", rOperType, lOperType)
+    elif op == "<>":
+        typeRes = typeMatch("NEQUIVALENT", rOperType, lOperType)
+    if typeRes == "INT":
+        if Ti >= 12001:
+            raise MemoryError("Temporal integer limit reached")
+        else:
+            direc = Ti
+            Ti += 1
+    elif typeRes == "FLOAT":
+        if Tf >= 13001:
+            raise MemoryError("Temporal float limit reached")
+        else:
+            direc = Tf
+            Tf += 1
+    elif typeRes == "BOOL":
+        if Tb >= 14001:
+            raise MemoryError("Temporal bool limit reached")
+        else:
+            direc = Tb
+            Tb += 1
+    else:
+        if To >= 15001:
+            raise MemoryError("Temporal other limit reached")
+        else:
+            direc = To
+            To += 1
+    temporalCounter += 1
+    return direc, lOperDir, rOperDir
+>>>>>>> Stashed changes
 
 # TYPE CODEs
 # int: 0
@@ -41,8 +198,38 @@ def p_routine0(p):
     routine0 : ROUTINE ID SEMICOLON global_scope routine1 main0
     ''' 
     p[0] = 1
+<<<<<<< Updated upstream
     print(json.dumps(func_dir, indent=5))
     #print(json.dumps(class_dir, indent=5))
+=======
+    quadruples.append(["END", None, None, None])
+    quadCounter += 1
+    print(json.dumps(func_dir, indent=4))
+    #print(operands_stack)
+    #print(types_stack)
+    #print(operators_stack)
+    #print('\nquadruples:')
+    #print(const_table)
+    [print(idx, quad) for idx, quad in enumerate(quadruples)]
+    vm = VirtualMachine(quadruples, func_dir, const_table)
+    vm.mem_init()
+    vm.run()
+
+
+### Neural Point 1
+# Generates first quaruple GOTO main
+def p_goto_main_neur(p):
+    '''
+    goto_main_neur :
+    '''
+    global quadruples, quadCounter, const_table, Ci, Cf
+    quadruples.append(["GOTO", "main", None, None])
+    quadCounter = quadCounter + 1
+    const_table[0] = Ci
+    Ci += 1
+    const_table[0.0] = Cf
+    Cf+= 1
+>>>>>>> Stashed changes
 
 def p_routine1(p):
     '''
@@ -52,6 +239,7 @@ def p_routine1(p):
              | assignment0 routine1
              | empty
     '''
+<<<<<<< Updated upstream
     global func_dir
     if(p[1] != None and 'def' in p[1][0]):
         func_dir["global"]["vars_table"][p[1][1]] = {"type":p[1][3]}
@@ -64,6 +252,24 @@ def p_routine1(p):
    
     
 
+=======
+    global func_dir, Gi, Gf, Go, Li, Lf, Lo, Ti, To, Tf, Tb, Ts, Tp, temporalCounter
+            
+    Li = 5000
+    Lf = 7001
+    Lo = 10001
+    Ti = 11000
+    Tf = 12001
+    Tb = 13001
+    To = 14001
+    Ts = 15001
+    Tp = 19000
+    temporalCounter = 0
+
+#### Global Scope (Neural point 2)
+# Converts current scope to "global"
+# Generates global scope func_dir entry
+>>>>>>> Stashed changes
 def p_global_scope(p):
     '''
     global_scope :
@@ -140,7 +346,26 @@ def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET function_block0 revert_scope
     '''
+<<<<<<< Updated upstream
     p[0] = (p[1], p[2],p[4], p[7])
+=======
+    global quadruples, quadCounter, prev_table, Li, Lf, Lo, temporalCounter, Ti, Tf, Tb, To, Ts, Tp
+    p[0] = (p[1], p[2], p[4], p[7])
+    quadruples.append(["ENDPROC",None,None,None])
+    func_dir[p[2]]["temporal_counter"] = temporalCounter
+    quadCounter += 1
+    Li = 5000
+    Lf = 7001
+    Lo = 10001
+    Ti = 11000
+    Tf = 12001
+    Tb = 13001
+    To = 14001
+    Ts = 15001
+    Tp = 19000
+    temporalCounter = 0
+
+>>>>>>> Stashed changes
 
 def p_function1(p):
     '''
@@ -177,6 +402,175 @@ def p_declaration1(p):
                  | type LSQRBRACKET exp0 RSQRBRACKET declaration2
     '''
     p[0] = p[1]
+<<<<<<< Updated upstream
+=======
+    global Li, Lf, Lo, func_dir, curr_scope, dimNodes, dimCounter
+    func_dir[curr_scope]["vars_table"][p[-2]]["type"] = p[1]
+
+### LimitNeur (Neural Point 9)
+# Checks 1st dim array limits and generates m, r, ls, and li. Checks if size type is valid
+def p_limitNeur(p):
+    '''
+    limitNeur : 
+    '''
+    global operands_stack, types_stack, dimNodes, dimCounter
+    aux = operands_stack.pop()
+    auxType = types_stack.pop()
+
+    if(auxType != "int"):
+        raise Error("Index type is not valid")
+    else:
+        
+        Ls = aux
+        Linf = 0
+        dimNodes[dimCounter]["ls"] = Ls
+        dimNodes[dimCounter]["li"] = Linf
+        dimNodes[dimCounter]["r"] = 1 * (Ls - Linf + 1)
+        dimCounter += 1
+        
+        #dim1Node["r"] = dim1Node["r"] * (Ls - Li + 1)
+
+
+### simpleMemoryNeur
+# Assigns memory address to simple declarations
+def p_simpleMemoryNeur(p):
+    '''
+    simpleMemoryNeur :
+    '''
+    global Li, Lf, Lo, func_dir, curr_scope, Gi, Gf, Go
+    if(curr_scope == "global"):
+        if p[-1] == "int":
+            if Gi >= 2001:
+                raise MemoryError("Global integer limit reached")
+            else:
+                direc = Gi
+                Gi += 1
+                val = 0
+        elif p[-1] == "float":
+            if Gf >= 4001:
+                raise MemoryError("Global float limit reached")
+            else:
+                direc = Gf
+                Gf += 1
+                val = 0.0
+        else:
+            if Go >= 5000:
+                raise MemoryError("Global other limit reached")
+            else:
+                direc = Go
+                Go += 1
+                val = None
+    else:
+        if p[-1] == "int":
+            if Li >= 7001:
+                raise MemoryError("Local integer limit reached")
+            else:
+                direc = Li
+                Li += 1
+                val = 0
+        elif p[-1] == "float":
+            if Lf >= 10001:
+                raise MemoryError("Local Float limit reached")
+            else:
+                direc = Lf
+                Lf += 1
+                val = 0.0
+        else:
+            if Lo >= 11000:
+                raise MemoryError("Local other limit reached")
+            else:
+                direc = Lo
+                Lo += 1
+                val = None
+
+    func_dir[curr_scope]["vars_table"][p[-3]]["dirV"] = direc
+    func_dir[curr_scope]["vars_table"][p[-3]]["value"] = val
+    func_dir[curr_scope]["vars_table"][p[-3]]["type"] = p[-1]
+
+
+
+###isArrayNeur (Neural )
+def p_isArrayNeur(p):
+    '''
+    isArrayNeur :
+    '''
+    global func_dir, curr_scope, operands_stack, dimCounter
+    func_dir[curr_scope]["vars_table"][p[-3]]["isArray"] = True
+    dimCounter = 0
+    dimNodes[0] = {"ls":0, "li":0, "r":1, "m":0}
+    dimNodes[1] = {"ls":0, "li":0, "r":1, "m":0}
+
+
+def p_neurMemory(p):
+    '''
+    neurMemory :
+    '''
+    global Li, Lf, Lo, func_dir, curr_scope, var_id, Gi, Gf, Go, operands_stack, dimCounter, dimNodes
+    if(dimCounter > 1):
+        size = dimNodes[1]["r"]
+    else:
+        size = dimNodes[0]["r"]
+
+    if curr_scope != "global":
+        if p[-7] == "int":
+            if Li >= 7001:
+                raise MemoryError("Local integer limit reached")
+            else:
+                direc = Li
+                Li += 1
+        elif p[-7] == "float":
+            if Lf >= 10001:
+                raise MemoryError("Local float limit reached")
+            else:
+                direc = Lf
+                Lf += 1
+        else:
+            if Lo >= 11000:
+                raise MemoryError("Local other limit reached")
+            else:
+                direc = Lo
+                Lo += 1
+    else:
+        if p[-7] == "int":
+            if Gi >= 2001:
+                raise MemoryError("Global integer limit reached")
+            else:
+                direc = Gi
+                Gi += size
+        elif p[-7] == "float":
+            if Gf >= 4001:
+                raise MemoryError("Global float limit reached")
+            else:
+                direc = Gf
+                Gf += size
+        else:
+            if Gi >= 5000:
+                raise MemoryError("Global other limit reached")
+            else:
+                direc = Go
+                Go += size
+    
+    if dimCounter == 1:
+        ls1 = dimNodes[0]["ls"]
+        r = dimNodes[0]["r"]
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim1"] = ls1
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = 0
+        func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
+        func_dir[curr_scope]["vars_table"][var_id]["m1"] = r / (ls1+1)
+    elif dimCounter == 2:
+        ls1 = dimNodes[0]["ls"]
+        ls2 = dimNodes[1]["ls"]
+        r = dimNodes[1]["r"]
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim1"] = ls1
+        func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = ls2
+        func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
+        func_dir[curr_scope]["vars_table"][var_id]["m1"] = r/ (ls1+1)
+        func_dir[curr_scope]["vars_table"][var_id]["m2"] = func_dir[curr_scope]["vars_table"][var_id]["m1"]/ (ls2+1)
+
+    func_dir[curr_scope]["vars_table"][var_id]["dirV"] = direc
+    func_dir[curr_scope]["vars_table"][var_id]["size"] = size
+
+>>>>>>> Stashed changes
 
 def p_declaration2(p):
     '''
@@ -184,6 +578,7 @@ def p_declaration2(p):
                  | empty
     '''
 
+<<<<<<< Updated upstream
 def p_assignment0(p):
     '''
     assignment0 : ID EQUALS expression0 SEMICOLON
@@ -193,6 +588,269 @@ def p_assignment0(p):
     #global curr_scope
     #if(p[2] != "["):
     #    func_dir[curr_scope][p[1]]["value"] = p[3]    
+=======
+def p_dim2Neur(p):
+    '''
+    dim2Neur :
+    '''
+    
+
+
+def p_limitNeur2(p):
+    '''
+    limitNeur2 : 
+    '''
+    global dimNodes, dimCounter, operands_stack, types_stack
+    aux = operands_stack.pop()
+    auxType = types_stack.pop()
+    if(auxType != "int"):
+        raise IndexError("Index Type not valid")
+    else:
+        Ls = aux
+        Linf = 0
+        dimNodes[dimCounter]["ls"] = Ls
+        dimNodes[dimCounter]["li"] = Linf
+        dimNodes[dimCounter]["r"] = dimNodes[dimCounter-1]["r"] * (Ls - Linf + 1)
+        dimCounter += 1
+
+def p_assignment0(p):
+    '''
+    assignment0 : ID EQUALS expression0 SEMICOLON
+                | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign EQUALS expression0 SEMICOLON 
+                | assign_id_def lsqrbracket_assign exp0 rsqrbracket_assign_2dim1 LSQRBRACKET exp0 RSQRBRACKET arrAccdim2 EQUALS expression0 SEMICOLON
+    '''
+    global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, const_table
+    if len(p) == 5 and operands_stack:
+        if p[1] not in func_dir["global"]["vars_table"] and p[1] not in func_dir[curr_scope]["vars_table"]:
+            raise NameError("Variable does not exist")
+        else:
+            value = operands_stack.pop()
+            valType = types_stack.pop()
+            if p[1] not in func_dir["global"]["vars_table"]:
+                validation = typeMatch("EQUAL",valType,func_dir[curr_scope]["vars_table"][p[1]]["type"])
+                direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
+            else:
+                validation = typeMatch("EQUAL",valType,func_dir["global"]["vars_table"][p[1]]["type"])
+                direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
+            if(value in const_table.keys()):
+                value = const_table[value]
+            quad = [p[2], value, None, direc]
+            quadruples.append(quad)
+            quadCounter += 1
+    elif len(p) == 8 and operands_stack:
+        valAssign = operands_stack.pop()
+        assignee = operands_stack.pop()
+        if valAssign in const_table.keys():
+            vAssign = const_table[valAssign]
+        elif valAssign in func_dir["global"]["vars_table"].keys():
+            vAssign = func_dir["global"]["vars_table"][valAssign]["dirV"]
+        elif valAssign in func_dir[curr_scope]["vars_table"].keys():
+            vAssign = func_dir[curr_scope]["vars_table"][valAssign]["dirV"]
+        else:
+            vAssign = valAssign
+        quad = [p[5], vAssign, None, assignee]
+        quadruples.append(quad)
+        quadCounter += 1
+    elif len(p) == 12 and operands_stack:
+        valAssign = operands_stack.pop()
+        assignee = operands_stack.pop()
+        quad = [p[9], const_table[valAssign], None, assignee]
+        quadruples.append(quad)
+        quadCounter += 1
+
+def p_arrAccdim2(p):
+    '''
+    arrAccdim2 :
+    '''
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack, Tp, Ci
+    id = p[-6][0]
+    idType = p[-6][1]
+    dim = p[-6][2]
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        ls = func_dir["global"]["vars_table"][id]["lsDim2"]
+    else:
+        ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
+    aux = operands_stack[-1]
+    if aux in func_dir[curr_scope]["vars_table"].keys():
+        aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+    elif aux in func_dir["global"]["vars_table"].keys():
+        aux = func_dir["global"]["vars_table"][aux]["dirV"]
+    else:
+        if aux not in const_table.keys():
+            const_table[aux] = Ci
+            Ci += 1
+        aux = const_table[aux]
+    print(aux, "asdasdasds")
+    if ls not in const_table.keys():
+        const_table[ls] = Ci
+        Ci += 1
+    ls = const_table[ls]
+    quad = ["VERIFY",aux , const_table[0], ls]
+    quadruples.append(quad)
+    quadCounter += 1
+    left_oper = operands_stack.pop()
+    right_oper = operands_stack.pop()
+    direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, "+")
+    operands_stack.append(direc)
+    quadruples.append(["+", lOperDir, rOperDir, direc])
+    operands_stack.append(direc)
+    temp_counter += 1
+    quadCounter += 1
+    aux3 = operands_stack.pop()
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        direc, lOperDir, rOperDir = tempCalculator(aux3, id, "+")
+    else:
+        direc, lOperDir, rOperDir = tempCalculator(aux3, id, "+")
+    
+    operands_stack.append(Tp)
+    quadruples.append(["+", lOperDir, rOperDir, Tp])
+    Tp += 1
+    temp_counter += 1
+    quadCounter += 1
+    
+    operators_stack.pop()
+
+def p_rsqrbracket_assign_2dim1(p):
+    '''
+    rsqrbracket_assign_2dim1 : RSQRBRACKET
+    '''
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack, const_table, Ci
+    aux = operands_stack.pop()
+    id = p[-2][0]
+    
+    if id not in func_dir[curr_scope]["vars_table"].keys():
+        ls = func_dir["global"]["vars_table"][id]["lsDim1"]
+        m = int(func_dir["global"]["vars_table"][id]["m1"])
+        if m not in const_table.keys():
+            const_table[m] = Ci
+            Ci += 1
+        if ls not in const_table.keys():
+            const_table[ls] = Ci
+            Ci += 1
+        if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+        elif aux in func_dir["global"]["vars_table"].keys():
+            aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        else:
+            if aux not in const_table.keys():
+                const_table[aux] = Ci
+                Ci += 1
+                aux = const_table[aux]
+            aux = const_table[aux]
+        quadruples.append(["VERIFY",aux , const_table[0],const_table[ls]])
+    else:
+        ls = func_dir[curr_scope]["vars_table"][id]["lsDim1"]
+        m = int(func_dir[curr_scope]["vars_table"][id]["m1"])
+        if m not in const_table.keys():
+            const_table[m] = Ci
+            Ci += 1
+        if ls not in const_table.keys():
+            const_table[ls] = Ci
+            Ci += 1
+        if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+        elif aux in func_dir["global"]["vars_table"].keys():
+            aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        else:
+            if aux not in const_table.keys():
+                const_table[aux] = Ci
+                Ci += 1
+                aux = const_table[aux]
+            aux = const_table[aux]
+        print(aux, "putamadreyamatenmealv")
+        quadruples.append(["VERIFY",aux , const_table[0],const_table[ls]])
+    quadCounter += 1
+    direc, rOperDir, lOperDir = tempCalculator(aux, m, "*")
+    quad = ["*", rOperDir, lOperDir,direc]
+    quadruples.append(quad)
+    operands_stack.append(direc)
+    temp_counter += 1
+    quadCounter +=1
+
+    
+
+def p_rsqrbracket_assign(p):
+    '''
+    rsqrbracket_assign : RSQRBRACKET
+    '''
+    global quadCounter, quadruples, func_dir, operands_stack, curr_scope, var_id, temp_counter, operators_stack, Tp, Ci
+    id = p[-2][0]
+    idType = p[-2][1]
+    
+    if id in func_dir[curr_scope]["vars_table"].keys():
+        aux = operands_stack[-1]
+        ls = func_dir[curr_scope]["vars_table"][id]["lsDim1"]
+        if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+        elif aux in func_dir["global"]["vars_table"].keys():
+            aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        else:
+            if aux not in const_table.keys():
+                const_table[aux] = Ci
+                Ci += 1
+            aux = const_table[aux]
+        if ls not in const_table.keys():
+            const_table[ls] = Ci
+            Ci += 1
+        ls = const_table[ls]
+        quadruples.append(["VERIFY",aux , const_table[0], ls])
+    else:
+        aux = operands_stack[-1]
+        ls = func_dir["global"]["vars_table"][id]["lsDim1"]
+        if aux in func_dir[curr_scope]["vars_table"].keys():
+            aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
+        elif aux in func_dir["global"]["vars_table"].keys():
+            aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        else:
+            if aux not in const_table.keys():
+                const_table[aux] = Ci
+                Ci += 1
+            aux = const_table[aux]
+        if ls not in const_table.keys():
+            const_table[ls] = Ci
+            Ci += 1
+        ls = const_table[ls]
+        print(aux)
+        quadruples.append(["VERIFY",aux , const_table[0], ls])
+    quadCounter += 1
+    aux = operands_stack.pop()
+    direc, lOperDir, rOperDir = tempCalculator(aux, id, "+")
+    operands_stack.append(Tp)
+    quadruples.append(["+", lOperDir, rOperDir, Tp])
+    Tp += 1
+    temp_counter += 1
+    quadCounter += 1
+    operators_stack.pop()
+
+
+def p_lsqrbracket_assign(p):
+    '''
+    lsqrbracket_assign : LSQRBRACKET
+    '''
+    global operands_stack, types_stack, operators_stack, dimAssign
+    
+    id = operands_stack.pop()
+    idType = types_stack.pop()
+    operators_stack.append("(")
+    dimAssign = 1
+    p[0] = (id, idType, dimAssign)
+
+        
+
+def p_assign_id_def(p):
+    '''
+    assign_id_def : ID
+    '''
+    global operands_stack, types_stack
+    p[0] = p[1]
+    if p[1] not in func_dir[curr_scope]["vars_table"].keys():
+        operands_stack.append(p[1])
+        types_stack.append(func_dir["global"]["vars_table"][p[1]]["type"])
+    else:
+        operands_stack.append(p[1])
+        types_stack.append(func_dir[curr_scope]["vars_table"][p[1]]["type"])
+
+>>>>>>> Stashed changes
     
 
 def p_constructor(p):
@@ -247,6 +905,43 @@ def p_params0(p):
     if(p[1] != None):
         p[0] = (p[1], p[2], p[3])
 
+<<<<<<< Updated upstream
+=======
+def p_paramsNeur(p):
+    '''
+    paramsNeur : 
+    '''
+    global func_dir, quadruples, quadCounter, Li, Lf, Lo, curr_scope
+    if p[-2] == "int":
+        if Li >= 7001:
+            raise MemoryError("Local integer limit reached")
+        else:
+            direc = Li
+            Li += 1
+            value = 0
+    elif p[-2] == "float":
+        if Lf >= 10001:
+            raise MemoryError("Local float limit reached")
+        else:
+            direc = Lf
+            Lf += 1
+            value = 0.0
+    else:
+        if Lo >= 11000:
+            raise MemoryError("Local other limit reached")
+        else:
+            direc = Lo
+            Lo += 1
+            value = None
+    if curr_scope in class_dir.keys():
+        class_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False, "value" : value}
+        class_dir[curr_scope]["params_table"].append(p[-2])
+        class_dir[curr_scope]["params_addresses"].append(direc)
+    else:
+        func_dir[curr_scope]["vars_table"][p[-1]] = {"type" : p[-2], "dirV" : direc, "isArray":False, "value" : value}
+        func_dir[curr_scope]["params_table"].append(p[-2])
+        func_dir[curr_scope]["params_addresses"].append(direc)
+>>>>>>> Stashed changes
 
 
 
@@ -547,6 +1242,20 @@ def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
     '''
+<<<<<<< Updated upstream
+=======
+    global Li, Lf, Lo, temporalCounter, Ti, Tf, Tb, To, Ts
+    Li = 5000
+    Lf = 7001
+    Lo = 10001
+    Ti = 11000
+    Tf = 12001
+    Tb = 13001
+    To = 14001
+    Ts = 15001
+    temporalCounter = 0
+
+>>>>>>> Stashed changes
 
 def p_main1(p):
     '''
