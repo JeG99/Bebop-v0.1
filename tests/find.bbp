@@ -4,6 +4,10 @@ main{
 
     arr: int[10];
     count: int;
+    count2: int;
+    count3: int;
+    count1:int;
+    
     count = 0;
     arr[0] = 4;
     arr[1] = 5;
@@ -17,9 +21,15 @@ main{
     arr[9] = 10;
     arr[10] = 9;
     in : int;
-    <<<(arr[2]);
-    while(count < 11){
-        <<<(arr[count]);
+    >>>in;
+    aux : int;
+    while(aux <> in){
+        count2 = 3;
+        count3 = 2;
+        count1 = count2 +count3;
+        <<<(count1);
+        aux = arr[count];
         count = count + 1;
     }
+    <<<("El indice es:", count-1);
 }
