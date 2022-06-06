@@ -200,7 +200,7 @@ def p_goto_main_neur(p):
 
 
 # Routine1
-# Allows program to generate values, functions, and clases on the global scope.
+# Allows program to generate values, functions, and clases on the global scope and resets local and temp addresses
 def p_routine1(p):
     '''
     routine1 : statement routine1
@@ -342,8 +342,6 @@ def p_class3(p):
 # Function 0
 # Checks for the structure of a function to generate it, adds ENDPROC quadruple at end of its excecution
 # and resets local and temporal addresses to default address
-
-
 def p_function0(p):
     '''
     function0 : DEF id_def LPAREN params0 RPAREN endParamNeur ARROW function1 LSQRBRACKET LSQRBRACKET function2 RSQRBRACKET RSQRBRACKET startFuncNeur function_block0 revert_scope
@@ -1776,7 +1774,7 @@ def p_object_assignment(p):
     '''
 
 ### main
-# Main and most important "function" in program
+# Main and most important "function" in program, resets temp and local addresses
 def p_main(p):
     '''
     main0 : MAIN main_scope LBRACKET main1 RBRACKET 
