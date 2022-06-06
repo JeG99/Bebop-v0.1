@@ -151,6 +151,7 @@ class VirtualMachine():
     def run(self):
         print("ROUTINE START")
         while(self.instructions[self.curr_ip][0] != 'END'):
+            #print(self.instructions[self.curr_ip])
             if self.instructions[self.curr_ip][0] == '+':
                 if len(self.execution_stack) > 0:
                     self.stack_operation(operator.add, self.curr_ip)
@@ -276,23 +277,33 @@ class VirtualMachine():
                 if len(self.execution_stack) > 0:
                     self.stack_assignation(self.curr_ip)
                 else:
+                    #print(self.instructions[self.curr_ip])
+                    
                     # Value to be stored
                     value = self.mem[self.instructions[self.curr_ip][1]]
                     # Memory direction
                     dir = self.instructions[self.curr_ip][3]
                     if dir >= 19000:  # Si la direccion a guardar es un puntero
+                        #print(self.mem[self.mem[dir]], value)
                         self.mem[self.mem[dir]] = value
+                    elif self.instructions[self.curr_ip][1] >= 19000:
+                        self.mem[dir] = self.mem[value] 
                     else:
                         self.mem[dir] = value
+                    #self.mem_dump()
 
             elif self.instructions[self.curr_ip][0] == '<<<':
                 if len(self.execution_stack) > 0:
                     self.stack_out(self.curr_ip)
                 else:
                     dir = self.instructions[self.curr_ip][3]
+                    dirAux = dir
                     if type(dir) != str:
                         dir = self.mem[dir]
-                    print(dir)
+                    if dirAux >= 19000:
+                        print(self.mem[dir])
+                    else:
+                        print(dir)
 
             elif self.instructions[self.curr_ip][0] == '>>>':
                 if len(self.execution_stack) > 0:
@@ -357,3 +368,4 @@ class VirtualMachine():
                     raise IndexError('Array index out of range.')
 
             self.curr_ip += 1
+        #self.mem_dump()
