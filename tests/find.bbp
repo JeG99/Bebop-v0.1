@@ -18,13 +18,8 @@ main{
     arr[8] = 0;
     arr[9] = 10;
     arr[10] = 9;
-    in : int;
-    >>>in;
-    aux : int;
     while(count < 10){
-        aux = arr[count];
-        <<<(count,"/////", aux);
+        <<<(arr[count]);
         count = count + 1;
     }
-    <<<("El indice es:", count-1);
 }

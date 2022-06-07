@@ -176,16 +176,6 @@ def p_routine0(p):
     p[0] = 1
     quadruples.append(["END", None, None, None])
     quadCounter += 1
-    print(json.dumps(func_dir, indent=4))
-    # print(operands_stack)
-    # print(types_stack)
-    # print(operators_stack)
-    # print(const_table)
-    # [print(idx, quad) for idx, quad in enumerate(quadruples)]
-    vm = VirtualMachine(quadruples, func_dir, const_table)
-    vm.mem_init()
-    vm.run()
-    #vm.mem_dump()
 
 
 # Neural Point 1
@@ -360,7 +350,6 @@ def p_function0(p):
         func_dir['global']['vars_table'][p[2]]['isArray'] = False
         func_dir['global']['vars_table'][p[2]]['value'] = 0
     p[0] = (p[1], p[2], p[4], p[7])
-    print(p[0])
     quadruples.append(["ENDPROC", None, None, None])
     func_dir[p[2]]["temporal_counter"] = func_mem
     quadCounter += 1
@@ -677,7 +666,6 @@ def p_assignment0(p):
 
             quad = [p[2], dirVal, None, direc]
 
-            print("Cuadruplo = ", quad)
             quadruples.append(quad)
             quadCounter += 1
     elif len(p) == 8 and operands_stack:
@@ -1477,9 +1465,7 @@ def p_check_rel_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
-        print("Igualacion = ", left_oper, op, right_oper)
         direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, op)
-        print(direc, lOperDir, rOperDir)
         operands_stack.append(direc)
         quad = [op, lOperDir,
                 rOperDir, direc]
