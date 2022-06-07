@@ -94,7 +94,6 @@ def tempCalculator(left_oper, right_oper, op):
                 rOperType = "float"
                 rOperDir = right_oper
             else:
-                print("Amogus")
                 rOperDir = right_oper
                 rOperType = "int"
 
@@ -122,7 +121,6 @@ def tempCalculator(left_oper, right_oper, op):
                 lOperType = "float"
                 lOperDir = left_oper
             else:
-                print("Amogus")
                 lOperDir = left_oper
                 lOperType = "int"
     # Utilize Semantic Cube to check if types are correct
@@ -176,6 +174,10 @@ def p_routine0(p):
     p[0] = 1
     quadruples.append(["END", None, None, None])
     quadCounter += 1
+    vm = VirtualMachine(quadruples, func_dir, const_table)
+    vm.mem_init()
+    vm.run()
+    #vm.mem_dump()
 
 
 # Neural Point 1
@@ -665,7 +667,6 @@ def p_assignment0(p):
                 dirVal = value
 
             quad = [p[2], dirVal, None, direc]
-
             quadruples.append(quad)
             quadCounter += 1
     elif len(p) == 8 and operands_stack:

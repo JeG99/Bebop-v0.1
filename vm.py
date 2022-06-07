@@ -294,6 +294,7 @@ class VirtualMachine():
                 if len(self.execution_stack) > 0:
                     self.stack_assignation(self.curr_ip)
                 else:
+
                     # Value to be stored
                     value = self.mem[self.instructions[self.curr_ip][1]]
                     # Memory direction
@@ -393,7 +394,9 @@ class VirtualMachine():
                 
                 if (index >= 11000 and index < 12001) or (index >= 5000 and index < 7000) or (index >= 16000 and index < 17000):
                     index = self.mem[self.instructions[self.curr_ip][1]]
+                #print(">>>>>>>>>>>>>>>>>>>>>>",index, upper_limit, lower_limit)
                 if index > upper_limit or index < lower_limit:
                     raise IndexError('Array index out of range.')
 
             self.curr_ip += 1
+        # self.mem_dump()
