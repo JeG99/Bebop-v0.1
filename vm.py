@@ -162,14 +162,14 @@ class VirtualMachine():
     def run(self):
         print("ROUTINE START")
         while(self.instructions[self.curr_ip][0] != 'END'):
-            print("B4",self.instructions[self.curr_ip])
+            #print("B4",self.instructions[self.curr_ip])
             if type(self.instructions[self.curr_ip][1]) == int:
                 if self.instructions[self.curr_ip][1] >= 19000:
                     self.instructions[self.curr_ip][1] = self.mem[self.instructions[self.curr_ip][1]]
             if type(self.instructions[self.curr_ip][2]) == int:
                 if self.instructions[self.curr_ip][2] >= 19000:
                     self.instructions[self.curr_ip][2] = self.mem[self.instructions[self.curr_ip][2]]
-            print(self.instructions[self.curr_ip])
+            #print(self.instructions[self.curr_ip])
             if self.instructions[self.curr_ip][0] == '+':
                 #print("---",self.instructions[self.curr_ip])
                 if len(self.execution_stack) > 0:
@@ -184,8 +184,8 @@ class VirtualMachine():
                         
                         self.mem[self.instructions[self.curr_ip][3]
                                  ] = self.mem[left_op_dir] + right_op_dir
-                        print(self.mem[self.instructions[self.curr_ip][3]
-                                 ],self.mem[left_op_dir] + right_op_dir, "+++++++++++++")
+                        #print(self.mem[self.instructions[self.curr_ip][3]
+                        #         ],self.mem[left_op_dir] + right_op_dir, "+++++++++++++")
                         #self.mem_dump()
                     else:
                         # Temporal direction

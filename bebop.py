@@ -459,8 +459,12 @@ def p_decl_id_def(p):
     p[0] = p[1]
     global var_id, func_dir, curr_scope
     var_id = p[1]
-    func_dir[curr_scope]["vars_table"][p[1]] = {
+    if p[1] not in func_dir[curr_scope]["vars_table"].keys():
+        func_dir[curr_scope]["vars_table"][p[1]] = {
         "type": None, "dirV": None, "isArray": False}
+    else:
+        raise NameError("Variable already exists")
+    
 
 # declaration1
 # Allows different types of declarations, from simple types to complex types(objects) and arrays
@@ -1821,14 +1825,17 @@ def p_empty(p):
 ### error
 # Checks for error in syntax
 def p_error(p):
-    print(p.value)
-    print("Código inválido.")
+    #print(p.value)
+    #print("Código inválido.")
+    raise SyntaxError("An error was found reading the file: " + p.value)
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         parser = yacc.yacc()
         code = sys.argv[1]
+        if ".bbp" not in code:
+            raise Error("File extension not valid")
         try:
             _file = open(code, 'r')
             source = _file.read()
@@ -1840,7 +1847,6 @@ if __name__ == '__main__':
 
             if parser.parse(source) == 1:
                 print("ROUTINE END")
-
         except EOFError:
             print(EOFError)
     else:

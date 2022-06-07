@@ -22,7 +22,6 @@ main{
     >>>in;
     aux : int;
     while(count < 10){
-        
         aux = arr[count];
         <<<(count,"/////", aux);
         count = count + 1;
