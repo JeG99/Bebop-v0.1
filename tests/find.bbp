@@ -1,12 +1,14 @@
 routine find;
-arr: int[10];
+
 
 main{
 
-    
+    arr: int[10];
     count: int;
+    ans: int;
     
     count = 0;
+    ans = -1;
     arr[0] = 4;
     arr[1] = 5;
     arr[2] = 6;
@@ -18,8 +20,20 @@ main{
     arr[8] = 0;
     arr[9] = 10;
     arr[10] = 9;
-    while(count < 10){
-        <<<(arr[count]);
+    in: int;
+    <<<("Ingrese el numero que desea buscar");
+    >>>in;
+    <<<("---");
+    while(count < 11){
+        if(arr[count] == in){
+            ans = count;
+        }
         count = count + 1;
+    }
+    if(ans == -1){
+        <<<("No se encontro");
+    }
+    else{
+        <<<("La respuesta es:",ans);
     }
 }

@@ -1,6 +1,4 @@
 routine holamundo; 
-v1: int[3][1]; 
-v1: int[3]; 
 
 class Clase1 {
 
@@ -12,25 +10,7 @@ class Clase1 {
 		
 	}
 
-	private def func1(int hola, float adios) -> int [[
-		var2: int;
-		var3: bool;
-		var: float;
-	]] {
-		>>> input;
-		<<<(hola \| adios + funcion23(adios**hola));
-		return hola + 3;
-	}
 
-	public def func2() -> void [[]] {
-		<<<("que onda");
-	}
-
-};
-
-class Test : Clase1 {
-	public varrr: float; 
-	construct Test() {}
 };
 
 def funcion71628(int b, bool asd) -> bool [[]] {
@@ -38,41 +18,5 @@ def funcion71628(int b, bool asd) -> bool [[]] {
 }
 
 main {
-	v9: float[3][54 + 3\|7];
-	v67: int;
-	v67 = 3\|7;
-	v1[1] = 2; 
-	v1[1][2] = v5;
-	v2: string;
-	v2 = vv; 
-	v3:float;
-	v3 = v1 + v2; 
-	>>> v4;
-	<<<(v3); 
-	if(v3 > v2) { 
-		<<<("esmayor"); 
-	} else { 
-		<<<("noesmayor"); 
-	};
-	while(v3 < v5) {
-		>>> keonda;
-		<<<( obj.meth(), obj2.attr6 );
-		while(v7) {
-			<<<("hola");
-		}
-		if(cond) {
-			<<<("inside condition");
-			if(cond32) {
-				<<<("if anidado compadre");
-				while(x > 3) {
-					<<<("hola");
-				}
-			};
-		} else {
-			<<<("no se pudo compadre");
-		};
-	}
-	obj: Obj7;
-	obj = new Obj7(2, 4, 6, true, obj2.attr);
-	a = func(3+2, 5-1*3);
+	
 }

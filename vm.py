@@ -21,7 +21,8 @@ class VirtualMachine():
         self.execution_stack = []  # Aqui van los activation records
         self.curr_func = ""
         self.params_counter = 0
-
+        self.auxSave1 = None
+        self.auxSave2 = None
         # Mapear memoria (las "declaraciones")
         self.mem_init()
 
@@ -70,6 +71,10 @@ class VirtualMachine():
     def stack_operation(self, op, ip):
         left_op_dir = self.instructions[ip][1]
         right_op_dir = self.instructions[ip][2]
+        #print("+++++", left_op_dir, right_op_dir)
+        #print(self.mem_backup[left_op_dir])
+        #print(self.mem_backup[right_op_dir])
+        #print(self.execution_stack[-1])
         res_dir = self.activation_record_dir_translator(
             self.instructions[ip][3])
 
@@ -161,29 +166,42 @@ class VirtualMachine():
 
     def run(self):
         print("ROUTINE START")
+        #print(self.instructions)
         while(self.instructions[self.curr_ip][0] != 'END'):
+            self.auxSave1 = None
+            self.auxSave2 = None
+            #print(self.instructions[self.curr_ip])
             if type(self.instructions[self.curr_ip][1]) == int:
                 if self.instructions[self.curr_ip][1] >= 19000:
+                    self.auxSave1 = self.instructions[self.curr_ip][1]
                     self.instructions[self.curr_ip][1] = self.mem[self.instructions[self.curr_ip][1]]
             if type(self.instructions[self.curr_ip][2]) == int:
                 if self.instructions[self.curr_ip][2] >= 19000:
+                    self.auxSave2 = self.instructions[self.curr_ip][2]
                     self.instructions[self.curr_ip][2] = self.mem[self.instructions[self.curr_ip][2]]
+
+            #print(self.instructions[self.curr_ip], "changed")
             if self.instructions[self.curr_ip][0] == '+':
+                
                 if len(self.execution_stack) > 0:
+                    #print(self.execution_stack)
                     self.stack_operation(operator.add, self.curr_ip)
                 else:
                     # Left operand
                     left_op_dir = self.instructions[self.curr_ip][1]
                     # Right operand
                     right_op_dir = self.instructions[self.curr_ip][2]
+                    #print(left_op_dir, right_op_dir, self.mem[self.instructions[self.curr_ip][3]])
                     if self.instructions[self.curr_ip][3] >= 19000:
                         
                         self.mem[self.instructions[self.curr_ip][3]
                                  ] = self.mem[left_op_dir] + right_op_dir
+                        #print(self.mem[left_op_dir] + right_op_dir, "+++++++++")
                     else:
                         # Temporal direction
                         self.mem[self.instructions[self.curr_ip][3]
                                  ] = self.mem[left_op_dir] + self.mem[right_op_dir]
+                        #print(self.mem[left_op_dir] + self.mem[right_op_dir], "----")
 
             elif self.instructions[self.curr_ip][0] == '-':
                 if len(self.execution_stack) > 0:
@@ -198,6 +216,7 @@ class VirtualMachine():
                              ] = self.mem[left_op_dir] - self.mem[right_op_dir]
 
             elif self.instructions[self.curr_ip][0] == '*':
+                #print(self.instructions[self.curr_ip])
                 if len(self.execution_stack) > 0:
                     self.stack_operation(operator.mul, self.curr_ip)
                 else:
@@ -279,6 +298,7 @@ class VirtualMachine():
                              ] = self.mem[left_op_dir] != self.mem[right_op_dir]
 
             elif self.instructions[self.curr_ip][0] == '==':
+                ## print(self.instructions[self.curr_ip])
                 if len(self.execution_stack) > 0:
                     self.stack_operation(operator.eq, self.curr_ip)
                 else:
@@ -291,6 +311,7 @@ class VirtualMachine():
                              ] = self.mem[left_op_dir] == self.mem[right_op_dir]
 
             elif self.instructions[self.curr_ip][0] == '=':
+                #print(self.instructions[self.curr_ip],self.auxSave1, self.auxSave2)
                 if len(self.execution_stack) > 0:
                     self.stack_assignation(self.curr_ip)
                 else:
@@ -299,6 +320,7 @@ class VirtualMachine():
                     value = self.mem[self.instructions[self.curr_ip][1]]
                     # Memory direction
                     dir = self.instructions[self.curr_ip][3]
+                    
                     if dir >= 19000 and self.instructions[self.curr_ip][1] >= 19000:
                         self.mem[self.mem[dir]] = self.mem[value]
                         
@@ -308,7 +330,6 @@ class VirtualMachine():
                         self.mem[self.mem[dir]] = value
                     else:
                         self.mem[dir] = value
-                    # self.mem_dump()
 
             elif self.instructions[self.curr_ip][0] == '<<<':
                 if len(self.execution_stack) > 0:
@@ -316,6 +337,7 @@ class VirtualMachine():
                 else:
                     dir = self.instructions[self.curr_ip][3]
                     dirAux = dir
+                    #print(self.instructions[self.curr_ip][3])
                     if type(dir) != str:
                         dir = self.mem[dir]
                     if dirAux >= 19000:
@@ -354,32 +376,45 @@ class VirtualMachine():
             elif self.instructions[self.curr_ip][0] == 'ERA':
                 self.curr_func = self.instructions[self.curr_ip][1]
                 reserved_chunk = self.instructions[self.curr_ip][3]
+                #print("asadas", len(reserved_chunk))
                 if len(reserved_chunk) == 0:
+                    #print(self.func_dir_copy[self.curr_func]['temporal_counter'], "/+/+//+/+/")
                     self.instructions[self.curr_ip][3] = self.func_dir_copy[self.curr_func]['temporal_counter']
+                    reserved_chunk = self.instructions[self.curr_ip][3]
+                    #print(reserved_chunk)
                     i = self.curr_ip
                     while(self.instructions[i][0] != 'ENDPROC'):
                         i += 1
                     self.curr_ip = i + 1
-                    continue
-
+                #print(reserved_chunk[0], "asdasds")
                 activation_record = [
-                    [None for i in range(reserved_chunk[0])],
-                    [None for i in range(reserved_chunk[1])],
-                    [None for i in range(reserved_chunk[2])],
-                    [None for i in range(reserved_chunk[3])],
-                    [None for i in range(reserved_chunk[4])]
+                    [None for i in range(reserved_chunk[0])], # Li
+                    [None for i in range(reserved_chunk[1])], # Lf
+                    [None for i in range(reserved_chunk[2])], # Ti
+                    [None for i in range(reserved_chunk[3])], # Tf
+                    [None for i in range(reserved_chunk[4])]  # Tb
                 ]
                 self.execution_stack.append(activation_record)
                 self.mem_backup = self.mem.copy()
 
             elif self.instructions[self.curr_ip][0] == 'PARAM':
-                pass
+                activation = self.activation_record_dir_translator(self.instructions[self.curr_ip][1])
+                #print("param")
+                if activation == 0:
+                    if self.instructions[self.curr_ip][1] >= 16000 and self.instructions[self.curr_ip][1] < 17000:
+                        #print(self.instructions[self.curr_ip][1], "----")
+                        self.execution_stack[-1][0][self.instructions[self.curr_ip][2]] = self.mem_backup[self.instructions[self.curr_ip][1]]
+                        #print(self.execution_stack)
+                    elif self.instructions[self.curr_ip][1] >= 17000 and self.instructions[self.curr_ip][1] < 18000:
+                        self.execution_stack[-1][1][self.instructions[self.curr_ip][2]] = self.mem_backup[self.instructions[self.curr_ip][1]]
+                else:
+                    
+                    self.execution_stack[-1][activation[0]][activation[1]] = self.mem_backup[self.instructions[self.curr_ip][1]]
 
             elif self.instructions[self.curr_ip][0] == 'RETURN':                
                 func = self.instructions[self.curr_ip][1]
                 value = self.stack_return(self.curr_ip)
-                dir = self.func_dir_copy["global"]["vars_table"][func]["dirV"] 
-                self.mem_backup[dir] = value
+                self.mem_backup[func] = value
 
             elif self.instructions[self.curr_ip][0] == 'ENDPROC':
                 activation_record = self.execution_stack.pop()
@@ -391,12 +426,16 @@ class VirtualMachine():
                 lower_limit = self.instructions[self.curr_ip][2]
                 upper_limit = self.instructions[self.curr_ip][3]
                 index = self.instructions[self.curr_ip][1]
-                
+                ##print(">>>>>>>>>>>>>>>>>>>>>>",index, upper_limit, lower_limit)
                 if (index >= 11000 and index < 12001) or (index >= 5000 and index < 7000) or (index >= 16000 and index < 17000):
                     index = self.mem[self.instructions[self.curr_ip][1]]
                 #print(">>>>>>>>>>>>>>>>>>>>>>",index, upper_limit, lower_limit)
                 if index > upper_limit or index < lower_limit:
                     raise IndexError('Array index out of range.')
-
-            self.curr_ip += 1
-        # self.mem_dump()
+            
+            if self.auxSave1 != None:
+                self.instructions[self.curr_ip][1] = self.auxSave1
+            if self.auxSave2 != None:
+                self.instructions[self.curr_ip][2] = self.auxSave2  
+            self.curr_ip += 1  
+        #self.mem_dump()

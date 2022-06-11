@@ -1,0 +1,58 @@
+routine arrOperations;
+
+main{
+    mat1: int[3][3];
+    mat2: int[3][3];
+    mat3: int[3][3];
+    count1: int;
+    count2: int;
+    aux: int;
+    aux = 0;
+    aux2: int;
+    aux2 = 0;
+    aux3: int;
+    aux3 = 0;
+    count1 = 0;
+    count2 = 0;
+    while(count1 < 4){
+        count2 = 0;
+        while(count2 < 4){
+            mat1[count1][count2] = (count1+1) * (count2+1);
+            mat2[count1][count2] = (count1+1) * (count2+1);
+            count2 = count2 + 1;
+        }
+        count1 = count1 + 1;
+    }
+    count1 = 0;
+    count2 = 0;
+    count3:int;
+    count1 = 0;
+    count2 = 0;
+    count3 = 0;
+    while(count1 < 4){
+        count2 = 0;
+        while(count2 < 4){
+            count3 = 0;
+            while(count3 < 4){
+                aux = mat1[count1][count3];
+                aux2 = mat2[count3][count2];
+                aux3 = mat3[count1][count2];
+                mat3[count1][count2] = aux3 + aux * aux2;
+                count3 = count3 + 1;
+            }
+            count2 = count2 + 1;
+        }
+        count1 = count1 + 1;
+    }
+    count1 = 0;
+    count2 = 0;
+    while(count1 < 4){
+        count2 = 0;
+        while(count2 < 4){
+            <<<(mat3[count1][count2]);
+            count2 = count2 + 1;
+        }
+        count1 = count1 + 1;
+    }
+    
+}

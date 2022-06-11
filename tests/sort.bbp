@@ -7,8 +7,7 @@ main{
     cont2: int;
     temp : int;
     
-    cont1 = 0;
-    cont2 = 0;
+    
     arr[0] = 4;
     arr[1] = 5;
     arr[2] = 6;
@@ -20,16 +19,26 @@ main{
     arr[8] = 0;
     arr[9] = 10;
     arr[10] = 9;
-    <<<("-----",arr[1],arr[1]+arr[2],arr[2],"-------");
-    while(cont1 <> 11){
+
+    cont1 = 0;
+    cont2 = 0;
+    
+    while(cont1 < 11){
         cont2 = cont1;
-        while(cont2 <> 11){
-            if (arr[cont2] < arr[cont1]){
-                <<<("Es menor");
+        while(cont2 < 10){
+            if(arr[cont1] < arr[cont2 + 1]){
+                temp = arr[cont1];
+                arr[cont1] = arr[cont2+1];
+                arr[cont2+1] = temp;
             }
             cont2 = cont2 + 1;
         }
+        
         cont1 = cont1 + 1;
+    }
+    cont1 = 0;
+    while(cont1 < 11){
         <<<(arr[cont1]);
+        cont1 = cont1 + 1;
     }
 }

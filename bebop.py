@@ -71,58 +71,57 @@ Tp = 19000
 def tempCalculator(left_oper, right_oper, op):
     global Ti, Tf, To, Tb, curr_scope, currFuncCall, func_mem
     # RIGHT
+    #print(left_oper, right_oper, "------------", quadCounter, op)
     # Check if constant
-    if right_oper in const_table.keys():
+    # Check in current scope, go to global, or check temporals
+    if right_oper in func_dir[curr_scope]["vars_table"].keys():
+        rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
+        rOperDir = func_dir[curr_scope]["vars_table"][right_oper]["dirV"]
+    elif right_oper in func_dir["global"]["vars_table"].keys():
+        rOperType = func_dir["global"]["vars_table"][right_oper]["type"]
+        rOperDir = func_dir["global"]["vars_table"][right_oper]["dirV"]
+    elif right_oper in const_table.keys():
         rOperDir = const_table[right_oper]
         if rOperDir >= 16000 and rOperDir < 17000:
             rOperType = "int"
         elif rOperDir >= 17000 and rOperDir < 18000:
             rOperType = "float"
     else:
-        # Check in current scope, go to global, or check temporals
-        if right_oper in func_dir[curr_scope]["vars_table"].keys():
-            rOperType = func_dir[curr_scope]["vars_table"][right_oper]["type"]
-            rOperDir = func_dir[curr_scope]["vars_table"][right_oper]["dirV"]
-        elif right_oper in func_dir["global"]["vars_table"].keys():
-            rOperType = func_dir["global"]["vars_table"][right_oper]["type"]
-            rOperDir = func_dir["global"]["vars_table"][right_oper]["dirV"]
+        if right_oper >= 11000 and right_oper < 12000 or right_oper >= 5000 and right_oper < 7000 or right_oper >= 16000 and right_oper < 17000:
+            rOperType = "int"
+            rOperDir = right_oper
+        elif right_oper >= 12000 and right_oper < 13000 or right_oper >= 7000 and right_oper < 10000 or right_oper >= 17000 and right_oper < 18000:
+            rOperType = "float"
+            rOperDir = right_oper
         else:
-            if right_oper >= 11000 and right_oper < 12000 or right_oper >= 5000 and right_oper < 7000 or right_oper >= 16000 and right_oper < 17000:
-                rOperType = "int"
-                rOperDir = right_oper
-            elif right_oper >= 12000 and right_oper < 13000 or right_oper >= 7000 and right_oper < 10000 or right_oper >= 17000 and right_oper < 18000:
-                rOperType = "float"
-                rOperDir = right_oper
-            else:
-                rOperDir = right_oper
-                rOperType = "int"
+            rOperDir = right_oper
+            rOperType = "int"
 
     # LEFT
     # Check if constant
-    if left_oper in const_table.keys():
+    # Check in current scope, go to global, or check temporals
+    if left_oper in func_dir[curr_scope]["vars_table"].keys():
+        lOperType = func_dir[curr_scope]["vars_table"][left_oper]["type"]
+        lOperDir = func_dir[curr_scope]["vars_table"][left_oper]["dirV"]
+    elif left_oper in func_dir["global"]["vars_table"].keys():
+        lOperType = func_dir["global"]["vars_table"][left_oper]["type"]
+        lOperDir = func_dir["global"]["vars_table"][left_oper]["dirV"]
+    elif left_oper in const_table.keys():
         lOperDir = const_table[left_oper]
         if lOperDir >= 16000 and lOperDir < 17000:
             lOperType = "int"
         elif lOperDir >= 17000 and lOperDir < 18000:
             lOperType = "float"
     else:
-        # Check in current scope, go to global, or check temporals
-        if left_oper in func_dir[curr_scope]["vars_table"].keys():
-            lOperType = func_dir[curr_scope]["vars_table"][left_oper]["type"]
-            lOperDir = func_dir[curr_scope]["vars_table"][left_oper]["dirV"]
-        elif left_oper in func_dir["global"]["vars_table"].keys():
-            lOperType = func_dir["global"]["vars_table"][left_oper]["type"]
-            lOperDir = func_dir["global"]["vars_table"][left_oper]["dirV"]
+        if left_oper >= 11000 and left_oper < 12000 or left_oper >= 5000 and left_oper < 7000 or left_oper >= 16000 and left_oper < 17000:
+            lOperType = "int"
+            lOperDir = left_oper
+        elif left_oper >= 12000 and left_oper < 13000 or left_oper >= 7000 and left_oper < 10000 or left_oper >= 17000 and left_oper < 18000:
+            lOperType = "float"
+            lOperDir = left_oper
         else:
-            if left_oper >= 11000 and left_oper < 12000 or left_oper >= 5000 and left_oper < 7000 or left_oper >= 16000 and left_oper < 17000:
-                lOperType = "int"
-                lOperDir = left_oper
-            elif left_oper >= 12000 and left_oper < 13000 or left_oper >= 7000 and left_oper < 10000 or left_oper >= 17000 and left_oper < 18000:
-                lOperType = "float"
-                lOperDir = left_oper
-            else:
-                lOperDir = left_oper
-                lOperType = "int"
+            lOperDir = left_oper
+            lOperType = "int"
     # Utilize Semantic Cube to check if types are correct
     
     if op == "+":
@@ -177,7 +176,6 @@ def p_routine0(p):
     vm = VirtualMachine(quadruples, func_dir, const_table)
     vm.mem_init()
     vm.run()
-    #vm.mem_dump()
 
 
 # Neural Point 1
@@ -199,7 +197,6 @@ def p_routine1(p):
              | class0 routine1 
              | function0 routine1
              | declaration0 routine1
-             | assignment0 routine1
              | empty
     '''
     global func_dir, Gi, Gf, Go, Li, Lf, Lo, Ti, To, Tf, Tb, Ts, func_mem
@@ -598,9 +595,8 @@ def p_neurMemory(p):
         func_dir[curr_scope]["vars_table"][var_id]["lsDim2"] = ls2
         func_dir[curr_scope]["vars_table"][var_id]["dim"] = dimCounter
         func_dir[curr_scope]["vars_table"][var_id]["m1"] = r / (ls1+1)
-        func_dir[curr_scope]["vars_table"][var_id]["m2"] = func_dir[curr_scope]["vars_table"][var_id]["m1"] / \
-            (ls2+1)
-
+        func_dir[curr_scope]["vars_table"][var_id]["m2"] = func_dir[curr_scope]["vars_table"][var_id]["m1"] /(ls2+1)
+    
     func_dir[curr_scope]["vars_table"][var_id]["dirV"] = direc
     func_dir[curr_scope]["vars_table"][var_id]["size"] = size
 
@@ -631,10 +627,10 @@ def p_limitNeur2(p):
         raise IndexError("Index Type not valid")
     else:
         Ls = aux
-        Li = 0
+        Linf = 0
         dimNodes[dimCounter]["ls"] = Ls
-        dimNodes[dimCounter]["li"] = Li
-        dimNodes[dimCounter]["r"] = dimNodes[dimCounter-1]["r"] * (Ls - Li + 1)
+        dimNodes[dimCounter]["li"] = Linf
+        dimNodes[dimCounter]["r"] = dimNodes[dimCounter-1]["r"] * (Ls - Linf + 1)
         dimCounter += 1
 
 
@@ -655,14 +651,16 @@ def p_assignment0(p):
                 direc = func_dir["global"]["vars_table"][p[1]]["dirV"]
             else:
                 direc = func_dir[curr_scope]["vars_table"][p[1]]["dirV"]
-
             if value in func_dir["global"]["vars_table"]:
                 dirVal = func_dir["global"]["vars_table"][value]["dirV"]
+            elif value in func_dir[curr_scope]["vars_table"]:
+                dirVal = func_dir[curr_scope]["vars_table"][value]["dirV"]
+            elif value >= 11000 and value < 12000:
+                dirVal = value
             elif(value in const_table.keys()):
                 dirVal = const_table[value]
                 #dirVal = value
-            elif value in func_dir[curr_scope]["vars_table"]:
-                dirVal = func_dir[curr_scope]["vars_table"][value]["dirV"]
+            
             else:
                 dirVal = value
 
@@ -672,12 +670,15 @@ def p_assignment0(p):
     elif len(p) == 8 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
-        if valAssign in const_table.keys():
-            vAssign = const_table[valAssign]
+        
+        if valAssign in func_dir[curr_scope]["vars_table"].keys():
+            vAssign = func_dir[curr_scope]["vars_table"][valAssign]["dirV"]
         elif valAssign in func_dir["global"]["vars_table"].keys():
             vAssign = func_dir["global"]["vars_table"][valAssign]["dirV"]
-        elif valAssign in func_dir[curr_scope]["vars_table"].keys():
-            vAssign = func_dir[curr_scope]["vars_table"][valAssign]["dirV"]
+        elif valAssign >= 11000 and valAssign < 12000:
+            vAssign = valAssign
+        elif valAssign in const_table.keys():
+            vAssign = const_table[valAssign]
         else:
             vAssign = valAssign
 
@@ -688,9 +689,22 @@ def p_assignment0(p):
     elif len(p) == 12 and operands_stack:
         valAssign = operands_stack.pop()
         assignee = operands_stack.pop()
-        quad = [p[9], const_table[valAssign], None, assignee]
+        #print(valAssign, assignee, "))()()()()", quadCounter)
+        if valAssign in func_dir[curr_scope]["vars_table"].keys():
+            vAssign = func_dir[curr_scope]["vars_table"][valAssign]["dirV"]
+        elif valAssign in func_dir["global"]["vars_table"].keys():
+            vAssign = func_dir["global"]["vars_table"][valAssign]["dirV"]
+        elif valAssign >= 11000 and valAssign < 12000:
+            vAssign = valAssign
+        elif valAssign in const_table.keys():
+            vAssign = const_table[valAssign]
+        else:
+            vAssign = valAssign
+        quad = [p[9], vAssign, None, assignee]
+        
         quadruples.append(quad)
         quadCounter += 1
+        #print(quad, quadCounter)
 
 ### arrAccDim2 (NeurPoint 13)
 # Generates array size for 2dim
@@ -702,11 +716,13 @@ def p_arrAccdim2(p):
     id = p[-6][0]
     idType = p[-6][1]
     dim = p[-6][2]
-    aux = operands_stack[-1]
+    aux = operands_stack.pop()
     if aux in func_dir[curr_scope]["vars_table"].keys():
             aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
     elif aux in func_dir["global"]["vars_table"].keys():
         aux = func_dir["global"]["vars_table"][aux]["dirV"]
+    elif aux >= 11000 and aux < 12000:
+            aux = aux
     elif aux not in const_table.keys():
         const_table[aux] = Ci
         Ci += 1
@@ -720,12 +736,14 @@ def p_arrAccdim2(p):
     else:
         ls = func_dir[curr_scope]["vars_table"][id]["lsDim2"]
     quad = ["VERIFY", aux, 0, ls]
+    
     quadruples.append(quad)
     quadCounter += 1
-    left_oper = operands_stack.pop()
+    left_oper = aux
     right_oper = operands_stack.pop()
     direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, "+")
     operands_stack.append(direc)
+    
     quadruples.append(["+", lOperDir, rOperDir, direc])
     operands_stack.append(direc)
     temp_counter += 1
@@ -759,6 +777,8 @@ def p_rsqrbracket_assign_2dim1(p):
             aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
         elif aux in func_dir["global"]["vars_table"].keys():
             aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        elif aux >= 11000 and aux < 12000:
+            aux = aux
         elif aux not in const_table.keys():
             const_table[aux] = Ci
             Ci += 1
@@ -778,6 +798,8 @@ def p_rsqrbracket_assign_2dim1(p):
             aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
         elif aux in func_dir["global"]["vars_table"].keys():
             aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        elif aux >= 11000 and aux < 12000:
+            aux = aux
         elif aux not in const_table.keys():
             const_table[aux] = Ci
             Ci += 1
@@ -815,6 +837,8 @@ def p_rsqrbracket_assign(p):
             aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
         elif aux in func_dir["global"]["vars_table"].keys():
             aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        elif aux >= 11000 and aux < 12000:
+            aux = aux
         elif aux not in const_table.keys():
             const_table[aux] = Ci
             Ci += 1
@@ -830,6 +854,8 @@ def p_rsqrbracket_assign(p):
             aux = func_dir[curr_scope]["vars_table"][aux]["dirV"]
         elif aux in func_dir["global"]["vars_table"].keys():
             aux = func_dir["global"]["vars_table"][aux]["dirV"]
+        elif aux >= 11000 and aux < 12000:
+            aux = aux
         elif aux not in const_table.keys():
             const_table[aux] = Ci
             Ci += 1
@@ -1170,7 +1196,10 @@ def p_check_last_times_division_operator(p):
         right_oper = operands_stack.pop()
         left_oper = operands_stack.pop()
         op = operators_stack.pop()
+        #print(quadruples[quadCounter-1])
+        #print(left_oper, right_oper, op, quadCounter)
         direc, lOperDir, rOperDir = tempCalculator(left_oper, right_oper, op)
+        #print(direc, lOperDir, rOperDir)
         operands_stack.append(direc)
         quad = [op, lOperDir,
                 rOperDir, direc]
@@ -1403,13 +1432,13 @@ def p_neurFuncCallParams1(p):
     else:
         if(aux in func_dir[curr_scope]["vars_table"].keys()):
             quadruples.append(["PARAM", func_dir[curr_scope]["vars_table"]
-                              [aux]["dirV"], "param$"+str(paramCounter), None])
+                              [aux]["dirV"], paramCounter, None])
         else:
             if aux not in const_table:
                 const_table[aux] = Ci
                 Ci += 1
             quadruples.append(["PARAM", const_table[aux],
-                              "param$"+str(paramCounter), None])
+                              paramCounter, None])
 
         quadCounter += 1
         paramCounter += 1
@@ -1671,19 +1700,31 @@ def p_return(p):
     global operators_stack, operands_stack, types_stack, quadruples, temp_counter, quadCounter, curr_scope
     if len(p) == 4 and len(operands_stack):
         value = operands_stack.pop()
+        valType = types_stack.pop()
+        if(valType != func_dir[curr_scope]["return_type"]):
+            raise TypeError("Function and return value are not of the same type")
         if value in func_dir["global"]["vars_table"].keys():
             direc = func_dir["global"]["vars_table"][value]['dirV']
+            dType = func_dir["global"]["vars_table"][value]['type']
         elif value in func_dir[curr_scope]["vars_table"].keys():
             direc = func_dir[curr_scope]["vars_table"][value]['dirV']
+            dType = func_dir[curr_scope]["vars_table"][value]['type']
         elif value in const_table.keys():
             direc = const_table[value]
         elif type(value) == int:
             direc = value
-        quad = ["RETURN", curr_scope, None, direc]
+        valNew = func_dir["global"]["vars_table"][curr_scope]["dirV"]
+        valNewType = func_dir["global"]["vars_table"][curr_scope]["type"]
+        quad = ["RETURN", valNew, None, direc]
         quadruples.append(quad)
         quadCounter += 1
+        operands_stack.append(valNew)
+        types_stack.append(valNewType)
+        
+        
     else:
         quadruples.append(["ENDPROC", None, None, None])
+        quadCounter += 1
 
 ### while
 # generates while statement
@@ -1768,7 +1809,7 @@ def p_object_assignment(p):
 # Main and most important "function" in program, resets temp and local addresses
 def p_main(p):
     '''
-    main0 : MAIN main_scope LBRACKET main1 RBRACKET 
+    main0 : MAIN  LBRACKET main_scope main1 RBRACKET 
     '''
     global Li, Lf, Lo, Ti, Tf, Tb, To, Ts, func_mem
     Li = 5000
@@ -1814,7 +1855,8 @@ def p_empty(p):
 def p_error(p):
     #print(p.value)
     #print("Código inválido.")
-    raise SyntaxError("An error was found reading the file: " + p.value)
+    errorMsg = ("An error was found reading the file: " + str(p.value))
+    raise SyntaxError(errorMsg)
 
 
 if __name__ == '__main__':

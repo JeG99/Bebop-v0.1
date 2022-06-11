@@ -1,0 +1,9 @@
+routine recFib;
+
+def funcion71628(int a, int b) -> int [[]] {
+	return b + asd;
+}
+
+main{
+    
+}

@@ -1,24 +1,25 @@
-# Global addresses
-Gi = 0
-Gf = 2000
-Go = 4000
+routine test2;
 
-# Local Addresses
-Li = 5000
-Lf = 7000
-Lo = 10000
+def funcion7() -> void [[v6:int; v9:float;]] {
+	<<<("Function");
+}
 
-# Temporal Addresses
-Ti = 11000
-Tf = 12000
-Tb = 13000
-To = 14000
-Ts = 15000
 
-# Constant Addresses
-Ci = 16000
-Cf = 17000
-Cs = 18000
+def funcion8(int vr) -> int [[v6:int; v9:float;]] {
+    v6 = 5 + vr;
+    v9 = 3.2;
+	return v6;
+}
 
-# Pointer Address
-Tp = 19000
+
+
+main {
+    v2: int;
+    v1: int;
+    v2 = 7;
+    <<<(v2);
+    funcion7();
+    v1 = funcion8(9);
+    <<<(v1);
+    <<<(v2);
+}
